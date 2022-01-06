@@ -1,0 +1,68 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.UserMapper">
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>        
+        <result property="hashedPassword" column="password"/>
+        <result property="passwordSalt" column="password_salt"/>
+        <result property="address" column="address"/>
+        <result property="name" column="name"/>
+        <result property="email" column="email"/>
+        <result property="role" column="role"/>
+        <result property="registrationTime" column="registration_time"/>
+    </resultMap>
+    
+    <insert id="create" parameterType="User" flushCache="true" keyProperty="id" keyColumn="id"
+            useGeneratedKeys="true">
+        <selectKey order="BEFORE" keyProperty="id" resultType="long">
+            SELECT users_increment.nextval FROM dual
+        </selectKey>
+        INSERT INTO users (
+            id, username, password, password_salt, address, name, email, role, registration_time
+        )
+        VALUES (
+            #{id}, #{username}, #{hashedPassword}, #{passwordSalt}, #{address}, #{name}, #{email}, #{role}, #{registrationTime}
+            )
+    </insert>   
+    
+    <update id="updateUser" parameterType="User">
+        UPDATE users
+        <set>
+            <if test="address != null"> address=#{address},</if>
+            <if test="name != null"> name=#{name},</if>
+            <if test="email != null"> email=#{email} </if>
+        </set>
+        WHERE UPPER(username) = UPPER(#{username})
+    </update>         
+    
+    <select id="findUserByUniqueUsername" resultMap="UserMap">
+        SELECT id, username, address, name, email, role, registration_time
+        FROM users
+        WHERE UPPER(username) = UPPER(#{username})
+    </select> 
+    
+    <select id="findUserByUniqueEmail" resultMap="UserMap">
+        SELECT id, username, email
+        FROM users
+        WHERE UPPER(email) = UPPER(#{email})
+    </select> 
+    
+    <select id="findPasswordDataByUsername" resultMap="UserMap">
+        SELECT id, username, password, password_salt, address, name, email, role, registration_time
+        FROM users
+        WHERE UPPER(username) = UPPER(#{username})
+    </select>    
+    
+    <select id="findAllUsers" resultMap="UserMap">
+        SELECT id, username, password, password_salt, address, name, email, role, registration_time
+        FROM users ORDER BY id
+    </select>        
+    
+    <delete id="deleteByUsername">
+        DELETE
+        FROM users
+		WHERE UPPER(username) = UPPER(#{username})
+    </delete>           
+</mapper>

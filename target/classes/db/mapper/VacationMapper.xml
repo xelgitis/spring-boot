@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.VacationMapper">
+    <resultMap id="VacationMap" type="Vacation">
+        <result property="id" column="id"/>
+        <result property="startDate" column="start_date"/>        
+        <result property="duration" column="duration"/>
+        <result property="approval" column="approval"/>
+        <result property="username" column="username"/>
+    </resultMap>
+    
+    <insert id="create" parameterType="Vacation" flushCache="true" keyProperty="id" keyColumn="id" 
+            useGeneratedKeys="true">
+        <selectKey order="BEFORE" keyProperty="id" resultType="long">
+            SELECT vacation_increment.nextval FROM dual
+        </selectKey>
+        INSERT INTO vacation (
+            id, start_date, duration, approval, username
+        )
+        VALUES (
+            #{id}, #{startDate}, #{duration}, #{approval}, #{username}
+            )
+    </insert>  
+    
+    <delete id="deleteByUserIdIn">
+        DELETE
+        FROM web_user_details
+        WHERE id in
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>        
+    
+    <select id="findVacationByUniqueUsername" resultMap="VacationMap">
+        SELECT id, start_date, duration, approval, username
+        FROM vacation
+        WHERE UPPER(username) = UPPER(#{username})
+    </select> 
+    
+    <select id="findAllVacations" resultMap="VacationMap">
+        SELECT id, start_date, duration, approval, username
+        FROM vacation
+    </select>  
+    
+    <update id="updateVacationByUniqueUsername" parameterType="Vacation">
+        UPDATE vacation
+        <set>
+            <if test="startDate != null"> start_date=#{startDate},</if>
+            <if test="duration != null"> duration=#{duration}</if>
+        </set>
+        WHERE UPPER(username) = UPPER(#{username})
+    </update> 
+    
+    <delete id="deleteVacationByUniqueUsername">
+        DELETE
+        FROM vacation
+		WHERE UPPER(username) = UPPER(#{username})
+    </delete>                            
+</mapper>

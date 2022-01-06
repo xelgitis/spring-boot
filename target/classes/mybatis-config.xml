@@ -1,0 +1,18 @@
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+    <typeAliases>
+    <typeAlias type="com.example.springboot.domain.User" alias="User"/>
+    <typeAlias type="com.example.springboot.domain.Vacation" alias="Vacation"/>
+    </typeAliases>
+    <typeHandlers>
+    </typeHandlers>
+    <mappers>
+    <mapper resource="db/mapper/UserMapper.xml" />
+    <mapper resource="db/mapper/VacationMapper.xml" />
+    </mappers>
+</configuration>
