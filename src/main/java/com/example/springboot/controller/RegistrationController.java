@@ -27,7 +27,7 @@ public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;    
 	
-	//TODO: add exception handling
+	//TODO: add exception handling - controllerAdvice - google
     //use @Valid annotation to perform checks defined in RegistrationRequest
 	@PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RegistrationResponse register(@Valid @RequestBody RegistrationRequest request) {
