@@ -34,5 +34,13 @@ public class VacationResponse {
 	public void setStatus(Status status) {
 		this.status = status;
 	}	
+	
+	@Override
+	public String toString() {
+		return "VacationResponse{" +
+				", status=" + status +
+				", message=" + message +
+				'}';
+	}	
 
 }

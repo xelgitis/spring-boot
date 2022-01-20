@@ -46,7 +46,7 @@ public class VacationController {
 		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.info("GetMapping VacationController - ulogovani korisnik={}, role={} ", username, role);
+		logger.debug("GetMapping VacationController - ulogovani korisnik={}, role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			return vacationService.getVacation(user);	
@@ -62,7 +62,7 @@ public class VacationController {
 		VacationResponse vacationResponse;
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.info("PostMapping VacationController - ulogovani korisnik={}, role={} ", username, role);
+		logger.debug("PostMapping VacationController - ulogovani korisnik={}, role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			vacationResponse = vacationService.createVacation(request, user);	
@@ -79,7 +79,7 @@ public class VacationController {
 		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.info("PutMapping VacationController - ulogovani korisnik={} ", username);
+		logger.debug("PutMapping VacationController - ulogovani korisnik={} ", username);
 		
 		if (loginService.isAdmin(role)) {
 			return vacationService.updateVacation(request.getStartDate(), request.getDuration(), user);		
@@ -93,7 +93,7 @@ public class VacationController {
 		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.info("DeleteMapping VacationController - ulogovani korisnik={} role={} ", username, role);
+		logger.debug("DeleteMapping VacationController - ulogovani korisnik={} role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			return vacationService.deleteVacation(user);			

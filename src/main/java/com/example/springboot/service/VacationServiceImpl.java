@@ -21,14 +21,20 @@ public class VacationServiceImpl implements VacationService {
     private VacationMapper vacationMapper;  
 	@Override
 	public VacationResponse createVacation(VacationRequest request, String username) {
+		logger.info("Zahtev za kreiranje odmora: {} usera = {} ", request.toString(), username);
 		createVac(request, username);
 		return new VacationResponse(VacationResponse.Status.SUCCESS, "Uspesno kreiran odmor za usera " + username);
 	}  
 	
 	@Override
 	public Vacation getVacation(String username) {
-		logger.info("Zahtev za pregled odmora usera = {} ", username);
-		return vacationMapper.findVacationByUniqueUsername(username);			
+		logger.debug("Zahtev za pregled odmora usera = {} ", username);
+		if (vacationMapper.findVacationByUniqueUsername(username) != null) {
+			return vacationMapper.findVacationByUniqueUsername(username);	
+		} else {
+			logger.info("Odmor za usera = {} ne postoji ", username);
+			return new Vacation();
+		}
 	}	
 
 	@Override

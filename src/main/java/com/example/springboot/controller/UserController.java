@@ -45,11 +45,15 @@ public class UserController {
 
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.info("GetMapping UserController - ulogovani korisnik={}, role={} ", username, role);
+		logger.debug("GetMapping UserController - ulogovani korisnik={}, role={} ", username, role);
 
 		if (loginService.isAdmin(role)) {
 			return userService.getUser(user);			
 		} else {
+			if (!username.contentEquals(user)) {
+				logger.info("Nije dozvoljeno regular korisniku da trazi podatke za drugog korisnika - vracaju se podaci ulogovanog korisnika");
+				logger.info("Ulogovani korisnik: {}, trazeni podaci za korisnika: {}", username, user);
+			}
 			return userService.getUser(username);
 		}		
 	}
@@ -61,11 +65,15 @@ public class UserController {
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
 		
-		logger.info("PutMapping UserController - ulogovani korisnik={} , role={} ", username, role);
+		logger.debug("PutMapping UserController - ulogovani korisnik={} , role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			return userService.updateUser(user, request.getAddress(), request.getName(), request.getEmail());		
 		} else {
+			if (!username.contentEquals(user)) {
+				logger.info("Nije dozvoljeno regular korisniku da azurira podatke za drugog korisnika. Bice izvrseno azuriranje ulogovanog korisnika.");
+				logger.info("Ulogovani korisnik: {}, trazeno azuriranje podataka za korisnika: {}", username, user);
+			}	
 			return userService.updateUser(username, request.getAddress(), request.getName(), request.getEmail());
 		}
 	}
@@ -75,11 +83,15 @@ public class UserController {
 		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.info("DeleteMapping UserController - ulogovani korisnik={} role={} ", username, role);
+		logger.debug("DeleteMapping UserController - ulogovani korisnik={} role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			return userService.deleteUser(user);
 		} else {
+			if (!username.contentEquals(user)) {
+				logger.info("Nije dozvoljeno regular korisniku da brise drugog korisnika. Bice izvrseno brisanje ulogovanog korisnika.");
+				logger.info("Ulogovani korisnik: {}, trazeno brisanje podataka za korisnika: {}", username, user);
+			}				
 			return userService.deleteUser(username);
 		}
 	}

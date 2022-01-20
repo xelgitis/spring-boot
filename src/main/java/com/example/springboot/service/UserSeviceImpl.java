@@ -29,7 +29,7 @@ public class UserSeviceImpl implements UserService {
 
 	@Override
 	public UserResponse updateUser(String username, String address, String name, String email) {
-		logger.info("Update sledeceg usera username = {}, address = {}, name = {}, email = {} ", username, address, name, email);
+		logger.debug("Update usera sa sl parametrima: username = {}, address = {}, name = {}, email = {} ", username, address, name, email);
 		userMapper.updateUser(username, address, name, email);	
 		//TODO: check how to solve this, when user does not exist
 		return new UserResponse(username, UserResponse.Status.SUCCESSFUL, "User uspesno updejtovan");
@@ -38,6 +38,7 @@ public class UserSeviceImpl implements UserService {
 	@Override
 	public UserResponse deleteUser(String username) {
 		userMapper.deleteByUsername(username);
+		//TODO: check how to solve this, when user does not exist
 		return new UserResponse(username, UserResponse.Status.SUCCESSFUL, "User uspesno obrisan");
 	}	
 

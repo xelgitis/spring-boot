@@ -36,7 +36,7 @@ public class RegistrationController {
 		
 		//validate if user already exist or if email exist
 		validator.validate(request);
-		logger.info("Zavrsena validacija za novog korisnika={} ", request);
+		logger.debug("Zavrsena validacija za novog korisnika={} ", request);
 
 		//try to register user and get a response
 	    RegistrationResponse response = registrationService.register(request);

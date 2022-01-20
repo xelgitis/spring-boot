@@ -11,6 +11,8 @@ public class VacationRequest {
 	@NotNull(message = "duration must be provided")
 	private int duration;
 	
+	public VacationRequest() {}
+	
 	public VacationRequest(Date startDate, int duration) {
 		this.startDate = startDate;
 		this.duration = duration;
@@ -28,5 +30,13 @@ public class VacationRequest {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
+	
+	@Override
+	public String toString() {
+		return "VacationRequest{" +
+				", startDate=" + startDate +
+				", duration=" + duration +
+				'}';
+	}		
 
 }

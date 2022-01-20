@@ -33,7 +33,9 @@ public class RegistrationResponse {
     
     public void setMessage(String message) {
         this.message = message;
-    }      
+    }    
+    
+    public RegistrationResponse() {}
     
     public RegistrationResponse(Status status) {
         this.status = status;

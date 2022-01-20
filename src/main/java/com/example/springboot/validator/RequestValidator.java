@@ -26,13 +26,13 @@ public class RequestValidator {
         //request.setPassword(request.getPassword().trim());
         //request.setUsername(request.getUsername().trim());
         
-        logger.info("Provera da li korisnik postoji u bazi sa sledecim username-om = {} ", request.getUsername());
+        logger.debug("Provera da li korisnik postoji u bazi sa sledecim username-om = {} ", request.getUsername());
         User user = userMapper.findUserByUniqueUsername(request.getUsername());
         if (user != null) {
             throw new RegistrationException("korisnicko ime vec postoji");
         }     
         
-        logger.info("Provera da li postoji korisnik u bazi sa istim email-om = {} ", request.getEmail());
+        logger.debug("Provera da li postoji korisnik u bazi sa istim email-om = {} ", request.getEmail());
         validateEmail(request.getEmail());
         
 	}

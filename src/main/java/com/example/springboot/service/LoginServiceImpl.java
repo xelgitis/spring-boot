@@ -51,12 +51,12 @@ public class LoginServiceImpl implements LoginService {
 		}		
 		
 		user.setPassword(request.getPassword());
-		logger.info("Dohvacen user: {}", user.toString());
+		logger.debug("Dohvacen user: {}", user.toString());
 		try {
 			getPasswordGeneratorService().checkPassword(user);
 			logger.info("Provera passworda uspesna za username {}", user.getUsername());
 		} catch (Exception e) {
-			logger.error("Nije pronadjen korisnik za username i password, username: {}", request.getUsername());
+			logger.error("Nije ispravna sifra za korisnika: {}", request.getUsername());
 			return handleFailedLoginAttempts(user);
 		}		
 

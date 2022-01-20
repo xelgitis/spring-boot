@@ -13,6 +13,8 @@ public class LoginResponse {
 	private String sessionId;	
 	private Status status;
 	private String message;
+	
+	public LoginResponse() {}
 
 	public LoginResponse(Status status, String message) {
 		this.status = status;

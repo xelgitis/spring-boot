@@ -1,6 +1,5 @@
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\controller\LoginController.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\domain\LoginRequest.java
-C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\Application.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\domain\RegistrationRequest.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\domain\RegistrationResponse.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\controller\RegistrationController.java
@@ -27,5 +26,6 @@ C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\s
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\domain\VacationRequest.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\exeption\RegistrationException.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\validator\RequestValidator.java
+C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\VacationApplication.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\service\PasswordGeneratorService.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\service\UserService.java
