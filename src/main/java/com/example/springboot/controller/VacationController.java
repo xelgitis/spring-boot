@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
+import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.VacationService;
-
-import javaslang.control.Try;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -38,19 +38,19 @@ public class VacationController {
     @Autowired
     private VacationService vacationService;
     
-    //TODO: ask wheter we can come to the situation where logged user is regular one, and it tries to see the vacation of another user
-    //would that be even possible
     
 	@GetMapping(path="/{sessionID}",produces = APPLICATION_JSON_VALUE)
 	public Vacation getVacation(@PathVariable String sessionID, @RequestParam(value="user") String user) {
 		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.debug("GetMapping VacationController - ulogovani korisnik={}, role={} ", username, role);
 		
-		if (loginService.isAdmin(role)) {
+		logger.info("Zahtev za getVacation ");
+		
+		if (loginService.isAdmin(role)) {			
 			return vacationService.getVacation(user);	
-		} else {			
+		} else {	
+			checkRequieredData(username, user);
 			return vacationService.getVacation(username);
 		}		
 	}
@@ -62,11 +62,11 @@ public class VacationController {
 		VacationResponse vacationResponse;
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.debug("PostMapping VacationController - ulogovani korisnik={}, role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			vacationResponse = vacationService.createVacation(request, user);	
 		} else {
+			checkRequieredData(username, user);
 			vacationResponse =  vacationService.createVacation(request, username);
 		}			
 		
@@ -79,11 +79,11 @@ public class VacationController {
 		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.debug("PutMapping VacationController - ulogovani korisnik={} ", username);
 		
 		if (loginService.isAdmin(role)) {
 			return vacationService.updateVacation(request.getStartDate(), request.getDuration(), user);		
 		} else {
+			checkRequieredData(username, user);
 			return vacationService.updateVacation(request.getStartDate(), request.getDuration(), username);
 		}
 	}	
@@ -93,12 +93,19 @@ public class VacationController {
 		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.debug("DeleteMapping VacationController - ulogovani korisnik={} role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			return vacationService.deleteVacation(user);			
 		} else {
+			checkRequieredData(username, user);
 		    return vacationService.deleteVacation(username);
+		}		
+	}	
+	
+	public void checkRequieredData(String username, String user) {
+		if (!username.contentEquals(user)) {
+			logger.info("Nije dozvoljeno regular korisniku da gleda-azurira-brise podatke za drugog korisnika");
+			throw new VacationAppException("Korisnik: " + username + " ne moze da gleda/azurira/brise podatke za korisnika " + user, GenericResponse.GENERIC_ERROR);
 		}		
 	}	
 

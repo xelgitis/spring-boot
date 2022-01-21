@@ -11,8 +11,6 @@ import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.service.LoginService;
 
-import javaslang.control.Try;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import javax.validation.Valid;

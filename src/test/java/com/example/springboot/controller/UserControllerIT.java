@@ -31,9 +31,9 @@ class UserControllerIT {
 	//try all testcases logged as admin and logged as regular user	
 	@BeforeEach
 	public void initialLogin(){
-		LoginRequest request = new LoginRequest();
-		request.setUsername("olga.jesic");
-		request.setPassword("olga.jesic");		
+		LoginRequest request = new LoginRequest("olga.jesic", "olga.jesic");
+		//request.setUsername("olga.jesic");
+		//request.setPassword("olga.jesic");		
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
 		uri = "/users/"+ sessionID + "?user=" + username;

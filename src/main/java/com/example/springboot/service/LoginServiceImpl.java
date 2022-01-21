@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.User;
+import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.mapper.UserMapper;
 
 @Service
@@ -31,34 +33,20 @@ public class LoginServiceImpl implements LoginService {
 		return userMapper;
 	}	
 	
-	@Override 
-	public PasswordGeneratorService getPasswordGeneratorService() {
-		return passwordGeneratorService;
-	}	
-	
 	public LoginResponse login(LoginRequest request) {
 		logger.info("Provera username/pass za korisnika: {}", request.getUsername());
-		
-		if (request.getUsername() == null || request.getPassword() == null) {
-			return new LoginResponse(LoginResponse.Status.WRONG_FORMAT_DATA, "Username ili šifra nisu uneseni");
-		}
 		
 		User user = getMapper().findPasswordDataByUsername(request.getUsername());
 		
 		if (user == null) {
 			logger.error("Username ne postoji u bazi");
-			return new LoginResponse(LoginResponse.Status.ERROR, "Username ne postoji u bazi");
+			throw new VacationAppException("Korisnik sa username-om = " + request.getUsername() + " ne postoji u bazi", GenericResponse.USER_NOT_FOUND);
 		}		
 		
 		user.setPassword(request.getPassword());
 		logger.debug("Dohvacen user: {}", user.toString());
-		try {
-			getPasswordGeneratorService().checkPassword(user);
-			logger.info("Provera passworda uspesna za username {}", user.getUsername());
-		} catch (Exception e) {
-			logger.error("Nije ispravna sifra za korisnika: {}", request.getUsername());
-			return handleFailedLoginAttempts(user);
-		}		
+
+		passwordGeneratorService.checkPassword(user);
 
 		String sessionId = UUID.randomUUID().toString();
 		if(loggedUsers == null) loggedUsers = new HashMap<>();
@@ -67,10 +55,6 @@ public class LoginServiceImpl implements LoginService {
 		return new LoginResponse(user.getUsername(), sessionId, LoginResponse.Status.SUCCESS, "Login za korisnika uspesan");
 	}	
 	
-	LoginResponse handleFailedLoginAttempts(User user) {
-		return new LoginResponse(LoginResponse.Status.WRONG_PASSWORD, "Korisnik je uneo pogresnu sifru");
-	}
-
 	@Override
 	public HashMap<String, User> getLoggedUsers() {
 		return loggedUsers;

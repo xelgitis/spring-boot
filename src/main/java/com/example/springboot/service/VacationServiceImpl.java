@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
+import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.mapper.VacationMapper;
 
 @Service
@@ -28,31 +30,35 @@ public class VacationServiceImpl implements VacationService {
 	
 	@Override
 	public Vacation getVacation(String username) {
-		logger.debug("Zahtev za pregled odmora usera = {} ", username);
 		if (vacationMapper.findVacationByUniqueUsername(username) != null) {
 			return vacationMapper.findVacationByUniqueUsername(username);	
 		} else {
-			logger.info("Odmor za usera = {} ne postoji ", username);
-			return new Vacation();
+			throw new VacationAppException("Odmor za korisnika sa username-om =" + username + " ne postoji u bazi", GenericResponse.GENERIC_ERROR);
 		}
 	}	
 
 	@Override
 	public VacationResponse updateVacation(Date startDate, int duration, String username) {
-		vacationMapper.updateVacationByUniqueUsername(startDate, duration, username);
-		return new VacationResponse(VacationResponse.Status.SUCCESS, "Odmor uspesno updejtovan za usera " + username);
+		if (vacationMapper.findVacationByUniqueUsername(username) != null) {
+			vacationMapper.updateVacationByUniqueUsername(startDate, duration, username);
+			return new VacationResponse(VacationResponse.Status.SUCCESS, "Odmor uspesno updejtovan za usera " + username);
+		} else {
+			throw new VacationAppException("Odmor za korisnika sa username-om =" + username + " ne postoji u bazi", GenericResponse.GENERIC_ERROR);
+		}
 	}
 
 	@Override
 	public VacationResponse deleteVacation(String username) {
-		vacationMapper.deleteVacationByUniqueUsername(username);	
-		return new VacationResponse(VacationResponse.Status.SUCCESS, "Odmor uspesno obrisan za usera " + username);
+		if (vacationMapper.findVacationByUniqueUsername(username) != null) {
+			vacationMapper.deleteVacationByUniqueUsername(username);	
+			return new VacationResponse(VacationResponse.Status.SUCCESS, "Odmor uspesno obrisan za usera " + username);
+		} else {
+			throw new VacationAppException("Odmor za korisnika sa username-om =" + username + " ne postoji u bazi", GenericResponse.GENERIC_ERROR);
+		}
 	}
 	
     public void createVac(VacationRequest request, String username) {
-        Vacation vacation = new Vacation (request.getStartDate(), request.getDuration(), 'N', username);
-        
-        logger.info("Kreiran je sledeci odmor = {} ", vacation.toString());        
+        Vacation vacation = new Vacation (null, request.getStartDate(), request.getDuration(), 'N', username);        
         vacationMapper.create(vacation);
     }
 

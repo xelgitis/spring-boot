@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springboot.domain.UserRequest;
 import com.example.springboot.domain.UserResponse;
+import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.domain.User;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.UserService;
 
-import javaslang.control.Try;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -42,18 +42,13 @@ public class UserController {
     //get information about user with specific username
 	@GetMapping(path="/{sessionID}",produces = APPLICATION_JSON_VALUE)
 	public User getUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {
-
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.debug("GetMapping UserController - ulogovani korisnik={}, role={} ", username, role);
 
 		if (loginService.isAdmin(role)) {
 			return userService.getUser(user);			
 		} else {
-			if (!username.contentEquals(user)) {
-				logger.info("Nije dozvoljeno regular korisniku da trazi podatke za drugog korisnika - vracaju se podaci ulogovanog korisnika");
-				logger.info("Ulogovani korisnik: {}, trazeni podaci za korisnika: {}", username, user);
-			}
+			checkRequieredData(username, user);
 			return userService.getUser(username);
 		}		
 	}
@@ -61,39 +56,35 @@ public class UserController {
     //update user address, or name, or email or all
 	@PutMapping(path="/{sessionID}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
 	public UserResponse updateUser(@PathVariable String sessionID, @RequestBody UserRequest request, @RequestParam(value="user") String user) {
-		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		
-		logger.debug("PutMapping UserController - ulogovani korisnik={} , role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			return userService.updateUser(user, request.getAddress(), request.getName(), request.getEmail());		
 		} else {
-			if (!username.contentEquals(user)) {
-				logger.info("Nije dozvoljeno regular korisniku da azurira podatke za drugog korisnika. Bice izvrseno azuriranje ulogovanog korisnika.");
-				logger.info("Ulogovani korisnik: {}, trazeno azuriranje podataka za korisnika: {}", username, user);
-			}	
+			checkRequieredData(username, user);
 			return userService.updateUser(username, request.getAddress(), request.getName(), request.getEmail());
 		}
 	}
 	
 	@DeleteMapping(path="/{sessionID}", produces = APPLICATION_JSON_VALUE)
-	public UserResponse deleteUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {
-		
+	public UserResponse deleteUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {		
 		String username = loginService.getUsernameBySessionID(sessionID);
 		String role     = loginService.getRoleBySessionID(sessionID);
-		logger.debug("DeleteMapping UserController - ulogovani korisnik={} role={} ", username, role);
 		
 		if (loginService.isAdmin(role)) {
 			return userService.deleteUser(user);
 		} else {
-			if (!username.contentEquals(user)) {
-				logger.info("Nije dozvoljeno regular korisniku da brise drugog korisnika. Bice izvrseno brisanje ulogovanog korisnika.");
-				logger.info("Ulogovani korisnik: {}, trazeno brisanje podataka za korisnika: {}", username, user);
-			}				
+			checkRequieredData(username, user);				
 			return userService.deleteUser(username);
 		}
+	}
+	
+	public void checkRequieredData(String username, String user) {
+		if (!username.contentEquals(user)) {
+			logger.info("Nije dozvoljeno regular korisniku da gleda-azurira-brise podatke za drugog korisnika");
+			throw new VacationAppException("Korisnik: " + username + " ne moze da gleda/azurira/brise podatke za korisnika " + user, GenericResponse.GENERIC_ERROR);
+		}		
 	}
 	
 }

@@ -2,6 +2,12 @@ package com.example.springboot.domain;
 
 import java.util.Date;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class Vacation {
 	
 	private Long id;
@@ -10,9 +16,9 @@ public class Vacation {
 	private char approval;
 	private String username;	
 	
-	public Vacation() {}
+	//public Vacation() {}
 	
-	public Vacation(Date startDate, int duration, char approval, String username) {
+	/*public Vacation(Date startDate, int duration, char approval, String username) {
 		this.startDate = startDate;
 		this.duration = duration;
 		this.approval = approval;
@@ -58,5 +64,5 @@ public class Vacation {
 				", approval=" + approval +
 				", username=" + username +
 				'}';
-	}		
+	}		*/
 }

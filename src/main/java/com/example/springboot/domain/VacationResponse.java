@@ -1,5 +1,10 @@
 package com.example.springboot.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class VacationResponse {
 	
 	public enum Status {
@@ -9,13 +14,13 @@ public class VacationResponse {
 
 	private Status status;
 	private String message;
-	
+	/*
 	public VacationResponse(Status status, String message) {
 		this.status  = status;
 		this.message = message;
-	}	
+	}	*/
 
-	public VacationResponse(Status status) {
+	/*public VacationResponse(Status status) {
 		this.status = status;
 	}	
 
@@ -41,6 +46,6 @@ public class VacationResponse {
 				", status=" + status +
 				", message=" + message +
 				'}';
-	}	
+	}	*/
 
 }

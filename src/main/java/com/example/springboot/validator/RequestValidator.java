@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.springboot.domain.UserRequest;
 import com.example.springboot.domain.RegistrationRequest;
 import com.example.springboot.domain.User;
-import com.example.springboot.exeption.RegistrationException;
+import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.mapper.UserMapper;
 
 @Component
@@ -29,7 +29,7 @@ public class RequestValidator {
         logger.debug("Provera da li korisnik postoji u bazi sa sledecim username-om = {} ", request.getUsername());
         User user = userMapper.findUserByUniqueUsername(request.getUsername());
         if (user != null) {
-            throw new RegistrationException("korisnicko ime vec postoji");
+            throw new VacationAppException("korisnicko ime vec postoji u bazi", GenericResponse.USERNAME_TAKEN);
         }     
         
         logger.debug("Provera da li postoji korisnik u bazi sa istim email-om = {} ", request.getEmail());
@@ -37,10 +37,10 @@ public class RequestValidator {
         
 	}
 	
-    public void validateEmail(String email) throws RegistrationException {
+    public void validateEmail(String email) throws VacationAppException {
     	User user = userMapper.findUserByUniqueEmail(email);
         if (user != null) {
-            throw new RegistrationException("email vec postoji u bazi");
+            throw new VacationAppException("korisnik sa ovim email-om vec postoji u bazi", GenericResponse.EMAIL_TAKEN);
         }
     }
 

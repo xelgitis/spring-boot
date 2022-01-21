@@ -9,8 +9,6 @@ import com.example.springboot.creator.UserCreator;
 import com.example.springboot.domain.RegistrationRequest;
 import com.example.springboot.domain.RegistrationResponse;
 import com.example.springboot.domain.User;
-import com.example.springboot.domain.UserRequest;
-import com.example.springboot.domain.UserResponse;
 import com.example.springboot.mapper.UserMapper;
 
 @Service

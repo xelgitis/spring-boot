@@ -13,7 +13,7 @@ public interface LoginService {
 	
 	UserMapper getMapper();
 	
-	PasswordGeneratorService getPasswordGeneratorService();	
+	//PasswordGeneratorService getPasswordGeneratorService();	
 	
 	HashMap<String, User> getLoggedUsers();	
 	

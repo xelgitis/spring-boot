@@ -23,9 +23,9 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginCheck() {
 		
-		LoginRequest request = new LoginRequest();
-		request.setUsername("olga.jesic");
-		request.setPassword("olga.jesic");
+		LoginRequest request = new LoginRequest("olga.jesic", "olga.jesic");
+		//request.setUsername("olga.jesic");
+		//request.setPassword("olga.jesic");
 		
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		
@@ -36,9 +36,9 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginWrongUsername() {
 		
-		LoginRequest request = new LoginRequest();
-		request.setUsername("oolga.jesic");
-		request.setPassword("olga.jesic");
+		LoginRequest request = new LoginRequest("oolga.jesic", "olga.jesic");
+		//request.setUsername("oolga.jesic");
+		//request.setPassword("olga.jesic");
 		
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		
@@ -49,9 +49,9 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginWrongPassword() {
 		
-		LoginRequest request = new LoginRequest();
-		request.setUsername("olga.jesic");
-		request.setPassword("oolga.jesic");
+		LoginRequest request = new LoginRequest("olga.jesic", "olga.jesic");
+		//request.setUsername("olga.jesic");
+		//request.setPassword("oolga.jesic");
 		
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		
@@ -62,8 +62,8 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginNoUsername() {
 		
-		LoginRequest request = new LoginRequest();
-		request.setPassword("olga.jesic");
+		LoginRequest request = new LoginRequest(null, "olga.jesic");
+		//request.setPassword("olga.jesic");
 		
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		
@@ -74,8 +74,8 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginNoPassword() {
 		
-		LoginRequest request = new LoginRequest();
-		request.setUsername("olga.jesic");
+		LoginRequest request = new LoginRequest("olga.jesic", null);
+		//request.setUsername("olga.jesic");
 		
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		

@@ -4,6 +4,13 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class VacationRequest {
 	
 	@NotNull(message = "start date must be provided")
@@ -11,7 +18,7 @@ public class VacationRequest {
 	@NotNull(message = "duration must be provided")
 	private int duration;
 	
-	public VacationRequest() {}
+	/*public VacationRequest() {}
 	
 	public VacationRequest(Date startDate, int duration) {
 		this.startDate = startDate;
@@ -37,6 +44,6 @@ public class VacationRequest {
 				", startDate=" + startDate +
 				", duration=" + duration +
 				'}';
-	}		
+	}		*/
 
 }

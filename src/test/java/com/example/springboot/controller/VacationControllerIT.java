@@ -41,9 +41,9 @@ class VacationControllerIT {
 	//try all testcases logged as admin and logged as regular user	
 	@BeforeEach
 	public void initialLogin(){
-		LoginRequest request = new LoginRequest();
-		request.setUsername("marija.petrovic");
-		request.setPassword("marija.petrovic");		
+		LoginRequest request = new LoginRequest("marija.petrovic","marija.petrovic");
+		//request.setUsername("marija.petrovic");
+		//request.setPassword("marija.petrovic");		
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
 		uri = "/vacation/"+ sessionID + "?user=" + username;
