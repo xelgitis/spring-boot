@@ -9,9 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.springboot.domain.ErrorResponseDto;
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
-import com.example.springboot.domain.RegistrationRequest;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class LoginControllerIT {
@@ -23,10 +23,8 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginCheck() {
 		
-		LoginRequest request = new LoginRequest("olga.jesic", "olga.jesic");
-		//request.setUsername("olga.jesic");
-		//request.setPassword("olga.jesic");
-		
+		LoginRequest request = LoginRequest.builder().username("olga.jesic").password("olga.jesic").build();
+
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		
 		assertNotNull(logedUser.getUsername());
@@ -35,51 +33,48 @@ class LoginControllerIT {
 	@Test
 	@Transactional
 	void testLoginWrongUsername() {
+
+		LoginRequest request = LoginRequest.builder().username("oolga.jesic").password("olga.jesic").build();
 		
-		LoginRequest request = new LoginRequest("oolga.jesic", "olga.jesic");
-		//request.setUsername("oolga.jesic");
-		//request.setPassword("olga.jesic");
+		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
-		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
-		
-		assertNull(logedUser.getUsername());
+		assertNotNull(errorResponse.getMessage());
 	}
 	
 	@Test
 	@Transactional
 	void testLoginWrongPassword() {
 		
-		LoginRequest request = new LoginRequest("olga.jesic", "olga.jesic");
-		//request.setUsername("olga.jesic");
-		//request.setPassword("oolga.jesic");
+		LoginRequest request = LoginRequest.builder().username("olga.jesic").password("oolga.jesic").build();
 		
-		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
+		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
-		assertNull(logedUser.getUsername());
+		assertNotNull(errorResponse.getMessage());
 	}	
 	
 	@Test
 	@Transactional
 	void testLoginNoUsername() {
+		String message = "Username se mora uneti";
+		LoginRequest request = LoginRequest.builder().username(null).password("olga.jesic").build();
 		
-		LoginRequest request = new LoginRequest(null, "olga.jesic");
-		//request.setPassword("olga.jesic");
+		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
-		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
-		
-		assertNull(logedUser);
+		assertNotNull(errorResponse.getMessage());
+		assertTrue(errorResponse.getError().equalsIgnoreCase(message));
 	}	
 	
 	@Test
 	@Transactional
 	void testLoginNoPassword() {
+		String message = "Password se mora uneti";
+		LoginRequest request = LoginRequest.builder().username("olga.jesic").password(null).build();
 		
-		LoginRequest request = new LoginRequest("olga.jesic", null);
-		//request.setUsername("olga.jesic");
+		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
-		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
+		assertNotNull(errorResponse.getMessage());
+		assertTrue(errorResponse.getError().equalsIgnoreCase(message));
 		
-		assertNull(logedUser);
 	}	
 
 }

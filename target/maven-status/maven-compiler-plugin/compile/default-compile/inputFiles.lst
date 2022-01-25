@@ -26,6 +26,7 @@ C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\s
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\creator\UserCreator.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\domain\VacationRequest.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\validator\RequestValidator.java
+C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\domain\ErrorResponseDto.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\VacationApplication.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\service\PasswordGeneratorService.java
 C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\main\java\com\example\springboot\exeption\ControllerAdvisor.java

@@ -1,6 +1,5 @@
 package com.example.springboot.exeption;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +21,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleException(VacationAppException ex, WebRequest request) {
 		Map<String, Object> body = new LinkedHashMap<>();
 		
-		body.put("message", ex.getMessage());
-		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());	
+		body.put("status",  ex.getStatus());
 
 		return new ResponseEntity<>(body, httpStatusValue(ex.getStatus()));
 	}
@@ -35,8 +34,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         HttpStatus status, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", status.value());
+        body.put("message", ex.getMessage());        
 
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
@@ -44,7 +42,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 .map(x -> x.getDefaultMessage())
                 .collect(Collectors.toList());
 
-        body.put("errors", errors);
+        body.put("error", errors.get(0));    	
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }	
@@ -60,5 +58,4 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     		default:                return HttpStatus.BAD_REQUEST;
     	}	
     }
-
 }

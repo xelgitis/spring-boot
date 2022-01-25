@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.User;
+import com.example.springboot.domain.UserRequest;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class UserControllerIT {
@@ -23,7 +24,7 @@ class UserControllerIT {
 	
 	private String sessionID;
 	private String uri;
-	private String username = "marija.peric"; //change the username to test CRUD for different users
+	private String username = "mirjana.jesic"; //change the username to test CRUD for different users
 	
 	@Autowired
 	TestRestTemplate restTamplete;
@@ -31,9 +32,8 @@ class UserControllerIT {
 	//try all testcases logged as admin and logged as regular user	
 	@BeforeEach
 	public void initialLogin(){
-		LoginRequest request = new LoginRequest("olga.jesic", "olga.jesic");
-		//request.setUsername("olga.jesic");
-		//request.setPassword("olga.jesic");		
+		LoginRequest request = LoginRequest.builder().username("olga.jesic").password("olga.jesic").build();
+	
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
 		uri = "/users/"+ sessionID + "?user=" + username;
@@ -51,16 +51,18 @@ class UserControllerIT {
 	@Test
 	@Transactional
 	void testUpdateUser() {
+		UserRequest request = UserRequest.builder().email("olga.jesic@mozzartbet.com").build();
+		restTamplete.put(uri, request);
 		User user = restTamplete.getForObject(uri, User.class);
-		user.setAddress("Luja Adamica 17");		
-		restTamplete.put(uri, user);
-		assertNotNull(user.getUsername());	
+		assertTrue(user.getEmail().equalsIgnoreCase("olga.jesic@mozzartbet.com"));
 	}
 
 	@Test
 	@Transactional
 	void testDeleteUser() {
 		restTamplete.delete(uri);
+		User user = restTamplete.getForObject(uri, User.class);
+		assertNull(user.getUsername());
 	}
 	
 	//invalid test scenarios - change the username to the one which does not exist in the DB
@@ -68,16 +70,24 @@ class UserControllerIT {
 	@Transactional
 	void testGetInvalidUser() {
 		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user);	
+		assertNull(user.getUsername());	
 	}
 	
 	@Test
 	@Transactional
 	void testUpdateInvalidUser() {
-		User user = restTamplete.getForObject(uri, User.class);		
-		//user.setAddress("Luja Adamica 17");		
-		restTamplete.put(uri, user);
-		assertNull(user);
+		UserRequest request = UserRequest.builder().email("olga.jesic@mozzartbet.com").build();
+		restTamplete.put(uri, request);
+		User user = restTamplete.getForObject(uri, User.class);
+		assertNull(user.getUsername());	
+	}	
+	
+	@Test
+	@Transactional
+	void testDeleteInvalidUser() {
+		restTamplete.delete(uri);
+		User user = restTamplete.getForObject(uri, User.class);
+		assertNull(user.getUsername());
 	}	
 	
 }

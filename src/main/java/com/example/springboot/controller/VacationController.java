@@ -104,8 +104,8 @@ public class VacationController {
 	
 	public void checkRequieredData(String username, String user) {
 		if (!username.contentEquals(user)) {
-			logger.info("Nije dozvoljeno regular korisniku da gleda-azurira-brise podatke za drugog korisnika");
-			throw new VacationAppException("Korisnik: " + username + " ne moze da gleda/azurira/brise podatke za korisnika " + user, GenericResponse.GENERIC_ERROR);
+			logger.info("Nije dozvoljeno regular korisniku da kreira-gleda-azurira-brise podatke za drugog korisnika");
+			throw new VacationAppException("Korisnik: " + username + " ne moze da kreira-gleda-azurira-brise podatke za korisnika " + user, GenericResponse.GENERIC_ERROR);
 		}		
 	}	
 

@@ -30,8 +30,9 @@ public class VacationServiceImpl implements VacationService {
 	
 	@Override
 	public Vacation getVacation(String username) {
-		if (vacationMapper.findVacationByUniqueUsername(username) != null) {
-			return vacationMapper.findVacationByUniqueUsername(username);	
+		Vacation vacation = vacationMapper.findVacationByUniqueUsername(username);
+		if (vacation != null) {
+			return vacation;	
 		} else {
 			throw new VacationAppException("Odmor za korisnika sa username-om =" + username + " ne postoji u bazi", GenericResponse.GENERIC_ERROR);
 		}
@@ -39,7 +40,8 @@ public class VacationServiceImpl implements VacationService {
 
 	@Override
 	public VacationResponse updateVacation(Date startDate, int duration, String username) {
-		if (vacationMapper.findVacationByUniqueUsername(username) != null) {
+		Vacation vacation = vacationMapper.findVacationByUniqueUsername(username);
+		if (vacation != null) {
 			vacationMapper.updateVacationByUniqueUsername(startDate, duration, username);
 			return new VacationResponse(VacationResponse.Status.SUCCESS, "Odmor uspesno updejtovan za usera " + username);
 		} else {
@@ -49,7 +51,8 @@ public class VacationServiceImpl implements VacationService {
 
 	@Override
 	public VacationResponse deleteVacation(String username) {
-		if (vacationMapper.findVacationByUniqueUsername(username) != null) {
+		Vacation vacation = vacationMapper.findVacationByUniqueUsername(username);
+		if (vacation != null) {
 			vacationMapper.deleteVacationByUniqueUsername(username);	
 			return new VacationResponse(VacationResponse.Status.SUCCESS, "Odmor uspesno obrisan za usera " + username);
 		} else {
@@ -58,8 +61,8 @@ public class VacationServiceImpl implements VacationService {
 	}
 	
     public void createVac(VacationRequest request, String username) {
-        Vacation vacation = new Vacation (null, request.getStartDate(), request.getDuration(), 'N', username);        
-        vacationMapper.create(vacation);
+    	Vacation vacation = Vacation.builder().startDate(request.getStartDate()).duration(request.getDuration()).approval('N').username(username).build();
+    	vacationMapper.create(vacation);  
     }
 
 }

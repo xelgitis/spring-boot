@@ -3,10 +3,12 @@ import java.util.Date;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -21,17 +23,5 @@ public class User {
 		private String email;
         private String role;
 		private Date registrationTime;			
-		
-		public User(String username, String password, String passwordSalt, String hashedPassword, String address, String name, String email, String role, Date registrationTime) {
-			this.username = username;
-			this.password = password; 
-			this.passwordSalt = passwordSalt;
-			this.hashedPassword = hashedPassword;
-			this.address = address;
-			this.name = name;
-			this.email = email;
-			this.role = role;
-			this.registrationTime = registrationTime;
-		}
 		
 }

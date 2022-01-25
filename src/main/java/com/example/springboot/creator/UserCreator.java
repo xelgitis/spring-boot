@@ -21,6 +21,7 @@ public class UserCreator {
 	private PasswordGeneratorService passwordGenerator;
 	
 	public User create(RegistrationRequest request) {
+
 		logger.debug("Zahtev za kreiranje novog korisnika={} ", request);
 		
 		String passwordSalt   = passwordGenerator.createPasswordSalt();
@@ -29,7 +30,7 @@ public class UserCreator {
 		logger.debug("Korisnik ima sledeci password_salt={} ", passwordSalt);
 		logger.debug("Korisnik ima sledeci hashed password={} ", hashedPassword);
 		
-		return new User(request.getUsername(), request.getPassword(), passwordSalt, hashedPassword, request.getAddress(), request.getName(), request.getEmail(), request.getRole(), new Date());
+		return User.builder().username(request.getUsername()).password(request.getPassword()).passwordSalt(passwordSalt).hashedPassword(hashedPassword).address(request.getAddress()).name(request.getName()).email(request.getEmail()).role(request.getRole()).registrationTime(new Date()).build();
 	}	
 
 }

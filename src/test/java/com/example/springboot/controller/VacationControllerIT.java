@@ -3,7 +3,6 @@ package com.example.springboot.controller;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
-import com.example.springboot.domain.RegistrationRequest;
-import com.example.springboot.domain.RegistrationResponse;
-import com.example.springboot.domain.User;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
@@ -31,7 +27,7 @@ class VacationControllerIT {
 	
 	private String sessionID;
 	private String uri;
-	private String username = "mmirjana.jesic"; //change the username to test CRUD of vacations for different users
+	private String username = "marija.petrovic"; //change the username to test CRUD of vacations for different users
 	
 	@Autowired
 	TestRestTemplate restTamplete;
@@ -41,9 +37,7 @@ class VacationControllerIT {
 	//try all testcases logged as admin and logged as regular user	
 	@BeforeEach
 	public void initialLogin(){
-		LoginRequest request = new LoginRequest("marija.petrovic","marija.petrovic");
-		//request.setUsername("marija.petrovic");
-		//request.setPassword("marija.petrovic");		
+		LoginRequest request = LoginRequest.builder().username("marija.petrovic").password("marija.petrovic").build();
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
 		uri = "/vacation/"+ sessionID + "?user=" + username;
