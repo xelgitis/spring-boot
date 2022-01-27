@@ -10,7 +10,6 @@
         <result property="address" column="address"/>
         <result property="name" column="name"/>
         <result property="email" column="email"/>
-        <result property="role" column="role"/>
         <result property="registrationTime" column="registration_time"/>
     </resultMap>
     
@@ -20,10 +19,10 @@
             SELECT users_increment.nextval FROM dual
         </selectKey>
         INSERT INTO users (
-            id, username, password, password_salt, address, name, email, role, registration_time
+            id, username, password, password_salt, address, name, email, registration_time
         )
         VALUES (
-            #{id}, #{username}, #{hashedPassword}, #{passwordSalt}, #{address}, #{name}, #{email}, #{role}, #{registrationTime}
+            #{id}, #{username}, #{hashedPassword}, #{passwordSalt}, #{address}, #{name}, #{email}, #{registrationTime}
             )
     </insert>   
     
@@ -37,30 +36,24 @@
         WHERE UPPER(username) = UPPER(#{username})
     </update>         
     
-    <select id="findUserByUniqueUsername" resultMap="UserMap">
-        SELECT id, username, address, name, email, role, registration_time
-        FROM users
-        WHERE UPPER(username) = UPPER(#{username})
-    </select> 
-    
-    <select id="findUserByUniqueEmail" resultMap="UserMap">
+    <select id="findUserByEmail" resultMap="UserMap">
         SELECT id, username, email
         FROM users
         WHERE UPPER(email) = UPPER(#{email})
     </select> 
     
-    <select id="findPasswordDataByUsername" resultMap="UserMap">
-        SELECT id, username, password, password_salt, address, name, email, role, registration_time
+    <select id="findUser" resultMap="UserMap">
+        SELECT id, username, password, password_salt, address, name, email, registration_time
         FROM users
         WHERE UPPER(username) = UPPER(#{username})
     </select>    
     
     <select id="findAllUsers" resultMap="UserMap">
-        SELECT id, username, password, password_salt, address, name, email, role, registration_time
+        SELECT id, username, password, password_salt, address, name, email, registration_time
         FROM users ORDER BY id
     </select>        
     
-    <delete id="deleteByUsername">
+    <delete id="deleteUser">
         DELETE
         FROM users
 		WHERE UPPER(username) = UPPER(#{username})

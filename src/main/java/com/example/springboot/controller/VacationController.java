@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.springboot.domain.Role;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
@@ -42,12 +43,12 @@ public class VacationController {
 	@GetMapping(path="/{sessionID}",produces = APPLICATION_JSON_VALUE)
 	public Vacation getVacation(@PathVariable String sessionID, @RequestParam(value="user") String user) {
 		
-		String username = loginService.getUsernameBySessionID(sessionID);
-		String role     = loginService.getRoleBySessionID(sessionID);
+		String username = loginService.getUsername(sessionID);
+		Role   role     = loginService.getRole(sessionID);
 		
 		logger.info("Zahtev za getVacation ");
 		
-		if (loginService.isAdmin(role)) {			
+		if (role.isAdmin(role.getRole())) {			
 			return vacationService.getVacation(user);	
 		} else {	
 			checkRequieredData(username, user);
@@ -60,10 +61,10 @@ public class VacationController {
 	public VacationResponse create(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
 		
 		VacationResponse vacationResponse;
-		String username = loginService.getUsernameBySessionID(sessionID);
-		String role     = loginService.getRoleBySessionID(sessionID);
+		String username = loginService.getUsername(sessionID);
+		Role   role     = loginService.getRole(sessionID);
 		
-		if (loginService.isAdmin(role)) {
+		if (role.isAdmin(role.getRole())) {
 			vacationResponse = vacationService.createVacation(request, user);	
 		} else {
 			checkRequieredData(username, user);
@@ -77,24 +78,24 @@ public class VacationController {
 	@PutMapping(path="/{sessionID}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
 	public VacationResponse updateVacation(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
 		
-		String username = loginService.getUsernameBySessionID(sessionID);
-		String role     = loginService.getRoleBySessionID(sessionID);
+		String username = loginService.getUsername(sessionID);
+		Role   role     = loginService.getRole(sessionID);
 		
-		if (loginService.isAdmin(role)) {
-			return vacationService.updateVacation(request.getStartDate(), request.getDuration(), user);		
+		if (role.isAdmin(role.getRole())) {
+			return vacationService.updateVacation(request, user);		
 		} else {
 			checkRequieredData(username, user);
-			return vacationService.updateVacation(request.getStartDate(), request.getDuration(), username);
+			return vacationService.updateVacation(request, username);
 		}
 	}	
 	
 	@DeleteMapping(path="/{sessionID}")
 	public VacationResponse deleteUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {
 		
-		String username = loginService.getUsernameBySessionID(sessionID);
-		String role     = loginService.getRoleBySessionID(sessionID);
+		String username = loginService.getUsername(sessionID);
+		Role   role     = loginService.getRole(sessionID);
 		
-		if (loginService.isAdmin(role)) {
+		if (role.isAdmin(role.getRole())) {
 			return vacationService.deleteVacation(user);			
 		} else {
 			checkRequieredData(username, user);

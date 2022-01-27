@@ -7,12 +7,16 @@
     </settings>
     <typeAliases>
     <typeAlias type="com.example.springboot.domain.User" alias="User"/>
+    <typeAlias type="com.example.springboot.domain.Role" alias="Role"/>
+    <typeAlias type="com.example.springboot.domain.UserRole" alias="UserRole"/>
     <typeAlias type="com.example.springboot.domain.Vacation" alias="Vacation"/>
     </typeAliases>
     <typeHandlers>
     </typeHandlers>
     <mappers>
     <mapper resource="db/mapper/UserMapper.xml" />
+    <mapper resource="db/mapper/RoleMapper.xml" />
+    <mapper resource="db/mapper/UserRoleMapper.xml" />
     <mapper resource="db/mapper/VacationMapper.xml" />
     </mappers>
 </configuration>

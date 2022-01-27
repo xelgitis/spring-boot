@@ -10,10 +10,10 @@ public interface VacationMapper {
 	
 	void create(Vacation vacation);
 	
-	Vacation findVacationByUniqueUsername(String username);
+	Vacation findVacation(String username);
 	
-	void updateVacationByUniqueUsername(Date startDate, int duration, String username);
+	void updateVacation(Date startDate, int duration, String username);
 	
-	void deleteVacationByUniqueUsername(String username);
+	void deleteVacation(String username);
 
 }

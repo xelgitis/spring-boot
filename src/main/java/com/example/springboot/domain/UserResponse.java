@@ -8,13 +8,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserResponse {
 	
-	public enum Status {
-		SUCCESSFUL,
-		ERROR
-	}	
-	
-	String  username;
-	Status  status;
-	String  message;
+	String          username;
+	ResponseStatus  status;
+	String          message;
 	
 }

@@ -32,7 +32,7 @@
         </foreach>
     </delete>        
     
-    <select id="findVacationByUniqueUsername" resultMap="VacationMap">
+    <select id="findVacation" resultMap="VacationMap">
         SELECT id, start_date, duration, approval, username
         FROM vacation
         WHERE UPPER(username) = UPPER(#{username})
@@ -43,7 +43,7 @@
         FROM vacation
     </select>  
     
-    <update id="updateVacationByUniqueUsername" parameterType="Vacation">
+    <update id="updateVacation" parameterType="Vacation">
         UPDATE vacation
         <set>
             <if test="startDate != null"> start_date=#{startDate},</if>
@@ -52,7 +52,7 @@
         WHERE UPPER(username) = UPPER(#{username})
     </update> 
     
-    <delete id="deleteVacationByUniqueUsername">
+    <delete id="deleteVacation">
         DELETE
         FROM vacation
 		WHERE UPPER(username) = UPPER(#{username})

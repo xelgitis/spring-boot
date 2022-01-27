@@ -27,7 +27,7 @@ public class RequestValidator {
         //request.setUsername(request.getUsername().trim());
         
         logger.debug("Provera da li korisnik postoji u bazi sa sledecim username-om = {} ", request.getUsername());
-        User user = userMapper.findUserByUniqueUsername(request.getUsername());
+        User user = userMapper.findUser(request.getUsername());
         if (user != null) {
             throw new VacationAppException("korisnicko ime vec postoji u bazi", GenericResponse.USERNAME_TAKEN);
         }     
@@ -38,7 +38,7 @@ public class RequestValidator {
 	}
 	
     public void validateEmail(String email) throws VacationAppException {
-    	User user = userMapper.findUserByUniqueEmail(email);
+    	User user = userMapper.findUserByEmail(email);
         if (user != null) {
             throw new VacationAppException("korisnik sa ovim email-om vec postoji u bazi", GenericResponse.EMAIL_TAKEN);
         }

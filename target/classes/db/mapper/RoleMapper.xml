@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.RoleMapper">
+    <resultMap id="RoleMap" type="Role">
+        <result property="id" column="id"/>
+        <result property="role" column="role"/>        
+    </resultMap>    
+    
+    <select id="getRole" resultMap="RoleMap">
+        SELECT id, role
+        FROM role
+        WHERE UPPER(role) = UPPER(#{role})
+    </select>   
+    
+    <select id="getRolebyId" resultMap="RoleMap">
+        SELECT id, role
+        FROM role
+        WHERE id =(#{id})
+    </select>      
+</mapper>

@@ -16,6 +16,7 @@ import com.example.springboot.domain.UserRequest;
 import com.example.springboot.domain.UserResponse;
 import com.example.springboot.exeption.GenericResponse;
 import com.example.springboot.exeption.VacationAppException;
+import com.example.springboot.domain.Role;
 import com.example.springboot.domain.User;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.UserService;
@@ -42,10 +43,10 @@ public class UserController {
     //get information about user with specific username
 	@GetMapping(path="/{sessionID}",produces = APPLICATION_JSON_VALUE)
 	public User getUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {
-		String username = loginService.getUsernameBySessionID(sessionID);
-		String role     = loginService.getRoleBySessionID(sessionID);
+		String username = loginService.getUsername(sessionID);
+		Role   role     = loginService.getRole(sessionID);
 
-		if (loginService.isAdmin(role)) {
+		if (role.isAdmin(role.getRole())) {
 			return userService.getUser(user);			
 		} else {
 			checkRequieredData(username, user);
@@ -56,23 +57,23 @@ public class UserController {
     //update user address, or name, or email or all
 	@PutMapping(path="/{sessionID}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
 	public UserResponse updateUser(@PathVariable String sessionID, @RequestBody UserRequest request, @RequestParam(value="user") String user) {
-		String username = loginService.getUsernameBySessionID(sessionID);
-		String role     = loginService.getRoleBySessionID(sessionID);
+		String username = loginService.getUsername(sessionID);
+		Role   role     = loginService.getRole(sessionID);
 		
-		if (loginService.isAdmin(role)) {
-			return userService.updateUser(user, request.getAddress(), request.getName(), request.getEmail());		
+		if (role.isAdmin(role.getRole())) {
+			return userService.updateUser(user, request);		
 		} else {
 			checkRequieredData(username, user);
-			return userService.updateUser(username, request.getAddress(), request.getName(), request.getEmail());
+			return userService.updateUser(username, request);
 		}
 	}
 	
 	@DeleteMapping(path="/{sessionID}", produces = APPLICATION_JSON_VALUE)
 	public UserResponse deleteUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {		
-		String username = loginService.getUsernameBySessionID(sessionID);
-		String role     = loginService.getRoleBySessionID(sessionID);
+		String username = loginService.getUsername(sessionID);
+		Role   role     = loginService.getRole(sessionID);
 		
-		if (loginService.isAdmin(role)) {
+		if (role.isAdmin(role.getRole())) {			
 			return userService.deleteUser(user);
 		} else {
 			checkRequieredData(username, user);				

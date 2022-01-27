@@ -21,7 +21,7 @@ public class User {
 		private String address;
 		private String name;
 		private String email;
-        private String role;
+        private Role role;
 		private Date registrationTime;			
 		
 }

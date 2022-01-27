@@ -11,8 +11,11 @@ import com.example.springboot.domain.RegistrationRequest;
 import com.example.springboot.domain.User;
 import com.example.springboot.service.PasswordGeneratorService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Component
+@Slf4j
 public class UserCreator {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -30,7 +33,15 @@ public class UserCreator {
 		logger.debug("Korisnik ima sledeci password_salt={} ", passwordSalt);
 		logger.debug("Korisnik ima sledeci hashed password={} ", hashedPassword);
 		
-		return User.builder().username(request.getUsername()).password(request.getPassword()).passwordSalt(passwordSalt).hashedPassword(hashedPassword).address(request.getAddress()).name(request.getName()).email(request.getEmail()).role(request.getRole()).registrationTime(new Date()).build();
+		return User.builder()
+				    .username(request.getUsername())
+				    .password(request.getPassword())
+				    .passwordSalt(passwordSalt)
+				    .hashedPassword(hashedPassword)
+				    .address(request.getAddress())
+				    .name(request.getName())
+				    .email(request.getEmail())
+				    .registrationTime(new Date()).build();
 	}	
 
 }

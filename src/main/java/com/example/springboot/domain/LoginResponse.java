@@ -8,16 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginResponse {
 	
-	public enum Status {
-		SUCCESS,
-		ERROR,
-		WRONG_FORMAT_DATA,
-		WRONG_PASSWORD
-	}
-
 	private String username;	
 	private String sessionId;	
-	private Status status;
+	private ResponseStatus status;
 	private String message;
 	
 }

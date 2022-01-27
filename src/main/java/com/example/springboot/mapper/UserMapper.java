@@ -13,22 +13,18 @@ public interface UserMapper {
 	//create new user
 	void create(User user);
 	
-	//check in the db if user with this username exist 
-	User findUserByUniqueUsername(String username);
+	//find user by username
+	User findUser(String username);	
+	
+	//update user 
+	void updateUser(String username, String address, String name, String email);
+	
+	//delete user by username
+	void deleteUser(String username);	
 	
 	//check in the db exist user with this email
-	User findUserByUniqueEmail(String username);
+	User findUserByEmail(String username);
 	
 	//return all users from db
 	List<User> findAllUsers();
-	
-	//update user 
-	void updateUser(String username, String address, String name, String email);	
-	
-	//delete user by username
-	void deleteByUsername(String username);
-	
-	//find user password by username
-	User findPasswordDataByUsername(String username);
-
 }

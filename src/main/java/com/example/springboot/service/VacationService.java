@@ -12,7 +12,7 @@ public interface VacationService {
 	
 	Vacation getVacation(String username);
 	
-	VacationResponse updateVacation(Date startDate, int duration, String username);
+	VacationResponse updateVacation(VacationRequest request, String username);
 	
 	VacationResponse deleteVacation(String username);
 
