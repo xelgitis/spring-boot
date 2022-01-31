@@ -18,7 +18,7 @@ import com.example.springboot.domain.Role;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
-import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.VacationService;
@@ -106,7 +106,7 @@ public class VacationController {
 	public void checkRequieredData(String username, String user) {
 		if (!username.contentEquals(user)) {
 			logger.info("Nije dozvoljeno regular korisniku da kreira-gleda-azurira-brise podatke za drugog korisnika");
-			throw new VacationAppException("Korisnik: " + username + " ne moze da kreira-gleda-azurira-brise podatke za korisnika " + user, GenericResponse.GENERIC_ERROR);
+			throw new VacationAppException("Korisnik: " + username + " ne moze da kreira-gleda-azurira-brise podatke za korisnika " + user, Status.GENERIC_ERROR);
 		}		
 	}	
 

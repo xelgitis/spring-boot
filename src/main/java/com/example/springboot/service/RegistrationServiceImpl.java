@@ -1,5 +1,6 @@
 package com.example.springboot.service;
 
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import com.example.springboot.domain.RegistrationResponse;
 import com.example.springboot.domain.ResponseStatus;
 import com.example.springboot.domain.Role;
 import com.example.springboot.domain.User;
+import com.example.springboot.exeption.Status;
+import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.mapper.RoleMapper;
 import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.mapper.UserRoleMapper;
@@ -47,8 +50,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     }  
     
     public void registerUserRole(RegistrationRequest request) {
-        User user = userMapper.findUser(request.getUsername());
-        Role role = new Role();
+    	
+    	User user =  userMapper.findUser(request.getUsername())
+    			     .orElseThrow(() -> new VacationAppException("Korisnik sa username-om = " + request.getUsername() + " ne postoji u bazi", Status.USER_NOT_FOUND));
+        
+    	Role role = new Role();
         role.setRole(request.getRole());
         
         logger.debug("Dohvacen je sledeci user = {} ", user.toString());    

@@ -2,7 +2,7 @@ package com.example.springboot.exeption;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum GenericResponse {
+public enum Status {
 
 	OK("OK"),
 	USERNAME_TAKEN("USERNAME_TAKEN"),
@@ -13,7 +13,7 @@ public enum GenericResponse {
 
 	private final String jsonValue;
 
-	GenericResponse(String jsonValue) {
+	Status(String jsonValue) {
 		this.jsonValue = jsonValue;
 	}
 

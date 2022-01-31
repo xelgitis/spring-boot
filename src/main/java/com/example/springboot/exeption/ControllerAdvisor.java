@@ -47,7 +47,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }	
     
-    public HttpStatus httpStatusValue(GenericResponse tmp) {    	
+    public HttpStatus httpStatusValue(Status tmp) {    	
     	switch (tmp) {
     	    case OK:                return HttpStatus.OK;
     	    case USERNAME_TAKEN:    return HttpStatus.CONFLICT;

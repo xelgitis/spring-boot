@@ -32,7 +32,10 @@ class UserControllerIT {
 	//try all testcases logged as admin and logged as regular user	
 	@BeforeEach
 	public void initialLogin(){
-		LoginRequest request = LoginRequest.builder().username("olga.jesic").password("olga.jesic").build();
+		LoginRequest request = LoginRequest.builder()
+				               .username("olga.jesic")
+				               .password("olga.jesic")
+				               .build();
 	
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
@@ -51,7 +54,9 @@ class UserControllerIT {
 	@Test
 	@Transactional
 	void testUpdateUser() {
-		UserRequest request = UserRequest.builder().email("olga.jesic@mozzartbet.com").build();
+		UserRequest request = UserRequest.builder()
+				              .email("olga.jesic@mozzartbet.com")
+				              .build();
 		restTamplete.put(uri, request);
 		User user = restTamplete.getForObject(uri, User.class);
 		assertTrue(user.getEmail().equalsIgnoreCase("olga.jesic@mozzartbet.com"));
@@ -76,7 +81,9 @@ class UserControllerIT {
 	@Test
 	@Transactional
 	void testUpdateInvalidUser() {
-		UserRequest request = UserRequest.builder().email("olga.jesic@mozzartbet.com").build();
+		UserRequest request = UserRequest.builder()
+				              .email("olga.jesic@mozzartbet.com")
+				              .build();
 		restTamplete.put(uri, request);
 		User user = restTamplete.getForObject(uri, User.class);
 		assertNull(user.getUsername());	

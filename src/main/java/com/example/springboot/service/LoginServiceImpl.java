@@ -1,6 +1,7 @@
 package com.example.springboot.service;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.example.springboot.domain.Role;
@@ -14,12 +15,10 @@ import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.ResponseStatus;
 import com.example.springboot.domain.User;
-import com.example.springboot.domain.UserRole;
-import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.mapper.RoleMapper;
 import com.example.springboot.mapper.UserMapper;
-import com.example.springboot.mapper.UserRoleMapper;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -43,12 +42,8 @@ public class LoginServiceImpl implements LoginService {
 	public LoginResponse login(LoginRequest request) {
 		logger.info("Provera username/pass za korisnika: {}", request.getUsername());
 		
-		User user = userMapper.findUser(request.getUsername());
-		
-		if (user == null) {
-			logger.error("Username ne postoji u bazi");
-			throw new VacationAppException("Korisnik sa username-om = " + request.getUsername() + " ne postoji u bazi", GenericResponse.USER_NOT_FOUND);
-		}		
+		User user = userMapper.findUser(request.getUsername())
+				    .orElseThrow(() -> new VacationAppException("Korisnik sa username-om = " + request.getUsername() + " ne postoji u bazi", Status.USER_NOT_FOUND));
 		
 		user.setPassword(request.getPassword());		
 

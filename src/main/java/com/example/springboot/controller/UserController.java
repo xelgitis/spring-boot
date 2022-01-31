@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springboot.domain.UserRequest;
 import com.example.springboot.domain.UserResponse;
-import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.domain.Role;
 import com.example.springboot.domain.User;
@@ -37,7 +37,6 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    //TODO: consider to add check for case when user is not admin and we still returns user info, maybe we should add returning error
     //TODO: consider changing some of prints to debug level
     
     //get information about user with specific username
@@ -84,7 +83,7 @@ public class UserController {
 	public void checkRequieredData(String username, String user) {
 		if (!username.contentEquals(user)) {
 			logger.info("Nije dozvoljeno regular korisniku da gleda-azurira-brise podatke za drugog korisnika");
-			throw new VacationAppException("Korisnik: " + username + " ne moze da gleda/azurira/brise podatke za korisnika " + user, GenericResponse.GENERIC_ERROR);
+			throw new VacationAppException("Korisnik: " + username + " ne moze da gleda/azurira/brise podatke za korisnika " + user, Status.GENERIC_ERROR);
 		}		
 	}
 	

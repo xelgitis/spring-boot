@@ -1,11 +1,12 @@
 package com.example.springboot.mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.example.springboot.domain.User;
+import com.example.springboot.domain.Vacation;
 
 @Mapper
 public interface UserMapper {
@@ -14,7 +15,7 @@ public interface UserMapper {
 	void create(User user);
 	
 	//find user by username
-	User findUser(String username);	
+	Optional <User> findUser(String username);	
 	
 	//update user 
 	void updateUser(String username, String address, String name, String email);
@@ -23,7 +24,7 @@ public interface UserMapper {
 	void deleteUser(String username);	
 	
 	//check in the db exist user with this email
-	User findUserByEmail(String username);
+	Optional <User> findUserByEmail(String username);
 	
 	//return all users from db
 	List<User> findAllUsers();

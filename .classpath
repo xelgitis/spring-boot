@@ -28,5 +28,14 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/olga.jesic/.m2/repository/com/oracle/database/security/osdt_cert/19.7.0.0/osdt_cert-19.7.0.0.jar" sourcepath="C:/Users/olga.jesic/.m2/repository/com/oracle/database/security/osdt_cert/19.7.0.0/osdt_cert-19.7.0.0-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.oracle.database.security"/>
+			<attribute name="maven.artifactId" value="osdt_cert"/>
+			<attribute name="maven.version" value="19.7.0.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

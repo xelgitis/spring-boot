@@ -6,7 +6,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
 import com.example.springboot.domain.User;
-import com.example.springboot.exeption.GenericResponse;
+import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
 
 @Service
@@ -44,7 +44,7 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
 	@Override
 	public void checkPassword(User user) {
 		if (!provideHashedPassword(user.getPassword(), user.getPasswordSalt()).equals(user.getHashedPassword())) {
-			throw new VacationAppException("Uneta pogresna sifra za korisnika ciji je username=" + user.getUsername(), GenericResponse.WRONG_PASSWORD);
+			throw new VacationAppException("Uneta pogresna sifra za korisnika ciji je username=" + user.getUsername(), Status.WRONG_PASSWORD);
 		}		
 	}
 

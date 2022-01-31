@@ -23,7 +23,10 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginCheck() {
 		
-		LoginRequest request = LoginRequest.builder().username("olga.jesic").password("olga.jesic").build();
+		LoginRequest request = LoginRequest.builder()
+				               .username("olga.jesic")
+				               .password("olga.jesic")
+				               .build();
 
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		
@@ -34,7 +37,10 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginWrongUsername() {
 
-		LoginRequest request = LoginRequest.builder().username("oolga.jesic").password("olga.jesic").build();
+		LoginRequest request = LoginRequest.builder()
+				               .username("oolga.jesic")
+				               .password("olga.jesic")
+				               .build();
 		
 		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
@@ -45,7 +51,10 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginWrongPassword() {
 		
-		LoginRequest request = LoginRequest.builder().username("olga.jesic").password("oolga.jesic").build();
+		LoginRequest request = LoginRequest.builder()
+				               .username("olga.jesic")
+				               .password("oolga.jesic")
+				               .build();
 		
 		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
@@ -56,7 +65,10 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginNoUsername() {
 		String message = "Username se mora uneti";
-		LoginRequest request = LoginRequest.builder().username(null).password("olga.jesic").build();
+		LoginRequest request = LoginRequest.builder()
+				               .username(null)
+				               .password("olga.jesic")
+				               .build();
 		
 		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
@@ -68,7 +80,10 @@ class LoginControllerIT {
 	@Transactional
 	void testLoginNoPassword() {
 		String message = "Password se mora uneti";
-		LoginRequest request = LoginRequest.builder().username("olga.jesic").password(null).build();
+		LoginRequest request = LoginRequest.builder()
+				               .username("olga.jesic")
+				               .password(null)
+				               .build();
 		
 		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		

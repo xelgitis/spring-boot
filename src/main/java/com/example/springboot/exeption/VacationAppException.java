@@ -3,9 +3,9 @@ package com.example.springboot.exeption;
 public class VacationAppException extends RuntimeException {
 	
 	private String message;
-	private GenericResponse status;
+	private Status status;
 	
-	public VacationAppException(String message, GenericResponse status) {
+	public VacationAppException(String message, Status status) {
 		this.message = message;
 		this.status = status;
 
@@ -15,7 +15,7 @@ public class VacationAppException extends RuntimeException {
         return message;
     }
     
-    public GenericResponse getStatus() {
+    public Status getStatus() {
         return status;
     }
        
