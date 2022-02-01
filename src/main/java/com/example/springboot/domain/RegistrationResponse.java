@@ -1,5 +1,7 @@
 package com.example.springboot.domain;
 
+import com.example.springboot.exeption.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,8 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class RegistrationResponse {
 	
-	String          username;
-	ResponseStatus  status;
-	String          message;
+	String   username;
+	Status   status;
+	String   message;
 	
 }

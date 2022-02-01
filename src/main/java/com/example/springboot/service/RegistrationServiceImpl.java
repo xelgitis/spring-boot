@@ -1,6 +1,5 @@
 package com.example.springboot.service;
 
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.example.springboot.creator.UserCreator;
 import com.example.springboot.domain.RegistrationRequest;
 import com.example.springboot.domain.RegistrationResponse;
-import com.example.springboot.domain.ResponseStatus;
 import com.example.springboot.domain.Role;
 import com.example.springboot.domain.User;
 import com.example.springboot.exeption.Status;
@@ -39,7 +37,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	public RegistrationResponse register(RegistrationRequest request) {
 		registerUser(request);
 		registerUserRole(request);
-		return new RegistrationResponse(request.getUsername(), ResponseStatus.SUCCESS, "Registracija uspesna");
+		return new RegistrationResponse(request.getUsername(), Status.SUCCESS, "Registracija uspesna");
 	}
 	
     public void registerUser(RegistrationRequest request) {
@@ -52,7 +50,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     public void registerUserRole(RegistrationRequest request) {
     	
     	User user =  userMapper.findUser(request.getUsername())
-    			     .orElseThrow(() -> new VacationAppException("Korisnik sa username-om = " + request.getUsername() + " ne postoji u bazi", Status.USER_NOT_FOUND));
+    			     .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
         
     	Role role = new Role();
         role.setRole(request.getRole());

@@ -21,7 +21,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleException(VacationAppException ex, WebRequest request) {
 		Map<String, Object> body = new LinkedHashMap<>();
 		
-		body.put("message", ex.getMessage());	
+		body.put("message", setMessage(ex.getStatus()));	
 		body.put("status",  ex.getStatus());
 
 		return new ResponseEntity<>(body, httpStatusValue(ex.getStatus()));
@@ -49,13 +49,28 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     
     public HttpStatus httpStatusValue(Status tmp) {    	
     	switch (tmp) {
-    	    case OK:                return HttpStatus.OK;
+    	    case SUCCESS:           return HttpStatus.OK;
     	    case USERNAME_TAKEN:    return HttpStatus.CONFLICT;
     	    case EMAIL_TAKEN   :    return HttpStatus.CONFLICT;    	    
     	    case GENERIC_ERROR:     return HttpStatus.BAD_REQUEST;
     	    case USER_NOT_FOUND:    return HttpStatus.NOT_FOUND;
     	    case WRONG_PASSWORD:    return HttpStatus.UNAUTHORIZED;
+    	    case WRONG_FORMAT_DATA: return HttpStatus.UNAUTHORIZED;
     		default:                return HttpStatus.BAD_REQUEST;
+    	}	
+    }
+    
+    public String setMessage(Status tmp) {    	
+    	switch (tmp) {
+    	    case SUCCESS:              return "uspesna obrada";
+    	    case USERNAME_TAKEN:       return "korinsicko ime vec postoji u bazi";
+    	    case EMAIL_TAKEN   :       return "korisnik sa ovim email-om vec postoji u bazi";    	    
+    	    case GENERIC_ERROR:        return "greska prilikom obrade zahteva - ulogovanom korisniku nije dozvoljeno da kreira-gleda-azurira-brise podatke za drugog korisnika";
+    	    case USER_NOT_FOUND:       return "korisnik sa ovim username-om ne postoji u bazi";
+    	    case WRONG_PASSWORD:       return "korisnik je uneo pogresnu sifru";
+    	    case WRONG_FORMAT_DATA:    return "korisnik je uneo nevalidne podatke";
+    	    case VACATION_NOT_PRESENT: return "Odmor za korisnika ne postoji u bazi"; 
+    		default:                   return "generic error";
     	}	
     }
 }

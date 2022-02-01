@@ -44,7 +44,7 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
 	@Override
 	public void checkPassword(User user) {
 		if (!provideHashedPassword(user.getPassword(), user.getPasswordSalt()).equals(user.getHashedPassword())) {
-			throw new VacationAppException("Uneta pogresna sifra za korisnika ciji je username=" + user.getUsername(), Status.WRONG_PASSWORD);
+			throw new VacationAppException(Status.WRONG_PASSWORD);
 		}		
 	}
 

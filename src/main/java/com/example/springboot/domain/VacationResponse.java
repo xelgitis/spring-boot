@@ -1,5 +1,7 @@
 package com.example.springboot.domain;
 
+import com.example.springboot.exeption.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class VacationResponse {
 	
-	private ResponseStatus status;
-	private String         message;
+	private Status status;
+	private String message;
 
 }

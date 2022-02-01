@@ -1,7 +1,6 @@
 package com.example.springboot.service;
 
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.UUID;
 
 import com.example.springboot.domain.Role;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
-import com.example.springboot.domain.ResponseStatus;
 import com.example.springboot.domain.User;
 import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
@@ -43,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
 		logger.info("Provera username/pass za korisnika: {}", request.getUsername());
 		
 		User user = userMapper.findUser(request.getUsername())
-				    .orElseThrow(() -> new VacationAppException("Korisnik sa username-om = " + request.getUsername() + " ne postoji u bazi", Status.USER_NOT_FOUND));
+				    .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
 		
 		user.setPassword(request.getPassword());		
 
@@ -62,7 +60,7 @@ public class LoginServiceImpl implements LoginService {
 		if(loggedUsers == null) loggedUsers = new HashMap<>();
 		loggedUsers.put(sessionId, user);
 		
-		return new LoginResponse(user.getUsername(), sessionId, ResponseStatus.SUCCESS, "Login za korisnika uspesan");
+		return new LoginResponse(user.getUsername(), sessionId, Status.SUCCESS, "Login za korisnika uspesan");
 	}	
 	
 	@Override

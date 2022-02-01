@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.springboot.domain.User;
-import com.example.springboot.domain.Vacation;
 
 @Mapper
 public interface UserMapper {
