@@ -1,7 +1,5 @@
 package com.example.springboot.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +14,11 @@ import com.example.springboot.mapper.RoleMapper;
 import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.mapper.UserRoleMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
     @Autowired
     private UserMapper userMapper;	
@@ -43,7 +42,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     public void registerUser(RegistrationRequest request) {
         User user = userCreator.create(request);
         
-        logger.debug("Kreiran je sledeci user = {} ", user.toString());        
+        log.debug("Kreiran je sledeci user = {} ", user.toString());        
         userMapper.create(user);
     }  
     
@@ -55,10 +54,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     	Role role = new Role();
         role.setRole(request.getRole());
         
-        logger.debug("Dohvacen je sledeci user = {} ", user.toString());    
+        log.debug("Dohvacen je sledeci user = {} ", user.toString());    
  
         Long roleId = roleMapper.getRole(request.getRole()).getId();
-        logger.debug("roleId = {} ", roleId);
+        log.debug("roleId = {} ", roleId);
         
         userRoleMapper.createRole(user.getId(), roleId);
     }     

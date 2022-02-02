@@ -1,8 +1,5 @@
 package com.example.springboot.service;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +11,11 @@ import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.mapper.VacationMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class VacationServiceImpl implements VacationService {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
     @Autowired
     private UserMapper userMapper;	
@@ -27,7 +25,7 @@ public class VacationServiceImpl implements VacationService {
     
 	@Override
 	public VacationResponse createVacation(VacationRequest request, String username) {
-		logger.debug("Zahtev za kreiranje odmora: {} usera = {} ", request.toString(), username);
+		log.debug("Zahtev za kreiranje odmora: {} usera = {} ", request.toString(), username);
 		
 		userMapper.findUser(username)
 		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));

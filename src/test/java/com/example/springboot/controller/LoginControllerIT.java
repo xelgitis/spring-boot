@@ -36,7 +36,7 @@ class LoginControllerIT {
 	@Test
 	@Transactional
 	void testLoginWrongUsername() {
-
+		String message = "korisnik sa ovim username-om ne postoji u bazi";
 		LoginRequest request = LoginRequest.builder()
 				               .username("oolga.jesic")
 				               .password("olga.jesic")
@@ -45,12 +45,13 @@ class LoginControllerIT {
 		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
 		assertNotNull(errorResponse.getMessage());
+		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
 	}
 	
 	@Test
 	@Transactional
-	void testLoginWrongPassword() {
-		
+	void testLoginWrongPassword() {		
+		String message = "korisnik je uneo pogresnu sifru";
 		LoginRequest request = LoginRequest.builder()
 				               .username("olga.jesic")
 				               .password("oolga.jesic")
@@ -59,6 +60,7 @@ class LoginControllerIT {
 		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
 		
 		assertNotNull(errorResponse.getMessage());
+		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
 	}	
 	
 	@Test

@@ -1,8 +1,5 @@
 package com.example.springboot.controller;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,15 +20,16 @@ import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.VacationService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import javax.validation.Valid;
 
 @RestController
+@Slf4j
 @RequestMapping("/vacation")
 public class VacationController {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
     @Autowired
     private LoginService loginService;
@@ -46,7 +44,7 @@ public class VacationController {
 		String username = loginService.getUsername(sessionID);
 		Role   role     = loginService.getRole(sessionID);
 		
-		logger.info("Zahtev za getVacation ");
+		log.info("Zahtev za getVacation ");
 		
 		if (role.isAdmin(role.getRole())) {			
 			return vacationService.getVacation(user);	
@@ -71,7 +69,7 @@ public class VacationController {
 			vacationResponse =  vacationService.createVacation(request, username);
 		}			
 		
-        logger.info("Odgovor servisa za kreiranje odmora - response: {}", vacationResponse);
+        log.info("Odgovor servisa za kreiranje odmora - response: {}", vacationResponse);
         return vacationResponse;
 	}	
 	
@@ -105,7 +103,7 @@ public class VacationController {
 	
 	public void checkRequieredData(String username, String user) {
 		if (!username.contentEquals(user)) {
-			logger.info("Nije dozvoljeno regular korisniku da kreira-gleda-azurira-brise podatke za drugog korisnika");
+			log.info("Nije dozvoljeno regular korisniku da kreira-gleda-azurira-brise podatke za drugog korisnika");
 			throw new VacationAppException(Status.GENERIC_ERROR);
 		}		
 	}	

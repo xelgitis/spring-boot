@@ -4,8 +4,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,10 +14,11 @@ import com.example.springboot.domain.RegistrationResponse;
 import com.example.springboot.service.RegistrationService;
 import com.example.springboot.validator.RequestValidator;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class RegistrationController {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	private RequestValidator validator;
@@ -31,16 +30,16 @@ public class RegistrationController {
 	@PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RegistrationResponse register(@Valid @RequestBody RegistrationRequest request) {
 		
-		logger.info("Zahtev za registraciju novog korisnika={} ", request);
+		log.info("Zahtev za registraciju novog korisnika={} ", request);
 		
 		//validate if user already exist or if email exist
 		validator.validate(request);
-		logger.debug("Zavrsena validacija za novog korisnika={} ", request);
+		log.debug("Zavrsena validacija za novog korisnika={} ", request);
 
 		//try to register user and get a response
 	    RegistrationResponse response = registrationService.register(request);
 		
-        logger.info("Odgovor servisa za registraciju za korisnicko ime: {}, response: {}", request.getUsername(), response);
+        log.info("Odgovor servisa za registraciju za korisnicko ime: {}, response: {}", request.getUsername(), response);
         return response;
 	}	    
 

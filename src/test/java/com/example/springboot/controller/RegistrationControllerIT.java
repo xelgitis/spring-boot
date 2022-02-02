@@ -54,8 +54,7 @@ class RegistrationControllerIT {
 		ErrorResponseDto errorResponse = restTamplete.postForObject("/register", request, ErrorResponseDto.class);
 		
 		assertNotNull(errorResponse.getError());
-		assertTrue(errorResponse.getError().equalsIgnoreCase(message));
-			
+		assertTrue(errorResponse.getError().equalsIgnoreCase(message));			
 	}	
 	
 	@Test
@@ -81,7 +80,7 @@ class RegistrationControllerIT {
 	@Test
 	@Transactional	
 	void testRegisterExistingUsername() {
-		String message = "korisnicko ime vec postoji u bazi";
+		String message = "korinsicko ime vec postoji u bazi";
 		
 		RegistrationRequest request = RegistrationRequest.builder()
 				                      .username("olga.jesic")

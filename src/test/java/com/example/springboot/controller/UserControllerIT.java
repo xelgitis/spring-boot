@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -17,14 +15,15 @@ import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.User;
 import com.example.springboot.domain.UserRequest;
 
+//import lombok.extern.slf4j.Slf4j;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@Slf4j
 class UserControllerIT {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private String sessionID;
 	private String uri;
-	private String username = "mirjana.jesic"; //change the username to test CRUD for different users
+	private String username = "olga.jesic"; //change the username to test CRUD for different users
 	
 	@Autowired
 	TestRestTemplate restTamplete;
@@ -33,8 +32,8 @@ class UserControllerIT {
 	@BeforeEach
 	public void initialLogin(){
 		LoginRequest request = LoginRequest.builder()
-				               .username("olga.jesic")
-				               .password("olga.jesic")
+				               .username("bogdan.blazic")
+				               .password("bogdan.blazic")
 				               .build();
 	
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
@@ -47,7 +46,6 @@ class UserControllerIT {
 	@Transactional
 	void testGetUser() {
 		User user = restTamplete.getForObject(uri, User.class);
-		logger.info("Informacije o trazenom korisniku: {} ", user.toString());
 		assertNotNull(user.getUsername());	
 	}	
 
@@ -55,11 +53,11 @@ class UserControllerIT {
 	@Transactional
 	void testUpdateUser() {
 		UserRequest request = UserRequest.builder()
-				              .email("olga.jesic@mozzartbet.com")
+				              .email("olga.jesic@gmail.com")
 				              .build();
 		restTamplete.put(uri, request);
 		User user = restTamplete.getForObject(uri, User.class);
-		assertTrue(user.getEmail().equalsIgnoreCase("olga.jesic@mozzartbet.com"));
+		assertTrue(user.getEmail().equalsIgnoreCase("olga.jesic@gmail.com"));
 	}
 
 	@Test
@@ -70,7 +68,8 @@ class UserControllerIT {
 		assertNull(user.getUsername());
 	}
 	
-	//invalid test scenarios - change the username to the one which does not exist in the DB
+	//invalid test scenarios - change the username to the one which does not exist in the DB or 
+	//when someone is logged as regular and than try to get data from some other user
 	@Test
 	@Transactional
 	void testGetInvalidUser() {
@@ -85,6 +84,8 @@ class UserControllerIT {
 				              .email("olga.jesic@mozzartbet.com")
 				              .build();
 		restTamplete.put(uri, request);
+		//check that this user does not exist - meaning no update was done or
+		//it is not allowed to change this user
 		User user = restTamplete.getForObject(uri, User.class);
 		assertNull(user.getUsername());	
 	}	
@@ -94,6 +95,8 @@ class UserControllerIT {
 	void testDeleteInvalidUser() {
 		restTamplete.delete(uri);
 		User user = restTamplete.getForObject(uri, User.class);
+		//check that this user does not exist - meaning no delete was done or
+		//it was not allowed to delete this user
 		assertNull(user.getUsername());
 	}	
 	

@@ -5,8 +5,6 @@ import java.util.UUID;
 
 import com.example.springboot.domain.Role;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +16,11 @@ import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.mapper.RoleMapper;
 import com.example.springboot.mapper.UserMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class LoginServiceImpl implements LoginService {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	HashMap<String, User> loggedUsers;
 	
@@ -38,7 +37,7 @@ public class LoginServiceImpl implements LoginService {
 	private UserRoleService userRoleService;	
 	
 	public LoginResponse login(LoginRequest request) {
-		logger.info("Provera username/pass za korisnika: {}", request.getUsername());
+		log.info("Provera username/pass za korisnika: {}", request.getUsername());
 		
 		User user = userMapper.findUser(request.getUsername())
 				    .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
@@ -48,13 +47,13 @@ public class LoginServiceImpl implements LoginService {
 		passwordGeneratorService.checkPassword(user);
 		
 		Long roleId = userRoleService.getUserRole(user.getId()).getRoleId();
-		logger.debug("roleId: {}", roleId);
+		log.debug("roleId: {}", roleId);
 		
 		Role role   = roleMapper.getRolebyId(roleId);
-		logger.debug("roleId: {}", role.getRole());
+		log.debug("roleId: {}", role.getRole());
 		
 		user.setRole(role);
-		logger.debug("Dohvacen user: {}", user.toString());
+		log.debug("Dohvacen user: {}", user.toString());
 
 		String sessionId = UUID.randomUUID().toString();
 		if(loggedUsers == null) loggedUsers = new HashMap<>();

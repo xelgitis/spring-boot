@@ -1,7 +1,5 @@
 package com.example.springboot.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +10,12 @@ import com.example.springboot.domain.User;
 import com.example.springboot.domain.UserRequest;
 import com.example.springboot.mapper.UserMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Service
+@Slf4j
 public class UserSeviceImpl implements UserService {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired 
 	private UserRoleService userRoleService;
@@ -26,7 +25,7 @@ public class UserSeviceImpl implements UserService {
 
 	@Override
 	public User getUser(String username) {
-		logger.debug("Zahtev za pregled usera = {} ", username);
+		log.debug("Zahtev za pregled usera = {} ", username);
 
 		return userMapper.findUser(username)
 			              .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));

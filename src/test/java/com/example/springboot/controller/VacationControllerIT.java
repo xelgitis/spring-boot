@@ -6,8 +6,6 @@ import java.util.Calendar;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -20,14 +18,15 @@ import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Slf4j
 class VacationControllerIT {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private String sessionID;
 	private String uri;
-	private String username = "marija.petrovic"; //change the username to test CRUD of vacations for different users
+	private String username   = "oolga.jesic"; //change the username to test CRUD of vacations for different users
 	
 	@Autowired
 	TestRestTemplate restTamplete;
@@ -38,8 +37,8 @@ class VacationControllerIT {
 	@BeforeEach
 	public void initialLogin(){
 		LoginRequest request = LoginRequest.builder()
-				               .username("marija.petrovic")
-				               .password("marija.petrovic")
+				               .username("bogdan.blazic")
+				               .password("bogdan.blazic")
 				               .build();
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
@@ -47,13 +46,14 @@ class VacationControllerIT {
 	}	
 
 	@Test
-	void testCreateVacation() {		
-		VacationRequest request = new VacationRequest();
+	void testCreateVacation() {
 		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); //month numbers start for zero
-		c1.set(Calendar.DATE,  30);
-		request.setStartDate(c1.getTime());
-		request.setDuration(19);
+		c1.set(Calendar.MONTH, 7); //month numbers start from zero
+		c1.set(Calendar.DATE,  30);		
+		VacationRequest request = VacationRequest.builder()
+				                  .startDate(c1.getTime())
+				                  .duration(19)
+				                  .build();
 	
 		VacationResponse newVacation = restTamplete.postForObject(uri, request, VacationResponse.class);
 		assertNotNull(newVacation);
@@ -62,7 +62,7 @@ class VacationControllerIT {
 	@Test
 	void testGetVacation() {
 		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		logger.info("Informacije o trazenom odmoru: {} ", vacation.toString());
+		log.info("Informacije o trazenom odmoru: {} ", vacation.toString());
 		assertNotNull(vacation);	
 	}
 
@@ -71,41 +71,57 @@ class VacationControllerIT {
 		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
 		vacation.setDuration(15);		
 		restTamplete.put(uri, vacation);
-		assertNotNull(vacation);	
+		vacation = restTamplete.getForObject(uri, Vacation.class);
+		assertTrue(vacation.getDuration() == 15);	
 	}
 
 	@Test
-	void testDeleteUser() {
+	void testDeleteVacation() {
 		restTamplete.delete(uri);
+		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
+		assertNull(vacation.getId());
 	}
 	
 	//invalid test scenarios - change the username to the one which does not exist in the DB	
+	//or make login of regular user and username to be somebody else
 	@Test
-	void testCreateInvalidUser() {		
-		VacationRequest request = new VacationRequest();
+	void testCreateVacationInvalidUser() {
+		String message = "korisnik sa ovim username-om ne postoji u bazi";
 		c1.set(Calendar.YEAR,  2022);
 		c1.set(Calendar.MONTH, 7); //month numbers start for zero
 		c1.set(Calendar.DATE,  30);
-		request.setStartDate(c1.getTime());
-		request.setDuration(19);
+		VacationRequest request = VacationRequest.builder()
+                				  .startDate(c1.getTime())
+                                  .duration(19)
+                                  .build();
 	
 		VacationResponse newVacation = restTamplete.postForObject(uri, request, VacationResponse.class);
-		assertNull(newVacation);
+		assertTrue(newVacation.getMessage().equalsIgnoreCase(message));
 	}
 	
 	@Test
 	@Transactional
-	void testGetInvalidUser() {
+	void testGetVacationInvalidUser() {
 		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		assertNull(vacation);	
+		assertNull(vacation.getId());
 	}
 	
 	@Test
 	@Transactional
-	void testUpdateInvalidUser() {
-		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);		
-		//user.setAddress("Luja Adamica 17");		
-		restTamplete.put(uri, vacation);
-		assertNull(vacation);
+	void testUpdateVacationInvalidUser() {
+		VacationRequest request = VacationRequest.builder()
+                                 .duration(33)
+                                 .build();	
+		restTamplete.put(uri, request);
+		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
+		assertNull(vacation.getId());
 	}
+	
+	@Test
+	@Transactional
+	void testDeleteVacationInvalidUser() {
+		restTamplete.delete(uri);
+		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
+		assertNull(vacation.getId());
+	}	
 }

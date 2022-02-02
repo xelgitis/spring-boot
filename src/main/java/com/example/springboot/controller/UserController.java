@@ -1,7 +1,5 @@
 package com.example.springboot.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +19,16 @@ import com.example.springboot.domain.User;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
+@Slf4j
 @RequestMapping("/users")
 public class UserController {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
     @Autowired
     private LoginService loginService;	
 	
@@ -82,7 +80,7 @@ public class UserController {
 	
 	public void checkRequieredData(String username, String user) {
 		if (!username.contentEquals(user)) {
-			logger.info("Nije dozvoljeno regular korisniku da gleda-azurira-brise podatke za drugog korisnika");
+			log.info("Nije dozvoljeno regular korisniku da gleda-azurira-brise podatke za drugog korisnika");
 			throw new VacationAppException(Status.GENERIC_ERROR);
 		}		
 	}
