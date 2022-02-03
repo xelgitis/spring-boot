@@ -1,0 +1,263 @@
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective settings
+[WARNING] Unrecognised tag: 'mirror' (position: START_TAG seen ...</pluginRepositories>\n         <mirror>... @30:18)  @ C:\Users\olga.jesic\.m2\settings.xml, line 30, column 18
+[WARNING] 
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.example:spring-boot:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.springframework.boot:spring-boot-starter-web:jar -> duplicate declaration of version (?) @ line 92, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ----------------------< com.example:spring-boot >-----------------------
+[INFO] Building spring-boot 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot-maven-plugin:2.1.4.RELEASE:run (default-cli) > test-compile @ spring-boot >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ spring-boot ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 28 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.0:compile (default-compile) @ spring-boot ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ spring-boot ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.0:testCompile (default-testCompile) @ spring-boot ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:2.1.4.RELEASE:run (default-cli) < test-compile @ spring-boot <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.4.RELEASE:run (default-cli) @ spring-boot ---
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.4.RELEASE)
+
+2022-02-03 13:21:05.952  INFO 9188 --- [           main] c.e.springboot.VacationApplication       : Starting VacationApplication on ojesic-lpt with PID 9188 (C:\Users\olga.jesic\Desktop\Olga\project\spring-boot\target\classes started by olga.jesic in C:\Users\olga.jesic\Desktop\Olga\project\spring-boot)
+2022-02-03 13:21:05.955 DEBUG 9188 --- [           main] c.e.springboot.VacationApplication       : Running with Spring Boot v2.1.4.RELEASE, Spring v5.1.6.RELEASE
+2022-02-03 13:21:05.955  INFO 9188 --- [           main] c.e.springboot.VacationApplication       : No active profile set, falling back to default profiles: default
+2022-02-03 13:21:06.831  INFO 9188 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9fcda6f0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-02-03 13:21:07.298  INFO 9188 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-02-03 13:21:07.318  INFO 9188 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-02-03 13:21:07.318  INFO 9188 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2022-02-03 13:21:07.389  INFO 9188 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-02-03 13:21:07.389  INFO 9188 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1410 ms
+2022-02-03 13:21:07.552 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : Driver class org.h2.Driver found in Thread context class loader TomcatEmbeddedWebappClassLoader
+  context: ROOT
+  delegate: true
+----------> Parent Classloader:
+java.net.URLClassLoader@764fa64b
+
+2022-02-03 13:21:08.114  INFO 9188 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-02-03 13:21:08.342 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - configuration:
+2022-02-03 13:21:08.343 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : allowPoolSuspension.............false
+2022-02-03 13:21:08.343 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : autoCommit......................true
+2022-02-03 13:21:08.343 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : catalog.........................none
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : connectionInitSql...............none
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : connectionTestQuery.............none
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : connectionTimeout...............30000
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : dataSource......................none
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : dataSourceClassName.............none
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : dataSourceJNDI..................none
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : dataSourceProperties............{password=<masked>}
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : driverClassName................."org.h2.Driver"
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : healthCheckProperties...........{}
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : healthCheckRegistry.............none
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : idleTimeout.....................600000
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : initializationFailTimeout.......1
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : isolateInternalQueries..........false
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : jdbcUrl.........................jdbc:h2:mem:testdb
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : leakDetectionThreshold..........0
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : maxLifetime.....................1800000
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : maximumPoolSize.................10
+2022-02-03 13:21:08.344 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : metricRegistry..................none
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : metricsTrackerFactory...........none
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : minimumIdle.....................10
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : password........................<masked>
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : poolName........................"HikariPool-1"
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : readOnly........................false
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : registerMbeans..................false
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : scheduledExecutor...............none
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : schema..........................none
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : threadFactory...................internal
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : transactionIsolation............default
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : username........................"sa"
+2022-02-03 13:21:08.345 DEBUG 9188 --- [           main] com.zaxxer.hikari.HikariConfig           : validationTimeout...............5000
+2022-02-03 13:21:08.345  INFO 9188 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-02-03 13:21:08.663 DEBUG 9188 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.665  INFO 9188 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-02-03 13:21:08.769 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=1, active=1, idle=0, waiting=0)
+2022-02-03 13:21:08.787 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn1: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.788 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn2: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.788 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn3: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.788 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn4: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.788 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn5: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.789 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn6: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.789 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn7: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.789 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn8: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.790 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn9: url=jdbc:h2:mem:testdb user=SA
+2022-02-03 13:21:08.790 DEBUG 9188 --- [onnection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - After adding stats (total=10, active=1, idle=9, waiting=0)
+2022-02-03 13:21:09.157  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK
+2022-02-03 13:21:09.165  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE PUBLIC.DATABASECHANGELOGLOCK (ID INT NOT NULL, LOCKED BOOLEAN NOT NULL, LOCKGRANTED TIMESTAMP, LOCKEDBY VARCHAR(255), CONSTRAINT PK_DATABASECHANGELOGLOCK PRIMARY KEY (ID))
+2022-02-03 13:21:09.169  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK
+2022-02-03 13:21:09.171  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : DELETE FROM PUBLIC.DATABASECHANGELOGLOCK
+2022-02-03 13:21:09.172  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOGLOCK (ID, LOCKED) VALUES (1, FALSE)
+2022-02-03 13:21:09.174  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT LOCKED FROM PUBLIC.DATABASECHANGELOGLOCK WHERE ID=1
+2022-02-03 13:21:09.179  INFO 9188 --- [           main] l.lockservice.StandardLockService        : Successfully acquired change log lock
+2022-02-03 13:21:09.520  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.539  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.553  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.566  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.576  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.583  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.591  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.598  WARN 9188 --- [           main] l.p.core.xml.LiquibaseEntityResolver     : Current XML parsers seems to not support EntityResolver2. External entities won't be correctly loaded
+2022-02-03 13:21:09.617  INFO 9188 --- [           main] l.c.StandardChangeLogHistoryService      : Creating database history table with name: PUBLIC.DATABASECHANGELOG
+2022-02-03 13:21:09.618  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE PUBLIC.DATABASECHANGELOG (ID VARCHAR(255) NOT NULL, AUTHOR VARCHAR(255) NOT NULL, FILENAME VARCHAR(255) NOT NULL, DATEEXECUTED TIMESTAMP NOT NULL, ORDEREXECUTED INT NOT NULL, EXECTYPE VARCHAR(10) NOT NULL, MD5SUM VARCHAR(35), DESCRIPTION VARCHAR(255), COMMENTS VARCHAR(255), TAG VARCHAR(255), LIQUIBASE VARCHAR(20), CONTEXTS VARCHAR(255), LABELS VARCHAR(255), DEPLOYMENT_ID VARCHAR(10))
+2022-02-03 13:21:09.619  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOG
+2022-02-03 13:21:09.619  INFO 9188 --- [           main] l.c.StandardChangeLogHistoryService      : Reading from PUBLIC.DATABASECHANGELOG
+2022-02-03 13:21:09.619  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT * FROM PUBLIC.DATABASECHANGELOG ORDER BY DATEEXECUTED ASC, ORDEREXECUTED ASC
+2022-02-03 13:21:09.620  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK
+2022-02-03 13:21:09.629  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE users (
+	username varchar2(45) NOT NULL,
+	password varchar2(45) NOT NULL,
+	password_salt varchar2(64) NOT NULL,
+	name varchar2(45) NOT NULL,
+	email varchar2(45) NOT NULL,
+	role varchar2(45) NOT NULL,
+	CONSTRAINT pk_users PRIMARY KEY (username)
+)
+2022-02-03 13:21:09.633  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : SQL in file OBK-293-ddl.sql executed
+2022-02-03 13:21:09.633  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_0/change-log.xml::OBK-293::olga.jesic ran successfully in 5ms
+2022-02-03 13:21:09.633  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : SELECT MAX(ORDEREXECUTED) FROM PUBLIC.DATABASECHANGELOG
+2022-02-03 13:21:09.638  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('OBK-293', 'olga.jesic', 'classpath:liquibase/change-log/1_0/change-log.xml', NOW(), 1, '8:6dcd26184c9ba30307ccfaef6a5e529c', 'sqlFile', 'Users authentication', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620')
+2022-02-03 13:21:09.640  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : Tag '1.0' applied to database
+2022-02-03 13:21:09.640  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_0/change-log.xml::version 1.0::olga.jesic ran successfully in 1ms
+2022-02-03 13:21:09.641  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID, TAG) VALUES ('version 1.0', 'olga.jesic', 'classpath:liquibase/change-log/1_0/change-log.xml', NOW(), 2, '8:3c7be0136474b1608ff678d78f1a3738', 'tagDatabase', '', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620', '1.0')
+2022-02-03 13:21:09.642  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : ALTER TABLE USERS RENAME COLUMN PASSWORD_SALT TO ADDRESS
+2022-02-03 13:21:09.643  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : SQL in file change_column_name.sql executed
+2022-02-03 13:21:09.643  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_1/change-log.xml::OBK-293::olga.jesic ran successfully in 2ms
+2022-02-03 13:21:09.644  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('OBK-293', 'olga.jesic', 'classpath:liquibase/change-log/1_1/change-log.xml', NOW(), 3, '8:d891e8231e6eb1d74b37e64812e74fb1', 'sqlFile', 'Rename column name', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620')
+2022-02-03 13:21:09.644  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : Tag '1.1' applied to database
+2022-02-03 13:21:09.644  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_1/change-log.xml::version 1.1::olga.jesic ran successfully in 0ms
+2022-02-03 13:21:09.645  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID, TAG) VALUES ('version 1.1', 'olga.jesic', 'classpath:liquibase/change-log/1_1/change-log.xml', NOW(), 4, '8:1dc9bb64b8fe1be5bf4a6ed2f1bb88ef', 'tagDatabase', '', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620', '1.1')
+2022-02-03 13:21:09.647  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : DROP TABLE USERS
+2022-02-03 13:21:09.649  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE USERS (
+  id NUMBER NOT NULL,
+  username varchar2(45) NOT NULL,
+  password varchar2(128),
+  password_salt varchar2(64),
+  address varchar2(64),
+  name varchar2(45),
+  email varchar2(64),
+  role varchar2(45),
+  registration_time date,
+  CONSTRAINT pk_users PRIMARY KEY(id)
+)
+2022-02-03 13:21:09.650  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE SEQUENCE users_increment MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 NOCACHE
+2022-02-03 13:21:09.651  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : SQL in file change_table.sql executed
+2022-02-03 13:21:09.651  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_2/change-log.xml::OBK-293::olga.jesic ran successfully in 6ms
+2022-02-03 13:21:09.651  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('OBK-293', 'olga.jesic', 'classpath:liquibase/change-log/1_2/change-log.xml', NOW(), 5, '8:7c4952fcf31482ca446b87f279954989', 'sqlFile', 'Add more columns', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620')
+2022-02-03 13:21:09.652  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : Tag '1.2' applied to database
+2022-02-03 13:21:09.652  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_2/change-log.xml::version 1.2::olga.jesic ran successfully in 0ms
+2022-02-03 13:21:09.653  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID, TAG) VALUES ('version 1.2', 'olga.jesic', 'classpath:liquibase/change-log/1_2/change-log.xml', NOW(), 6, '8:e42a63992c149e432e6a71fc43f11d27', 'tagDatabase', '', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620', '1.2')
+2022-02-03 13:21:09.654  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE VACATION (
+  id NUMBER NOT NULL,
+  start_date date NOT NULL,
+  duration NUMBER NOT NULL,
+  approval char NOT NULL,
+  username varchar2(45) NOT NULL,
+  CONSTRAINT pk_vacation PRIMARY KEY(id)
+)
+2022-02-03 13:21:09.655  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE SEQUENCE vacation_increment MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 NOCACHE
+2022-02-03 13:21:09.655  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : SQL in file add_vacation_table.sql executed
+2022-02-03 13:21:09.655  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_3/change-log.xml::OBK-293::olga.jesic ran successfully in 2ms
+2022-02-03 13:21:09.658  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('OBK-293', 'olga.jesic', 'classpath:liquibase/change-log/1_3/change-log.xml', NOW(), 7, '8:866f18b5279aa05c967dcb7053b8dfd5', 'sqlFile', 'Add new vacation table', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620')
+2022-02-03 13:21:09.658  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : Tag '1.3' applied to database
+2022-02-03 13:21:09.658  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_3/change-log.xml::version 1.3::olga.jesic ran successfully in 0ms
+2022-02-03 13:21:09.659  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID, TAG) VALUES ('version 1.3', 'olga.jesic', 'classpath:liquibase/change-log/1_3/change-log.xml', NOW(), 8, '8:62d929cc233720cb9bc2beddb8aa2659', 'tagDatabase', '', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620', '1.3')
+2022-02-03 13:21:09.661  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : ALTER TABLE USERS ADD CONSTRAINT username_uq UNIQUE (username)
+2022-02-03 13:21:09.662  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : ALTER TABLE VACATION ADD CONSTRAINT fk_vacation FOREIGN KEY(username) REFERENCES USERS(username)
+2022-02-03 13:21:09.667  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : SQL in file add_foreign_key.sql executed
+2022-02-03 13:21:09.667  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_4/change-log.xml::OBK-293::olga.jesic ran successfully in 7ms
+2022-02-03 13:21:09.668  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('OBK-293', 'olga.jesic', 'classpath:liquibase/change-log/1_4/change-log.xml', NOW(), 9, '8:cbb1a72508494d8297424146ed7804c8', 'sqlFile', 'Add foreign key for username column', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620')
+2022-02-03 13:21:09.669  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : Tag '1.4' applied to database
+2022-02-03 13:21:09.669  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_4/change-log.xml::version 1.4::olga.jesic ran successfully in 0ms
+2022-02-03 13:21:09.669  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID, TAG) VALUES ('version 1.4', 'olga.jesic', 'classpath:liquibase/change-log/1_4/change-log.xml', NOW(), 10, '8:e39c821c9bdf0f2003b516ee63f54e99', 'tagDatabase', '', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620', '1.4')
+2022-02-03 13:21:09.672  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : ALTER TABLE Users DROP COLUMN ROLE
+2022-02-03 13:21:09.677  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE ROLE (
+  id NUMBER NOT NULL,
+  role varchar2(45) NOT NULL,
+  CONSTRAINT pk_role PRIMARY KEY(id)
+)
+2022-02-03 13:21:09.678  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE SEQUENCE role_increment MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 NOCACHE
+2022-02-03 13:21:09.678  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE TABLE USER_ROLE (
+  id NUMBER NOT NULL,
+  user_id NUMBER NOT NULL,
+  role_id NUMBER NOT NULL,
+  CONSTRAINT pk_user_role PRIMARY KEY(id)
+)
+2022-02-03 13:21:09.678  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : CREATE SEQUENCE user_role_increment MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 NOCACHE
+2022-02-03 13:21:09.679  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : ALTER TABLE USER_ROLE ADD CONSTRAINT userid_uq UNIQUE (user_id)
+2022-02-03 13:21:09.679  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : ALTER TABLE USER_ROLE ADD CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES USERS(id)
+2022-02-03 13:21:09.680  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : ALTER TABLE USER_ROLE ADD CONSTRAINT fk_role FOREIGN KEY(role_id) REFERENCES ROLE(id)
+2022-02-03 13:21:09.680  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : SQL in file create_role_and_user_role_table.sql executed
+2022-02-03 13:21:09.681  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_5/change-log.xml::OBK-293::olga.jesic ran successfully in 12ms
+2022-02-03 13:21:09.681  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('OBK-293', 'olga.jesic', 'classpath:liquibase/change-log/1_5/change-log.xml', NOW(), 11, '8:2b23585a0be82a9c1824b7bd80bf6ba0', 'sqlFile', 'Create new ROLE and USER_ROLE table', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620')
+2022-02-03 13:21:09.682  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : Tag '1.5' applied to database
+2022-02-03 13:21:09.682  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_5/change-log.xml::version 1.5::olga.jesic ran successfully in 0ms
+2022-02-03 13:21:09.683  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID, TAG) VALUES ('version 1.5', 'olga.jesic', 'classpath:liquibase/change-log/1_5/change-log.xml', NOW(), 12, '8:78d9b2395512ab148da04fd193dd4b8d', 'tagDatabase', '', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620', '1.5')
+2022-02-03 13:21:09.684  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : UPDATE role SET id = role_increment.nextval
+2022-02-03 13:21:09.684  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO role (id, role) VALUES (role_increment.nextval, 'user')
+2022-02-03 13:21:09.685  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO role (id, role) VALUES (role_increment.nextval, 'administrator')
+2022-02-03 13:21:09.686  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : SQL in file fill_in_role_table.sql executed
+2022-02-03 13:21:09.686  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_6/change-log.xml::OBK-293::olga.jesic ran successfully in 3ms
+2022-02-03 13:21:09.686  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('OBK-293', 'olga.jesic', 'classpath:liquibase/change-log/1_6/change-log.xml', NOW(), 13, '8:4aa383f9085755fbb1b51062fd9cc0d1', 'sqlFile', 'Fill in ROLE table', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620')
+2022-02-03 13:21:09.687  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : Tag '1.6' applied to database
+2022-02-03 13:21:09.687  INFO 9188 --- [           main] liquibase.changelog.ChangeSet            : ChangeSet classpath:liquibase/change-log/1_6/change-log.xml::version 1.6::olga.jesic ran successfully in 0ms
+2022-02-03 13:21:09.688  INFO 9188 --- [           main] liquibase.executor.jvm.JdbcExecutor      : INSERT INTO PUBLIC.DATABASECHANGELOG (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID, TAG) VALUES ('version 1.6', 'olga.jesic', 'classpath:liquibase/change-log/1_6/change-log.xml', NOW(), 14, '8:6f79c7f2d9ca1a30d15b801ad7c04498', 'tagDatabase', '', 'EXECUTED', NULL, NULL, '3.6.3', '3890869620', '1.6')
+2022-02-03 13:21:09.689  INFO 9188 --- [           main] l.lockservice.StandardLockService        : Successfully released change log lock
+2022-02-03 13:21:09.770  INFO 9188 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoint(s) beneath base path '/actuator'
+2022-02-03 13:21:09.823  INFO 9188 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-02-03 13:21:09.825  INFO 9188 --- [           main] c.e.springboot.VacationApplication       : Started VacationApplication in 4.147 seconds (JVM running for 6.214)
+2022-02-03 13:21:38.777 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:22:08.781 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:22:38.782 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:23:08.786 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:23:38.792 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:24:08.796 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:24:38.812 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:25:08.821 DEBUG 9188 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:25:21.366  INFO 9188 --- [       Thread-5] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2022-02-03 13:25:21.367  INFO 9188 --- [       Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-02-03 13:25:21.367 DEBUG 9188 --- [       Thread-5] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Before shutdown stats (total=10, active=0, idle=10, waiting=0)
+2022-02-03 13:25:21.368 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn0: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.369 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn1: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.369 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn2: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.369 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn3: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.369 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn4: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.369 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn5: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.369 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn6: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.369 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn7: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.370 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn8: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.370 DEBUG 9188 --- [nnection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection conn9: url=jdbc:h2:mem:testdb user=SA: (connection evicted)
+2022-02-03 13:25:21.370 DEBUG 9188 --- [       Thread-5] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - After shutdown stats (total=0, active=0, idle=0, waiting=0)
+2022-02-03 13:25:21.370  INFO 9188 --- [       Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  04:17 min
+Terminate batch job (Y/N)? 
