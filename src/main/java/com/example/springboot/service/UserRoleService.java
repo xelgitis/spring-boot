@@ -1,10 +1,11 @@
 package com.example.springboot.service;
 
-import com.example.springboot.domain.UserRole;
+import com.example.springboot.domain.Role;
+import com.example.springboot.domain.User;
 
 public interface UserRoleService {
 	
-	UserRole getUserRole(Long id);
+	Role getUserRole(User user);
 	
 	void deleteRole(Long id);
 

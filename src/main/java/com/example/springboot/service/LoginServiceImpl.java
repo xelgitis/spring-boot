@@ -13,7 +13,6 @@ import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.User;
 import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
-import com.example.springboot.mapper.RoleMapper;
 import com.example.springboot.mapper.UserMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +25,6 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Autowired
 	private UserMapper userMapper;
-	
-	@Autowired
-	private RoleMapper roleMapper;	
 	
 	@Autowired 
 	private PasswordGeneratorService passwordGeneratorService;
@@ -46,11 +42,7 @@ public class LoginServiceImpl implements LoginService {
 
 		passwordGeneratorService.checkPassword(user);
 		
-		Long roleId = userRoleService.getUserRole(user.getId()).getRoleId();
-		log.debug("roleId: {}", roleId);
-		
-		Role role   = roleMapper.getRolebyId(roleId);
-		log.debug("roleId: {}", role.getRole());
+		Role role = userRoleService.getUserRole(user);
 		
 		user.setRole(role);
 		log.debug("Dohvacen user: {}", user.toString());
@@ -76,6 +68,11 @@ public class LoginServiceImpl implements LoginService {
 	public Role getRole(String sessionId) {
 		Role role = loggedUsers.get(sessionId).getRole();
         return role;
+	}
+
+	@Override
+	public User getUser(String sessionId) {		
+		return loggedUsers.get(sessionId);
 	}
 
 }

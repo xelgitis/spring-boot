@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springboot.domain.Role;
+import com.example.springboot.domain.User;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
@@ -41,17 +42,8 @@ public class VacationController {
 	@GetMapping(path="/{sessionID}",produces = APPLICATION_JSON_VALUE)
 	public Vacation getVacation(@PathVariable String sessionID, @RequestParam(value="user") String user) {
 		
-		String username = loginService.getUsername(sessionID);
-		Role   role     = loginService.getRole(sessionID);
-		
-		log.info("Zahtev za getVacation ");
-		
-		if (role.isAdmin(role.getRole())) {			
-			return vacationService.getVacation(user);	
-		} else {	
-			checkRequieredData(username, user);
-			return vacationService.getVacation(username);
-		}		
+		User loggedUser = loginService.getUser(sessionID);
+		return vacationService.getVacation(loggedUser, user);	
 	}
 	
 	//TODO: add exception handling
@@ -59,53 +51,25 @@ public class VacationController {
 	public VacationResponse create(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
 		
 		VacationResponse vacationResponse;
-		String username = loginService.getUsername(sessionID);
-		Role   role     = loginService.getRole(sessionID);
-		
-		if (role.isAdmin(role.getRole())) {
-			vacationResponse = vacationService.createVacation(request, user);	
-		} else {
-			checkRequieredData(username, user);
-			vacationResponse =  vacationService.createVacation(request, username);
-		}			
-		
+		User loggedUser = loginService.getUser(sessionID);
+		vacationResponse = vacationService.createVacation(loggedUser, request, user);
+	
         log.info("Odgovor servisa za kreiranje odmora - response: {}", vacationResponse);
         return vacationResponse;
 	}	
 	
 	@PutMapping(path="/{sessionID}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
-	public VacationResponse updateVacation(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
+	public void updateVacation(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
 		
-		String username = loginService.getUsername(sessionID);
-		Role   role     = loginService.getRole(sessionID);
-		
-		if (role.isAdmin(role.getRole())) {
-			return vacationService.updateVacation(request, user);		
-		} else {
-			checkRequieredData(username, user);
-			return vacationService.updateVacation(request, username);
-		}
+		User loggedUser = loginService.getUser(sessionID);
+		vacationService.updateVacation(loggedUser, request, user);		
 	}	
 	
 	@DeleteMapping(path="/{sessionID}")
-	public VacationResponse deleteUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {
+	public void deleteUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {
 		
-		String username = loginService.getUsername(sessionID);
-		Role   role     = loginService.getRole(sessionID);
-		
-		if (role.isAdmin(role.getRole())) {
-			return vacationService.deleteVacation(user);			
-		} else {
-			checkRequieredData(username, user);
-		    return vacationService.deleteVacation(username);
-		}		
-	}	
-	
-	public void checkRequieredData(String username, String user) {
-		if (!username.contentEquals(user)) {
-			log.info("Nije dozvoljeno regular korisniku da kreira-gleda-azurira-brise podatke za drugog korisnika");
-			throw new VacationAppException(Status.GENERIC_ERROR);
-		}		
+		User loggedUser = loginService.getUser(sessionID);
+		vacationService.deleteVacation(loggedUser, user);	
 	}	
 
 }

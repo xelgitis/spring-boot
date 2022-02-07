@@ -14,7 +14,7 @@ public class Role {
 	private Long id;
 	private String role;	
 	
-	public boolean isAdmin(String role) {
+	public static boolean isAdmin(String role) {
 		
 		if (role.equalsIgnoreCase("administrator")) return true;
 		else return false;	

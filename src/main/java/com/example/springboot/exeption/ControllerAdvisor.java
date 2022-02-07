@@ -24,7 +24,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 		body.put("message", setMessage(ex.getStatus()));	
 		body.put("status",  ex.getStatus());
 
-		return new ResponseEntity<>(body, httpStatusValue(ex.getStatus()));
+		return new ResponseEntity<>(body, ex.getStatus().getHttpStatus());
 	}
 	
 	//koristi se za anotacije iz requesta
@@ -46,19 +46,6 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }	
-    
-    public HttpStatus httpStatusValue(Status tmp) {    	
-    	switch (tmp) {
-    	    case SUCCESS:           return HttpStatus.OK;
-    	    case USERNAME_TAKEN:    return HttpStatus.CONFLICT;
-    	    case EMAIL_TAKEN   :    return HttpStatus.CONFLICT;    	    
-    	    case GENERIC_ERROR:     return HttpStatus.BAD_REQUEST;
-    	    case USER_NOT_FOUND:    return HttpStatus.NOT_FOUND;
-    	    case WRONG_PASSWORD:    return HttpStatus.UNAUTHORIZED;
-    	    case WRONG_FORMAT_DATA: return HttpStatus.UNAUTHORIZED;
-    		default:                return HttpStatus.BAD_REQUEST;
-    	}	
-    }
     
     public String setMessage(Status tmp) {    	
     	switch (tmp) {
