@@ -30,18 +30,14 @@ public class VacationServiceImpl implements VacationService {
 		log.debug("Zahtev za kreiranje odmora: {} usera = {} ", request.toString(), username);
 		String role = loggedUser.getRole().getRole();
 		
-		if (Role.isAdmin(role)) {
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
+		userMapper.findUser(username)
+		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
 		
+		if (Role.isAdmin(role)) {		
 			createVac(request, username);
 			return new VacationResponse(Status.SUCCESS, "Uspesno kreiran odmor za usera " + username);
 		} else {
 			checkRequieredData(loggedUser.getUsername(), username);
-			
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-		
 			createVac(request, username);
 			return new VacationResponse(Status.SUCCESS, "Uspesno kreiran odmor za usera " + username);			
 		}
@@ -52,18 +48,14 @@ public class VacationServiceImpl implements VacationService {
 		
 		String role = loggedUser.getRole().getRole();
 		
+		userMapper.findUser(username)
+		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
+		
 		if (Role.isAdmin(role)) {			
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-			
 			return vacationMapper.findVacation(username)
 				   .orElseThrow(() -> new VacationAppException(Status.VACATION_NOT_PRESENT));
 		} else {	
 			checkRequieredData(loggedUser.getUsername(), username);
-			
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-			
 			return vacationMapper.findVacation(username)
 				   .orElseThrow(() -> new VacationAppException(Status.VACATION_NOT_PRESENT));
 		}
@@ -74,19 +66,16 @@ public class VacationServiceImpl implements VacationService {
 		
 		String role = loggedUser.getRole().getRole();
 		
-		if (Role.isAdmin(role)) {
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
+		userMapper.findUser(username)
+		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
 		
+		if (Role.isAdmin(role)) {		
 			vacationMapper.findVacation(username)
 			.orElseThrow(() -> new VacationAppException(Status.VACATION_NOT_PRESENT));
 				
 			vacationMapper.updateVacation(request.getStartDate(), request.getDuration(), username);
 		} else {			
 			checkRequieredData(loggedUser.getUsername(), username);
-			
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
 		
 			vacationMapper.findVacation(username)
 			.orElseThrow(() -> new VacationAppException(Status.VACATION_NOT_PRESENT));
@@ -99,20 +88,16 @@ public class VacationServiceImpl implements VacationService {
 	public void deleteVacation(User loggedUser, String username) {
 		String role = loggedUser.getRole().getRole();
 		
-		if (Role.isAdmin(role)) {
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
+		userMapper.findUser(username)
+		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
 		
+		if (Role.isAdmin(role)) {		
 			vacationMapper.findVacation(username)
 			.orElseThrow(() -> new VacationAppException(Status.VACATION_NOT_PRESENT));
 
 			vacationMapper.deleteVacation(username);
 		} else {
 			checkRequieredData(loggedUser.getUsername(), username);
-			
-			userMapper.findUser(username)
-			.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-		
 			vacationMapper.findVacation(username)
 			.orElseThrow(() -> new VacationAppException(Status.VACATION_NOT_PRESENT));
 

@@ -41,18 +41,15 @@ public class UserSeviceImpl implements UserService {
 
 	@Override
 	public void updateUser(User loggedUser, String user, UserRequest request) {
-		String role = loggedUser.getRole().getRole();		
+		String role = loggedUser.getRole().getRole();	
 		
-		if (Role.isAdmin(role)) {
-			   userMapper.findUser(user)
-		       .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-			   
+		userMapper.findUser(user)
+	    .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
+		
+		if (Role.isAdmin(role)) {			   
 			   userMapper.updateUser(user, request.getAddress(), request.getName(), request.getEmail());			   
 		} else {
 			checkRequieredData(loggedUser.getUsername(), user);
-			userMapper.findUser(user)
-		    .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-			
 			userMapper.updateUser(user, request.getAddress(), request.getName(), request.getEmail());
 		}		
 	}	
@@ -60,18 +57,15 @@ public class UserSeviceImpl implements UserService {
 	@Override
 	public void deleteUser(User loggedUser, String username) {
 		String role = loggedUser.getRole().getRole();
+		
+		User user = userMapper.findUser(username)
+	                .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
 
-		if (Role.isAdmin(role)) {
-			User user = userMapper.findUser(username)
-            .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-			
+		if (Role.isAdmin(role)) {			
 			userRoleService.deleteRole(user.getId());	//first need to remove raw from user_role table
 			userMapper.deleteUser(username);
 		} else {
 			checkRequieredData(loggedUser.getUsername(), username);
-			User user = userMapper.findUser(username)
-		                .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
-					
 			userRoleService.deleteRole(user.getId());	//first need to remove raw from user_role table
 			userMapper.deleteUser(username);			
 		}
