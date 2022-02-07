@@ -14,9 +14,4 @@ public interface LoginService {
 	HashMap<String, User> getLoggedUsers();	
 	
 	User getUser(String sessionId);
-	
-	String getUsername(String sessionId);
-	
-	Role getRole(String sessionId);	
-
 }

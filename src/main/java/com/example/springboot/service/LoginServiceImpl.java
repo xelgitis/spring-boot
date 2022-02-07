@@ -60,17 +60,6 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public String getUsername(String sessionId) {		
-		return loggedUsers.get(sessionId).getUsername();
-	}
-
-	@Override
-	public Role getRole(String sessionId) {
-		Role role = loggedUsers.get(sessionId).getRole();
-        return role;
-	}
-
-	@Override
 	public User getUser(String sessionId) {		
 		return loggedUsers.get(sessionId);
 	}

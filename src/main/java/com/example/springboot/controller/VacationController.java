@@ -54,7 +54,7 @@ public class VacationController {
 		User loggedUser = loginService.getUser(sessionID);
 		vacationResponse = vacationService.createVacation(loggedUser, request, user);
 	
-        log.info("Odgovor servisa za kreiranje odmora - response: {}", vacationResponse);
+        log.debug("Odgovor servisa za kreiranje odmora - response: {}", vacationResponse);
         return vacationResponse;
 	}	
 	
