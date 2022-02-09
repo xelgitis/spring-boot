@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 public interface UserService {
 
     User getUser(User loggedUser, String username);
+    
+    User findUser(String username, String password);
    
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateUser(User loggedUser, String user, UserRequest request);

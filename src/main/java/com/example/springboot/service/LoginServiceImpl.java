@@ -21,33 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginServiceImpl implements LoginService {
 	
-	HashMap<String, User> loggedUsers;
-	
-	@Autowired
-	private UserMapper userMapper;
+	HashMap<String, User> loggedUsers;	
 	
 	@Autowired 
-	private PasswordGeneratorService passwordGeneratorService;
-	
-	@Autowired 
-	private UserRoleService userRoleService;	
+	private UserService userService;	
 	
 	public LoginResponse login(LoginRequest request) {
 		log.info("Provera username/pass za korisnika: {}", request.getUsername());
 		
-		User user = userMapper.findUser(request.getUsername())
-				    .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
+		User user = userService.findUser(request.getUsername(), request.getPassword());
 		
-		user.setPassword(request.getPassword());		
-
-		passwordGeneratorService.checkPassword(user);
-		
-		Role role = userRoleService.getUserRole(user);
-		
-		user.setRole(role);
-		log.debug("Dohvacen user: {}", user.toString());
-
-		String sessionId = UUID.randomUUID().toString();
+    	String sessionId = UUID.randomUUID().toString();
 		if(loggedUsers == null) loggedUsers = new HashMap<>();
 		loggedUsers.put(sessionId, user);
 		

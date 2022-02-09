@@ -17,11 +17,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserSeviceImpl implements UserService {
 	
-	@Autowired 
-	private UserRoleService userRoleService;
-	
     @Autowired
     private UserMapper userMapper;
+    
+	@Autowired 
+	private PasswordGeneratorService passwordGeneratorService;	
+	
+	@Autowired 
+	private UserRoleService userRoleService;	
 
 	@Override
 	public User getUser(User loggedUser, String username) {
@@ -76,6 +79,24 @@ public class UserSeviceImpl implements UserService {
 			log.info("Nije dozvoljeno regular korisniku da gleda-azurira-brise podatke za drugog korisnika");
 			throw new VacationAppException(Status.GENERIC_ERROR);
 		}		
+	}
+
+	@Override
+	public User findUser(String username, String password) {
+		
+		User user = userMapper.findUser(username)
+					.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
+		
+		user.setPassword(password);
+		
+		passwordGeneratorService.checkPassword(user);
+		
+		Role role = userRoleService.getUserRole(user);
+		
+		user.setRole(role);
+		log.debug("Dohvacen user: {}", user.toString());		
+		
+		return user;
 	}	
 
 }
