@@ -1,9 +1,9 @@
 package com.example.springboot.service;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
-
-import com.example.springboot.domain.Role;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,6 @@ import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.User;
 import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
-import com.example.springboot.mapper.UserMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginServiceImpl implements LoginService {
 	
-	HashMap<String, User> loggedUsers;	
+	private final Map<String, User> loggedUsers = new ConcurrentHashMap<>();	
 	
 	@Autowired 
 	private UserService userService;	
@@ -32,19 +31,20 @@ public class LoginServiceImpl implements LoginService {
 		User user = userService.findUser(request.getUsername(), request.getPassword());
 		
     	String sessionId = UUID.randomUUID().toString();
-		if(loggedUsers == null) loggedUsers = new HashMap<>();
 		loggedUsers.put(sessionId, user);
 		
 		return new LoginResponse(user.getUsername(), sessionId, Status.SUCCESS, "Login za korisnika uspesan");
 	}	
 	
 	@Override
-	public HashMap<String, User> getLoggedUsers() {
-		return loggedUsers;
+	public Map<String, User> getLoggedUsers() {
+		return Collections.unmodifiableMap(loggedUsers);
 	}
 
 	@Override
-	public User getUser(String sessionId) {		
+	public User getUser(String sessionId) {	
+		
+		if (loggedUsers.get(sessionId) == null) throw new VacationAppException(Status.USER_NOT_LOGGED_IN);		
 		return loggedUsers.get(sessionId);
 	}
 

@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VacationRequest {
 	
-	@NotNull(message = "start date must be provided")
+	@NotNull(message = "mora se uneti pocetak odmora")
 	private Date startDate;
-	@NotNull(message = "duration must be provided")
-	private int duration;
+	@NotNull(message = "mora se uneti trajanje odmora")
+	private Integer duration;
 
 }

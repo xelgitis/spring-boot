@@ -1,22 +1,19 @@
 package com.example.springboot.service;
 
 
-import org.springframework.web.bind.annotation.ResponseStatus;
-
+import com.example.springboot.domain.RegistrationResponse;
 import com.example.springboot.domain.User;
-import com.example.springboot.domain.UserRequest;
-import org.springframework.http.HttpStatus;
 
 public interface UserService {
+	
+	RegistrationResponse registerUser(User user);
 
-    User getUser(User loggedUser, String username);
+    User getUser(String username);
     
-    User findUser(String username, String password);
-   
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateUser(User loggedUser, String user, UserRequest request);
+    User findUser(String username, String password);   
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteUser(User loggedUser, String username);
+    void updateUser(User userForUpdate);
+
+    void deleteUser(String username);
 }
 

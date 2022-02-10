@@ -1,7 +1,6 @@
 package com.example.springboot.mapper;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,9 +11,9 @@ public interface VacationMapper {
 	
 	void create(Vacation vacation);
 	
-	Optional<Vacation> findVacation(String username);
+	List<Vacation> findVacation(String username);
 	
-	void updateVacation(Date startDate, int duration, String username);
+	void updateVacation(Vacation vacation);
 	
 	void deleteVacation(String username);
 

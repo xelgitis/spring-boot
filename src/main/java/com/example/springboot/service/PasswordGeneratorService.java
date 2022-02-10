@@ -8,8 +8,6 @@ public interface PasswordGeneratorService {
 
 	String createPasswordSalt();
 
-	String generateTemporaryPassword();
-
 	void checkPassword(User user);	
 
 }

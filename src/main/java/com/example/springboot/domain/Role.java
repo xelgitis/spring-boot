@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class Role {
 	
 	private Long id;
-	private String role;	
+	private String name;	
 	
 	public static boolean isAdmin(String role) {
 		

@@ -50,6 +50,7 @@
             <if test="duration != null"> duration=#{duration}</if>
         </set>
         WHERE UPPER(username) = UPPER(#{username})
+        AND   id = #{id}
     </update> 
     
     <delete id="deleteVacation">

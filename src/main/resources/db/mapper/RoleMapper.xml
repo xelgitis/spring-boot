@@ -4,13 +4,13 @@
 <mapper namespace="com.example.springboot.mapper.RoleMapper">
     <resultMap id="RoleMap" type="Role">
         <result property="id" column="id"/>
-        <result property="role" column="role"/>        
+        <result property="name" column="role"/>        
     </resultMap>    
     
     <select id="getRole" resultMap="RoleMap">
         SELECT id, role
         FROM role
-        WHERE UPPER(role) = UPPER(#{role})
+        WHERE UPPER(role) = UPPER(#{name})
     </select>   
     
     <select id="getRolebyId" resultMap="RoleMap">

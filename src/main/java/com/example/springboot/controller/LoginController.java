@@ -26,6 +26,8 @@ public class LoginController {
 	public LoginResponse loginCheck(@Valid @RequestBody LoginRequest request) {
 		
 		log.info("Zahtev za proveru podataka za logovanje korisnika, username :{} ", request.getUsername());
+		
+		request.setUsername(request.getUsername().toLowerCase());
 
 		LoginResponse response = loginService.login(request);
 		
