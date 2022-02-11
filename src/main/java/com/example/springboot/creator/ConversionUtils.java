@@ -66,5 +66,15 @@ public class ConversionUtils {
 		
 		return vacation;
 	}
+	
+	public Vacation approveVacationRequest(VacationRequest request, String username) {
+		
+		Vacation vacation = Vacation.builder()
+					       .approval('Y')
+					       .username(username)
+					       .build();	
+		
+		return vacation;
+	}	
 
 }

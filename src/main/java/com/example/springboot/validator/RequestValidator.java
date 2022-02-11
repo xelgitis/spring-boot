@@ -63,7 +63,12 @@ public class RequestValidator {
 		
 		if (vacation.getStartDate().before(current)) throw new VacationAppException(Status.VACATION_DATE_IN_THE_PAST);
 		if (vacation.getDuration() <= 0) throw new VacationAppException(Status.INVALID_LENGTH);
-
+	}
+	
+	public boolean isAdmin(User loggedUser) {
+		
+		String role = loggedUser.getRole().getName();		
+		return (Role.isAdmin(role));
 	}
 	
 }

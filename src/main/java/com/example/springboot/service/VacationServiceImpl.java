@@ -11,7 +11,6 @@ import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationResponse;
 import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
-import com.example.springboot.mapper.UserMapper;
 import com.example.springboot.mapper.VacationMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class VacationServiceImpl implements VacationService {
 	
-    @Autowired
-    private UserMapper userMapper;	
+	@Autowired
+	private UserService userService;	
 	
     @Autowired
     private VacationMapper vacationMapper; 
@@ -31,8 +30,7 @@ public class VacationServiceImpl implements VacationService {
 	public VacationResponse createVacation(Vacation vacation) {
 		log.debug("Zahtev za kreiranje odmora: {} usera = {} ", vacation.getUsername());
 		
-		userMapper.findUser(vacation.getUsername())
-		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
+		userService.getUser(vacation.getUsername());
 				
 		vacationMapper.create(vacation);
 		return new VacationResponse(Status.SUCCESS, "Uspesno kreiran odmor za usera " + vacation.getUsername());		
@@ -43,8 +41,7 @@ public class VacationServiceImpl implements VacationService {
 	@Transactional
 	public List <Vacation> getVacation(String username) {		
 		
-		userMapper.findUser(username)
-		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
+		userService.getUser(username);
 		
 		if (CollectionUtils.isEmpty(vacationMapper.findVacation(username))) throw new VacationAppException(Status.VACATION_NOT_PRESENT);	
 			
@@ -55,8 +52,7 @@ public class VacationServiceImpl implements VacationService {
 	@Transactional
 	public void updateVacation(Vacation vacation) {
 		
-		userMapper.findUser(vacation.getUsername())
-		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));	
+		userService.getUser(vacation.getUsername());	
 		
 		if (CollectionUtils.isEmpty(vacationMapper.findVacation(vacation.getUsername()))) throw new VacationAppException(Status.VACATION_NOT_PRESENT);
 			
@@ -67,10 +63,9 @@ public class VacationServiceImpl implements VacationService {
 	@Transactional
 	public void deleteVacation(String username) {
 		
-		userMapper.findUser(username)
-		.orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));	
+		userService.getUser(username);	
 		
-		if (CollectionUtils.isEmpty(vacationMapper.findVacation(username))) throw new VacationAppException(Status.VACATION_NOT_PRESENT);
+		//if (CollectionUtils.isEmpty(vacationMapper.findVacation(username))) throw new VacationAppException(Status.VACATION_NOT_PRESENT);
 
 		vacationMapper.deleteVacation(username);		
 	}

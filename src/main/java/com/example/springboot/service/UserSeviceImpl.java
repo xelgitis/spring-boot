@@ -74,11 +74,8 @@ public class UserSeviceImpl implements UserService {
 		
 		User user = userMapper.findUser(username)
 	                .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));		
-		
-		//TODO: think about this how to solve
-		//Vacation vacation = vacationService.getVacation(username);
-		
-		//if (vacation != null) vacationService.deleteVacation(username); //need to remove vacation if exist
+
+		vacationService.deleteVacation(username);		
 		userRoleService.deleteRole(user.getId()); //first need to remove raw from user_role table
 		userMapper.deleteUser(username);
 	}		

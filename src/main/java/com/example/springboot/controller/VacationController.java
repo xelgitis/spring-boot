@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,8 @@ import com.example.springboot.domain.User;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
+import com.example.springboot.exeption.Status;
+import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.VacationService;
 import com.example.springboot.validator.RequestValidator;
@@ -57,7 +60,7 @@ public class VacationController {
 	}
 	
 	@PostMapping(path="/{sessionID}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public VacationResponse create(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
+	public VacationResponse createVacation(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
 
 		User loggedUser = loginService.getUser(sessionID);
 		Vacation vacation = converter.convertVacationRequest(request, user);
@@ -72,7 +75,7 @@ public class VacationController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping(path="/{sessionID}/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
 	public void updateVacation(@PathVariable String sessionID, @PathVariable Long id, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
-		
+
 		User loggedUser = loginService.getUser(sessionID);
 		Vacation vacation = converter.convertVacationRequest(request, user);
 		vacation.setId(id);
@@ -87,6 +90,17 @@ public class VacationController {
 		User loggedUser = loginService.getUser(sessionID);
 		validator.validatePrivilages(loggedUser, user);
 		vacationService.deleteVacation(user);	
+	}	
+	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PatchMapping(path="/{sessionID}/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
+	public void approveVacation(@PathVariable String sessionID, @PathVariable Long id, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
+
+		User loggedUser = loginService.getUser(sessionID);
+		if (!validator.isAdmin(loggedUser)) throw new VacationAppException(Status.USER_DOES_NOT_HAVE_PRIVLEGES);
+		Vacation vacation = converter.approveVacationRequest(request, user);
+		vacation.setId(id);		
+		vacationService.updateVacation(vacation);		
 	}	
 
 }

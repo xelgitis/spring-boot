@@ -47,7 +47,8 @@
         UPDATE vacation
         <set>
             <if test="startDate != null"> start_date=#{startDate},</if>
-            <if test="duration != null"> duration=#{duration}</if>
+            <if test="duration != null"> duration=#{duration}</if>,
+            <if test="approval != null"> approval=#{approval}</if>
         </set>
         WHERE UPPER(username) = UPPER(#{username})
         AND   id = #{id}
