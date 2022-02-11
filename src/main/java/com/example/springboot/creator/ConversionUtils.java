@@ -60,7 +60,7 @@ public class ConversionUtils {
 		Vacation vacation = Vacation.builder()
 					       .startDate(request.getStartDate())
 					       .duration(request.getDuration())
-					       .approval('N')
+					       .approval(request.getApproval())
 					       .username(username)
 					       .build();	
 		
@@ -70,7 +70,7 @@ public class ConversionUtils {
 	public Vacation approveVacationRequest(VacationRequest request, String username) {
 		
 		Vacation vacation = Vacation.builder()
-					       .approval('Y')
+					       .approval(request.getApproval())
 					       .username(username)
 					       .build();	
 		

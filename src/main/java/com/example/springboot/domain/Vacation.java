@@ -14,7 +14,7 @@ public class Vacation {
 	
 	private Long id;
 	private Date startDate;
-	private int  duration;
-	private char approval;
+	private Integer  duration;
+	private String approval;
 	private String username;
 }

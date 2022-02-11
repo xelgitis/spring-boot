@@ -19,5 +19,6 @@ public class VacationRequest {
 	private Date startDate;
 	@NotNull(message = "mora se uneti trajanje odmora")
 	private Integer duration;
+	private String approval;
 
 }

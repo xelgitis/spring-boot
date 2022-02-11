@@ -97,7 +97,7 @@ public class VacationController {
 	public void approveVacation(@PathVariable String sessionID, @PathVariable Long id, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
 
 		User loggedUser = loginService.getUser(sessionID);
-		if (!validator.isAdmin(loggedUser)) throw new VacationAppException(Status.USER_DOES_NOT_HAVE_PRIVLEGES);
+		if (!validator.isAdmin(loggedUser)) throw new VacationAppException(Status.USER_NOT_ADMIN);
 		Vacation vacation = converter.approveVacationRequest(request, user);
 		vacation.setId(id);		
 		vacationService.updateVacation(vacation);		
