@@ -12,6 +12,10 @@ public interface VacationService {
 	List <Vacation> getVacation(String username); 
 
 	void updateVacation(Vacation vacation);
+	
+	void approveVacation(Vacation vacation);
 
 	void deleteVacation(String username);
+	
+	void deleteVacationById(String username, Long id);
 }

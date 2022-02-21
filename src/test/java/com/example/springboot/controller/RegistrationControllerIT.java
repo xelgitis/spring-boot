@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
@@ -32,16 +35,13 @@ class RegistrationControllerIT {
 				                      .role("user")
 				                      .build();
 		
-		RegistrationResponse regularResponse = restTamplete.postForObject("/register", request, RegistrationResponse.class);
-		
-		assertNotNull(regularResponse.getUsername());	
+		ResponseEntity<RegistrationResponse> response = restTamplete.postForEntity("/register", new HttpEntity<>(request), RegistrationResponse.class);
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());	
 	}
 	
 	@Test
 	@Transactional	
 	void testRegisterInvalidUsername() {
-		String message = "username nije unet";
-		
 		RegistrationRequest request = RegistrationRequest.builder()
 				                      .username(null)
 				                      .password("olga.jesic")
@@ -51,17 +51,13 @@ class RegistrationControllerIT {
 				                      .role("user")
 				                      .build();
 		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/register", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getError());
-		assertTrue(errorResponse.getError().equalsIgnoreCase(message));			
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
+		assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());				
 	}	
 	
 	@Test
 	@Transactional	
 	void testRegisterInvalidPassword() {
-		String message = "password nije unet";
-		
 		RegistrationRequest request = RegistrationRequest.builder()
 				                      .username("olga.jesic")
 				                      .password(null)
@@ -71,17 +67,13 @@ class RegistrationControllerIT {
 				                      .role("user")
 				                      .build();
 		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/register", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getError());
-		assertTrue(errorResponse.getError().equalsIgnoreCase(message));
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
+		assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());
 	}	
 	
 	@Test
 	@Transactional	
 	void testRegisterExistingUsername() {
-		String message = "korinsicko ime vec postoji u bazi";
-		
 		RegistrationRequest request = RegistrationRequest.builder()
 				                      .username("olga.jesic")
 				                      .password("olga.jesic")
@@ -91,16 +83,13 @@ class RegistrationControllerIT {
 				                      .role("user")
 				                      .build();
 		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/register", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getStatus());
-		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
+		assertEquals(HttpStatus.CONFLICT, errorResponse.getStatusCode());
 	}	
 	
 	@Test
 	@Transactional	
 	void testRegisterExistingEmail() {
-		String message = "korisnik sa ovim email-om vec postoji u bazi";
 		RegistrationRequest request = RegistrationRequest.builder()
 				                      .username("milos.milosevic")
 				                      .password("milos.milosevic")
@@ -109,11 +98,8 @@ class RegistrationControllerIT {
 				                      .email("olga.jesic@mozzartbet.com")
 				                      .role("user")
 				                      .build();
-		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/register", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getStatus());	
-		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
+		assertEquals(HttpStatus.CONFLICT, errorResponse.getStatusCode());
 	}	
 
 }

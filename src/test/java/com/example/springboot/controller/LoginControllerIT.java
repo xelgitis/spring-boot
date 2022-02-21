@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springboot.domain.ErrorResponseDto;
@@ -28,70 +31,56 @@ class LoginControllerIT {
 				               .password("olga.jesic")
 				               .build();
 
-		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
-		
-		assertNotNull(logedUser.getUsername());
+		ResponseEntity<LoginResponse> response = restTamplete.postForEntity("/login", new HttpEntity<>(request), LoginResponse.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
 	@Test
 	@Transactional
 	void testLoginWrongUsername() {
-		String message = "korisnik sa ovim username-om ne postoji u bazi";
 		LoginRequest request = LoginRequest.builder()
 				               .username("oolga.jesic")
 				               .password("olga.jesic")
 				               .build();
 		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getMessage());
-		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/login", new HttpEntity<>(request), ErrorResponseDto.class);
+		assertEquals(HttpStatus.NOT_FOUND, errorResponse.getStatusCode());		
 	}
 	
+	//TODO: ne radi!
 	@Test
 	@Transactional
 	void testLoginWrongPassword() {		
-		String message = "korisnik je uneo pogresnu sifru";
 		LoginRequest request = LoginRequest.builder()
 				               .username("olga.jesic")
 				               .password("oolga.jesic")
 				               .build();
 		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getMessage());
-		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/login", new HttpEntity<>(request), ErrorResponseDto.class);
+		assertEquals(HttpStatus.UNAUTHORIZED, errorResponse.getStatusCode());
 	}	
 	
 	@Test
 	@Transactional
 	void testLoginNoUsername() {
-		String message = "Username se mora uneti";
 		LoginRequest request = LoginRequest.builder()
 				               .username(null)
 				               .password("olga.jesic")
 				               .build();
-		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getMessage());
-		assertTrue(errorResponse.getError().equalsIgnoreCase(message));
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/login", new HttpEntity<>(request), ErrorResponseDto.class);
+		assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());
 	}	
 	
 	@Test
 	@Transactional
 	void testLoginNoPassword() {
-		String message = "Password se mora uneti";
 		LoginRequest request = LoginRequest.builder()
 				               .username("olga.jesic")
 				               .password(null)
 				               .build();
 		
-		ErrorResponseDto errorResponse = restTamplete.postForObject("/login", request, ErrorResponseDto.class);
-		
-		assertNotNull(errorResponse.getMessage());
-		assertTrue(errorResponse.getError().equalsIgnoreCase(message));
-		
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/login", new HttpEntity<>(request), ErrorResponseDto.class);		
+		assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());		
 	}	
 
 }

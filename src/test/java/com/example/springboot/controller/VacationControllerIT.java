@@ -3,29 +3,29 @@ package com.example.springboot.controller;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Calendar;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.springboot.domain.ErrorResponseDto;
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
 
-import lombok.extern.slf4j.Slf4j;
-
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@Slf4j
 class VacationControllerIT {
 	
 	private String sessionID;
 	private String uri;
+	private String uriUpdate;
+	private Long   id = 88l;
 	private String username   = "oolga.jesic"; //change the username to test CRUD of vacations for different users
 	
 	@Autowired
@@ -43,6 +43,7 @@ class VacationControllerIT {
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
 		uri = "/vacation/"+ sessionID + "?user=" + username;
+		System.out.println("URI: " + uri.toString());
 	}	
 
 	@Test
@@ -52,34 +53,49 @@ class VacationControllerIT {
 		c1.set(Calendar.DATE,  30);		
 		VacationRequest request = VacationRequest.builder()
 				                  .startDate(c1.getTime())
-				                  .duration(19)
+				                  .duration(21)
+				                  .approval("N")
 				                  .build();
 	
 		VacationResponse newVacation = restTamplete.postForObject(uri, request, VacationResponse.class);
 		assertNotNull(newVacation);
-	}		
+	}	
+
 	
 	@Test
 	void testGetVacation() {
-		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		log.info("Informacije o trazenom odmoru: {} ", vacation.toString());
-		assertNotNull(vacation);	
+		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
+		Vacation[] vacations = response.getBody();
+		assertNotNull(vacations);	
 	}
 
 	@Test
 	void testUpdateVacation() {
-		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		vacation.setDuration(15);		
-		restTamplete.put(uri, vacation);
-		vacation = restTamplete.getForObject(uri, Vacation.class);
-		assertTrue(vacation.getDuration() == 15);	
+		VacationRequest vacationRequest = VacationRequest.builder()
+                                         .duration(22)
+                                         .build();
+		uriUpdate = "/vacation/"+ sessionID + "/" + id + "/" + "?user=" + username;
+		//uriUpdate = "/vacation/"+ sessionID + "/" + id + "?user=" + username;
+		System.out.println("URI for update: " + uriUpdate.toString());
+		restTamplete.put(uriUpdate, vacationRequest);
+		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
+		Vacation[] vacations = response.getBody();
+		Vacation vacation = null;
+		for (int i = 0; i < vacations.length; i++) {
+			if (vacations[i].getId() == id) {
+				vacation = vacations[i];
+				break;
+			}
+		}
+		assertTrue(vacation.getDuration() == 22);	
 	}
 
 	@Test
 	void testDeleteVacation() {
 		restTamplete.delete(uri);
-		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		assertNull(vacation.getId());
+		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
+		Vacation[] vacations = response.getBody();
+		assertNull(vacations);
 	}
 	
 	//invalid test scenarios - change the username to the one which does not exist in the DB	
@@ -102,26 +118,29 @@ class VacationControllerIT {
 	@Test
 	@Transactional
 	void testGetVacationInvalidUser() {
-		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		assertNull(vacation.getId());
+		String message = "korisnik sa ovim username-om ne postoji u bazi";
+		ErrorResponseDto errorResponse = restTamplete.getForObject(uri, ErrorResponseDto.class);
+		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
 	}
 	
 	@Test
 	@Transactional
 	void testUpdateVacationInvalidUser() {
+		String message = "korisnik sa ovim username-om ne postoji u bazi";
 		VacationRequest request = VacationRequest.builder()
                                  .duration(33)
-                                 .build();	
-		restTamplete.put(uri, request);
-		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		assertNull(vacation.getId());
+                                 .build();
+		uriUpdate = "/vacation/"+ sessionID + "/" + id + "/" + "?user=" + username;
+		System.out.println("URI for update: " + uriUpdate.toString());
+		restTamplete.put(uriUpdate, request);
+		uri = "/vacation/"+ sessionID + "?user=" + username;		
+		ErrorResponseDto errorResponse = restTamplete.getForObject(uri, ErrorResponseDto.class);
+		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
 	}
 	
 	@Test
 	@Transactional
 	void testDeleteVacationInvalidUser() {
 		restTamplete.delete(uri);
-		Vacation vacation = restTamplete.getForObject(uri, Vacation.class);
-		assertNull(vacation.getId());
 	}	
 }

@@ -9,16 +9,14 @@ import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.domain.RegistrationResponse;
 import com.example.springboot.domain.Role;
 import com.example.springboot.domain.User;
-import com.example.springboot.mapper.RoleMapper;
 import com.example.springboot.mapper.UserMapper;
-import com.example.springboot.mapper.UserRoleMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
 
 @Service
 @Slf4j
-public class UserSeviceImpl implements UserService {
+public class UserServiceImpl implements UserService {
     
 	@Autowired 
 	private PasswordGeneratorService passwordGeneratorService;	
@@ -30,23 +28,20 @@ public class UserSeviceImpl implements UserService {
 	private VacationService vacationService;
 	
     @Autowired
-    private RoleMapper roleMapper;	    
-    
-    @Autowired
-    private UserRoleMapper userRoleMapper;    
-	
-    @Autowired
     private UserMapper userMapper;    
 
 	@Override
 	@Transactional
 	public RegistrationResponse registerUser(User user) {
 
-		userMapper.create(user);
-		Long roleId = roleMapper.getRole(user.getRole().getName()).getId();
-        log.debug("roleId = {} ", roleId);	
-        
-        userRoleMapper.createRole(user.getId(), roleId);		
+		try {
+			userMapper.create(user);
+		} catch (Exception e) {
+			if (e.getCause().getMessage().contains("USERNAME_UQ")) throw new VacationAppException(Status.USERNAME_TAKEN);
+			if (e.getCause().getMessage().contains("EMAIL_UQ"))    throw new VacationAppException(Status.EMAIL_TAKEN);
+    	}
+
+		userRoleService.createRole(user);
 		
 		return new RegistrationResponse(user.getUsername(), Status.SUCCESS, "Registracija uspesna");
 	}	
@@ -61,11 +56,9 @@ public class UserSeviceImpl implements UserService {
 
 	@Override
 	public void updateUser(User userForUpdate) {		
-	
-		userMapper.findUser(userForUpdate.getUsername())
-	    .orElseThrow(() -> new VacationAppException(Status.USER_NOT_FOUND));
 		
-		userMapper.updateUser(userForUpdate.getUsername(), userForUpdate.getAddress(), userForUpdate.getName(), userForUpdate.getEmail());
+		int result = userMapper.updateUser(userForUpdate.getUsername(), userForUpdate.getAddress(), userForUpdate.getName(), userForUpdate.getEmail());
+	    if (result == 0) throw new VacationAppException(Status.USER_NOT_FOUND);
 	}	
 
 	@Override

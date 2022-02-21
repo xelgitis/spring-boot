@@ -12,5 +12,5 @@ public interface LoginService {
 	
 	Map<String, User> getLoggedUsers();	
 	
-	User getUser(String sessionId);
+	User getLoggedUser(String sessionId);
 }

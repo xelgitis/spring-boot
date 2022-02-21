@@ -17,10 +17,10 @@ public interface UserMapper {
 	Optional <User> findUser(String username);	
 	
 	//update user 
-	void updateUser(String username, String address, String name, String email);
+	int updateUser(String username, String address, String name, String email);
 	
 	//delete user by username
-	void deleteUser(String username);	
+	int deleteUser(String username);	
 	
 	//check in the db exist user with this email
 	Optional <User> findUserByEmail(String username);

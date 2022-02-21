@@ -9,7 +9,10 @@ import com.example.springboot.domain.User;
 import com.example.springboot.mapper.RoleMapper;
 import com.example.springboot.mapper.UserRoleMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserRoleServiceImpl implements UserRoleService {
 	
     @Autowired
@@ -28,6 +31,15 @@ public class UserRoleServiceImpl implements UserRoleService {
 	public Role getUserRole(User user) {				
 		Long id = userRoleMapper.getUserRole(user.getId()).getRoleId();
 		return roleMapper.getRolebyId(id);
+	}
+
+	@Override
+	public void createRole(User user) {
+		
+		Long roleId = roleMapper.getRole(user.getRole().getName()).getId();
+        log.debug("roleId = {} ", roleId);	
+        
+        userRoleMapper.createRole(user.getId(), roleId);		
 	} 
 
 }

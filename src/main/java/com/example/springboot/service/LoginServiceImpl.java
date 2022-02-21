@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public User getUser(String sessionId) {	
+	public User getLoggedUser(String sessionId) {	
 		
 		if (loggedUsers.get(sessionId) == null) throw new VacationAppException(Status.USER_NOT_LOGGED_IN);		
 		return loggedUsers.get(sessionId);

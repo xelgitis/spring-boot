@@ -23,7 +23,7 @@ import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.VacationService;
-import com.example.springboot.validator.RequestValidator;
+import com.example.springboot.validator.Validator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,24 +48,23 @@ public class VacationController {
 	private ConversionUtils converter; 
 	
 	@Autowired
-	private RequestValidator validator;	
+	private Validator validator;	
     
     
 	@GetMapping(path="/{sessionID}",produces = APPLICATION_JSON_VALUE)
 	public List <Vacation> getVacation(@PathVariable String sessionID, @RequestParam(value="user") String user) {
-		
-		User loggedUser = loginService.getUser(sessionID);
+		User loggedUser = loginService.getLoggedUser(sessionID);
 		validator.validatePrivilages(loggedUser, user);
 		return vacationService.getVacation(user);	
 	}
 	
+	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(path="/{sessionID}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public VacationResponse createVacation(@PathVariable String sessionID, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
 
-		User loggedUser = loginService.getUser(sessionID);
+		User loggedUser = loginService.getLoggedUser(sessionID);
 		Vacation vacation = converter.convertVacationRequest(request, user);
 		validator.validatePrivilages(loggedUser, user);
-		validator.validateVacationData(vacation);
 		VacationResponse vacationResponse = vacationService.createVacation(vacation);
 	
         log.debug("Odgovor servisa za kreiranje odmora - response: {}", vacationResponse);
@@ -73,11 +72,12 @@ public class VacationController {
 	}	
 		
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@PutMapping(path="/{sessionID}/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
+	@PutMapping(path="/{sessionID}/{id}", consumes = APPLICATION_JSON_VALUE)	
 	public void updateVacation(@PathVariable String sessionID, @PathVariable Long id, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
-
-		User loggedUser = loginService.getUser(sessionID);
+		User loggedUser = loginService.getLoggedUser(sessionID);
+		log.debug("loggedUser {}", loggedUser);
 		Vacation vacation = converter.convertVacationRequest(request, user);
+		log.debug("vacation {}", vacation);
 		vacation.setId(id);
 		validator.validatePrivilages(loggedUser, user);
 		vacationService.updateVacation(vacation);		
@@ -86,21 +86,27 @@ public class VacationController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping(path="/{sessionID}")
 	public void deleteVacation(@PathVariable String sessionID, @RequestParam(value="user") String user) {
-		
-		User loggedUser = loginService.getUser(sessionID);
+		User loggedUser = loginService.getLoggedUser(sessionID);
 		validator.validatePrivilages(loggedUser, user);
 		vacationService.deleteVacation(user);	
 	}	
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping(path="/{sessionID}/{id}")
+	public void deleteVacationById(@PathVariable String sessionID, @PathVariable Long id, @RequestParam(value="user") String user) {
+		User loggedUser = loginService.getLoggedUser(sessionID);
+		validator.validatePrivilages(loggedUser, user);
+		vacationService.deleteVacationById(user, id);	
+	}		
+	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PatchMapping(path="/{sessionID}/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)	
 	public void approveVacation(@PathVariable String sessionID, @PathVariable Long id, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
-
-		User loggedUser = loginService.getUser(sessionID);
+		User loggedUser = loginService.getLoggedUser(sessionID);
 		if (!validator.isAdmin(loggedUser)) throw new VacationAppException(Status.USER_NOT_ADMIN);
-		Vacation vacation = converter.approveVacationRequest(request, user);
+		Vacation vacation = converter.convertVacationRequest(request, user);
 		vacation.setId(id);		
-		vacationService.updateVacation(vacation);		
+		vacationService.approveVacation(vacation);		
 	}	
 
 }

@@ -19,7 +19,10 @@ public class ConversionUtils {
 	@Autowired
 	private PasswordGeneratorService passwordGenerator;	
 	
-	public User convertRegistrationRequest(RegistrationRequest request) {
+	public User convertRegistrationRequest(RegistrationRequest request) {		
+		
+		request.setUsername(request.getUsername().trim());
+        request.setPassword(request.getPassword().trim());
 		
 		String passwordSalt   = passwordGenerator.createPasswordSalt();
 		String hashedPassword = passwordGenerator.provideHashedPassword(request.getPassword(), passwordSalt);		
@@ -66,15 +69,4 @@ public class ConversionUtils {
 		
 		return vacation;
 	}
-	
-	public Vacation approveVacationRequest(VacationRequest request, String username) {
-		
-		Vacation vacation = Vacation.builder()
-					       .approval(request.getApproval())
-					       .username(username)
-					       .build();	
-		
-		return vacation;
-	}	
-
 }

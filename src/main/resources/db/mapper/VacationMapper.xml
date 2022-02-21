@@ -58,5 +58,12 @@
         DELETE
         FROM vacation
 		WHERE UPPER(username) = UPPER(#{username})
-    </delete>                            
+    </delete>    
+    
+    <delete id="deleteVacationById">
+        DELETE
+        FROM vacation
+		WHERE UPPER(username) = UPPER(#{username})
+		AND   id = #{id}
+    </delete>                              
 </mapper>

@@ -32,8 +32,8 @@ class UserControllerIT {
 	@BeforeEach
 	public void initialLogin(){
 		LoginRequest request = LoginRequest.builder()
-				               .username("bogdan.blazic")
-				               .password("bogdan.blazic")
+				               .username("olga.jesic")
+				               .password("olga.jesic")
 				               .build();
 	
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);

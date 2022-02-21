@@ -17,7 +17,7 @@ import com.example.springboot.creator.ConversionUtils;
 import com.example.springboot.domain.User;
 import com.example.springboot.service.LoginService;
 import com.example.springboot.service.UserService;
-import com.example.springboot.validator.RequestValidator;
+import com.example.springboot.validator.Validator;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -36,13 +36,13 @@ public class UserController {
 	private ConversionUtils converter; 
 	
 	@Autowired
-	private RequestValidator validator;	
+	private Validator validator;	
     
     //get information about user with specific username
 	@GetMapping(path="/{sessionID}",produces = APPLICATION_JSON_VALUE)
 	public User getUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {
 		
-		User loggedUser = loginService.getUser(sessionID);
+		User loggedUser = loginService.getLoggedUser(sessionID);
 		validator.validatePrivilages(loggedUser, user);
 		return userService.getUser(user);
 	
@@ -53,7 +53,7 @@ public class UserController {
 	public void updateUser(@PathVariable String sessionID, @RequestBody UserRequest request, @RequestParam(value="user") String user) {
 		
     	User userForUpdate = converter.convertUserRequest(request, user);
-		User loggedUser    = loginService.getUser(sessionID);
+		User loggedUser    = loginService.getLoggedUser(sessionID);
 		validator.validatePrivilages(loggedUser, user);
 		userService.updateUser(userForUpdate);
 	}
@@ -62,7 +62,7 @@ public class UserController {
 	@DeleteMapping(path="/{sessionID}", produces = APPLICATION_JSON_VALUE)
 	public void deleteUser(@PathVariable String sessionID, @RequestParam(value="user") String user) {		
 		
-		User loggedUser = loginService.getUser(sessionID);	
+		User loggedUser = loginService.getLoggedUser(sessionID);	
 		validator.validatePrivilages(loggedUser, user);
 		userService.deleteUser(user);
 	}

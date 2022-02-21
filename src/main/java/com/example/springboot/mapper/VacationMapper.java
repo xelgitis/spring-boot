@@ -13,8 +13,10 @@ public interface VacationMapper {
 	
 	List<Vacation> findVacation(String username);
 	
-	void updateVacation(Vacation vacation);
+	int updateVacation(Vacation vacation);
 	
-	void deleteVacation(String username);
+	int deleteVacation(String username);
+	
+	int deleteVacationById(String username, Long id);
 
 }
