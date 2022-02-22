@@ -74,32 +74,60 @@ class RegistrationControllerIT {
 	@Test
 	@Transactional	
 	void testRegisterExistingUsername() {
+		//preduslov: vec postoji isti user u bazi
 		RegistrationRequest request = RegistrationRequest.builder()
-				                      .username("olga.jesic")
-				                      .password("olga.jesic")
-				                      .address("Ivana Blagojevica 14")
-				                      .name("Olga Jesic")
-				                      .email("olga.jesic@mozzartbet.com")
-				                      .role("user")
-				                      .build();
+                					  .username("olga.jesic")
+                					  .password("olga.jesic")
+                                      .address("Ivana Blagojevica 14")
+                                      .name("Olga Jesic")
+                                      .email("olga.jesic@mozzartbet.com")
+                                      .role("user")
+                                      .build();
+
+        ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
+        assertEquals(HttpStatus.CREATED, errorResponse.getStatusCode());
 		
-		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
-		assertEquals(HttpStatus.CONFLICT, errorResponse.getStatusCode());
+				
+		RegistrationRequest newRequest = RegistrationRequest.builder()
+				                         .username("olga.jesic")
+				                         .password("olga.jesic")
+				                         .address("Ivana Blagojevica 14")
+				                         .name("Olga Jesic")
+				                         .email("olga.jesic@mozzartbet.com")
+				                         .role("user")
+				                         .build();
+		
+		ResponseEntity<ErrorResponseDto> errorNewResponse = restTamplete.postForEntity("/register", new HttpEntity<>(newRequest), ErrorResponseDto.class);
+		assertEquals(HttpStatus.CONFLICT, errorNewResponse.getStatusCode());
 	}	
 	
 	@Test
 	@Transactional	
 	void testRegisterExistingEmail() {
+		//preduslov: vec postoji user sa istim email-om u bazi		
 		RegistrationRequest request = RegistrationRequest.builder()
-				                      .username("milos.milosevic")
-				                      .password("milos.milosevic")
-				                      .address("Ivana Blagojevica 14")
-				                      .name("Olga Jesic")
-				                      .email("olga.jesic@mozzartbet.com")
-				                      .role("user")
-				                      .build();
-		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
-		assertEquals(HttpStatus.CONFLICT, errorResponse.getStatusCode());
+                					  .username("olga.jesic")
+                					  .password("olga.jesic")
+                                      .address("Ivana Blagojevica 14")
+                                      .name("Olga Jesic")
+                                      .email("olga.jesic@mozzartbet.com")
+                                      .role("user")
+                                      .build();
+
+        ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
+        assertEquals(HttpStatus.CREATED, errorResponse.getStatusCode());		
+				
+		RegistrationRequest newRequest = RegistrationRequest.builder()
+				                         .username("milos.milosevic")
+				                         .password("milos.milosevic")
+				                         .address("Ivana Blagojevica 14")
+				                         .name("Olga Jesic")
+				                         .email("olga.jesic@mozzartbet.com")
+				                         .role("user")
+				                         .build();
+		
+		ResponseEntity<ErrorResponseDto> errorNewResponse = restTamplete.postForEntity("/register", new HttpEntity<>(newRequest), ErrorResponseDto.class);
+		assertEquals(HttpStatus.CONFLICT, errorNewResponse.getStatusCode());
 	}	
 
 }

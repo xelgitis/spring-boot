@@ -2,6 +2,7 @@ package com.example.springboot.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,12 +16,29 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.springboot.domain.ErrorResponseDto;
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
+import com.example.springboot.domain.RegistrationRequest;
+import com.example.springboot.domain.RegistrationResponse;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class LoginControllerIT {
 	
 	@Autowired
-	TestRestTemplate restTamplete;	
+	TestRestTemplate restTamplete;
+	
+	@BeforeEach
+	public void initialCreate(){
+		RegistrationRequest request = RegistrationRequest.builder()
+				                      .username("olga.jesic")
+				                      .password("olga.jesic")
+				                      .address("Ivana Blagojevica 14")
+				                      .name("Olga Jesic")
+				                      .email("olga.jesic@mozzartbet.com")
+				                      .role("user")
+				                      .build();
+		
+		ResponseEntity<RegistrationResponse> response = restTamplete.postForEntity("/register", new HttpEntity<>(request), RegistrationResponse.class);
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());	
+	}		
 
 	@Test
 	@Transactional

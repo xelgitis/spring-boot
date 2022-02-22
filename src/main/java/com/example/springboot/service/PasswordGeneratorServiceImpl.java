@@ -4,12 +4,14 @@ import java.util.Random;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
-
 import com.example.springboot.domain.User;
 import com.example.springboot.exeption.Status;
 import com.example.springboot.exeption.VacationAppException;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
 	
 	private static final String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -32,6 +34,7 @@ public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
 
 	@Override
 	public void checkPassword(User user) {
+		log.debug("checkPassword for user: {}", user);
 		if (!provideHashedPassword(user.getPassword(), user.getPasswordSalt()).equals(user.getHashedPassword())) {
 			throw new VacationAppException(Status.WRONG_PASSWORD);
 		}		
