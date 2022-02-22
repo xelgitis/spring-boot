@@ -75,6 +75,34 @@ class VacationControllerIT {
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
 		sessionID = logedUser.getSessionId();	
 	}	
+	
+	public void initializeVacations(String username) {
+		uri = "/vacation/"+ sessionID + "?user=" + username;
+		
+		c1.set(Calendar.YEAR,  2022);
+		c1.set(Calendar.MONTH, 7); 
+		c1.set(Calendar.DATE,  30);		
+		VacationRequest request1 = VacationRequest.builder()
+				                  .startDate(c1.getTime())
+				                  .duration(15)
+				                  .approval("N")
+				                  .build();
+	
+		ResponseEntity<VacationResponse> response1 = restTamplete.postForEntity(uri, new HttpEntity<>(request1), VacationResponse.class);
+		assertEquals(HttpStatus.CREATED, response1.getStatusCode());	
+		
+		c1.set(Calendar.YEAR,  2022);
+		c1.set(Calendar.MONTH, 9); 
+		c1.set(Calendar.DATE,  15);		
+		VacationRequest request2 = VacationRequest.builder()
+				                  .startDate(c1.getTime())
+				                  .duration(13)
+				                  .approval("N")
+				                  .build();
+	
+		ResponseEntity<VacationResponse> response2 = restTamplete.postForEntity(uri, new HttpEntity<>(request2), VacationResponse.class);
+		assertEquals(HttpStatus.CREATED, response2.getStatusCode());			
+	}
 
 	//ulogovati se kao admin i kreirati odmor sebi
 	@Test
@@ -139,31 +167,7 @@ class VacationControllerIT {
 	void testGetVacation() {
 		//prvo kreirati sebi 2 odmora
 		username = "bogdan.blazic";
-		uri = "/vacation/"+ sessionID + "?user=" + username;
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); 
-		c1.set(Calendar.DATE,  30);		
-		VacationRequest request1 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(15)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response1 = restTamplete.postForEntity(uri, new HttpEntity<>(request1), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response1.getStatusCode());	
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 9); 
-		c1.set(Calendar.DATE,  15);		
-		VacationRequest request2 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(13)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response2 = restTamplete.postForEntity(uri, new HttpEntity<>(request2), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());		
+		initializeVacations(username);
 		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
 		Vacation[] vacations = response.getBody();
 		assertNotNull(vacations);	
@@ -175,31 +179,7 @@ class VacationControllerIT {
 	void testGetVacationOtherUser() {
 		//prvo kreirati useru 2 odmora
 		username = "olga.jesic";
-		uri = "/vacation/"+ sessionID + "?user=" + username;
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); 
-		c1.set(Calendar.DATE,  30);		
-		VacationRequest request1 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(15)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response1 = restTamplete.postForEntity(uri, new HttpEntity<>(request1), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response1.getStatusCode());	
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 9); 
-		c1.set(Calendar.DATE,  15);		
-		VacationRequest request2 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(13)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response2 = restTamplete.postForEntity(uri, new HttpEntity<>(request2), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());		
+		initializeVacations(username);	
 		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
 		Vacation[] vacations = response.getBody();
 		assertNotNull(vacations);	
@@ -211,31 +191,8 @@ class VacationControllerIT {
 	void testGetVacationInvalidUser() {
 		//prvo kreirati useru 2 odmora
 		username = "olga.jesic";
-		uri = "/vacation/"+ sessionID + "?user=" + username;
+		initializeVacations(username);
 		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); 
-		c1.set(Calendar.DATE,  30);		
-		VacationRequest request1 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(15)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response1 = restTamplete.postForEntity(uri, new HttpEntity<>(request1), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response1.getStatusCode());	
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 9); 
-		c1.set(Calendar.DATE,  15);		
-		VacationRequest request2 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(13)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response2 = restTamplete.postForEntity(uri, new HttpEntity<>(request2), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());
 		//invalid username
 		username = "oolga.jesic";
 		uri = "/vacation/"+ sessionID + "?user=" + username;		
@@ -249,31 +206,7 @@ class VacationControllerIT {
 	void testUpdateVacation() {
 		//prvo kreirati useru 2 odmora
 		username = "bogdan.blazic";
-		uri = "/vacation/"+ sessionID + "?user=" + username;
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); 
-		c1.set(Calendar.DATE,  30);		
-		VacationRequest request1 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(15)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response1 = restTamplete.postForEntity(uri, new HttpEntity<>(request1), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response1.getStatusCode());	
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 9); 
-		c1.set(Calendar.DATE,  15);		
-		VacationRequest request2 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(13)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response2 = restTamplete.postForEntity(uri, new HttpEntity<>(request2), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());
+		initializeVacations(username);
 		
 		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
 		Vacation[] vacations = response.getBody();		
@@ -302,31 +235,7 @@ class VacationControllerIT {
 	void testUpdateVacationOtherUser() {
 		//prvo kreirati useru 2 odmora
 		username = "olga.jesic";
-		uri = "/vacation/"+ sessionID + "?user=" + username;
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); 
-		c1.set(Calendar.DATE,  30);		
-		VacationRequest request1 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(15)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response1 = restTamplete.postForEntity(uri, new HttpEntity<>(request1), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response1.getStatusCode());	
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 9); 
-		c1.set(Calendar.DATE,  15);		
-		VacationRequest request2 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(13)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response2 = restTamplete.postForEntity(uri, new HttpEntity<>(request2), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());
+		initializeVacations(username);
 		
 		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
 		Vacation[] vacations = response.getBody();		
@@ -355,31 +264,7 @@ class VacationControllerIT {
 	void testUpdateVacationInvalidUser() {
 		//prvo kreirati useru 2 odmora
 		username = "olga.jesic";
-		uri = "/vacation/"+ sessionID + "?user=" + username;
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); 
-		c1.set(Calendar.DATE,  30);		
-		VacationRequest request1 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(15)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response1 = restTamplete.postForEntity(uri, new HttpEntity<>(request1), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response1.getStatusCode());	
-		
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 9); 
-		c1.set(Calendar.DATE,  15);		
-		VacationRequest request2 = VacationRequest.builder()
-				                  .startDate(c1.getTime())
-				                  .duration(13)
-				                  .approval("N")
-				                  .build();
-	
-		ResponseEntity<VacationResponse> response2 = restTamplete.postForEntity(uri, new HttpEntity<>(request2), VacationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());
+		initializeVacations(username);
 		
 		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
 		Vacation[] vacations = response.getBody();		
