@@ -3,6 +3,8 @@ package com.example.springboot.controller;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Calendar;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +34,19 @@ class VacationControllerIT {
 	private String uri;
 	private String uriUpdate;
 	private Long id;
-	private String loggedUser = "bogdan.blazic"; //change the loggedUser between admin and regular user
+	//private static String loggedUser, loggedUsr; //change the loggedUser between admin and regular user
 	private String username;  
 	
 	@Autowired
 	TestRestTemplate restTamplete;
+	
+/*	@BeforeAll
+	public static void loggedUserSetUp(){
+		System.out.println("Passed parameter: " + loggedUsr);
+		loggedUser = loggedUsr;	
+		System.out.println("Final parameter: " + loggedUser);
+	} */
+
 	
 	//try all testcases logged as admin and logged as regular user	
 	@BeforeEach
@@ -64,8 +74,10 @@ class VacationControllerIT {
 					                  .build();
 			
 	    ResponseEntity<RegistrationResponse> response2 = restTamplete.postForEntity("/register", new HttpEntity<>(request2), RegistrationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());						
-		
+		assertEquals(HttpStatus.CREATED, response2.getStatusCode());
+	}	
+	
+	public void login(String loggedUser) {		
 		//logovanje
 		LoginRequest request = LoginRequest.builder()
 				               .username(loggedUser)
@@ -73,8 +85,8 @@ class VacationControllerIT {
 				               .build();
 	
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
-		sessionID = logedUser.getSessionId();	
-	}	
+		sessionID = logedUser.getSessionId();		
+	}
 	
 	public void initializeVacations(String username) {
 		uri = "/vacation/"+ sessionID + "?user=" + username;
@@ -108,6 +120,7 @@ class VacationControllerIT {
 	@Test
 	@Transactional
 	void testCreateVacation() {
+		login("bogdan.blazic");
 		username = "bogdan.blazic";
 		uri = "/vacation/"+ sessionID + "?user=" + username;		
 		c1.set(Calendar.YEAR,  2022);
@@ -127,6 +140,7 @@ class VacationControllerIT {
 	@Test
 	@Transactional
 	void testCreateVacationOtherUser() {
+		login("bogdan.blazic");
 		username = "olga.jesic";
 		uri = "/vacation/"+ sessionID + "?user=" + username;		
 		c1.set(Calendar.YEAR,  2022);
@@ -146,6 +160,7 @@ class VacationControllerIT {
 	@Test
 	@Transactional
 	void testCreateVacationInvalidUser() {
+		login("bogdan.blazic");
 		username = "oolga.jesic";
 		uri = "/vacation/"+ sessionID + "?user=" + username;		
 		c1.set(Calendar.YEAR,  2022);
@@ -165,6 +180,7 @@ class VacationControllerIT {
 	@Test
 	@Transactional
 	void testGetVacation() {
+		login("bogdan.blazic");
 		//prvo kreirati sebi 2 odmora
 		username = "bogdan.blazic";
 		initializeVacations(username);
@@ -177,6 +193,7 @@ class VacationControllerIT {
 	@Test
 	@Transactional
 	void testGetVacationOtherUser() {
+		login("bogdan.blazic");
 		//prvo kreirati useru 2 odmora
 		username = "olga.jesic";
 		initializeVacations(username);	
@@ -189,6 +206,7 @@ class VacationControllerIT {
 	@Test
 	@Transactional
 	void testGetVacationInvalidUser() {
+		login("bogdan.blazic");
 		//prvo kreirati useru 2 odmora
 		username = "olga.jesic";
 		initializeVacations(username);
@@ -201,9 +219,11 @@ class VacationControllerIT {
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}		
 	
+	//ulogovati se kao admin i uraditi updejt svog odmora
 	@Test
 	@Transactional
 	void testUpdateVacation() {
+		login("bogdan.blazic");
 		//prvo kreirati useru 2 odmora
 		username = "bogdan.blazic";
 		initializeVacations(username);
@@ -230,9 +250,11 @@ class VacationControllerIT {
 		assertTrue(vacation.getDuration() == 22);	*/
 	}
 	
+	//ulogovati se kao admin i uraditi updejt odmora drugog usera
 	@Test
 	@Transactional
 	void testUpdateVacationOtherUser() {
+		login("bogdan.blazic");
 		//prvo kreirati useru 2 odmora
 		username = "olga.jesic";
 		initializeVacations(username);
@@ -259,6 +281,7 @@ class VacationControllerIT {
 		assertTrue(vacation.getDuration() == 22);	*/
 	}	
 	
+	//ulogovati se kao admin i uraditi updejt odmora nepostojeceg usera
 	@Test
 	@Transactional
 	void testUpdateVacationInvalidUser() {
@@ -289,57 +312,168 @@ class VacationControllerIT {
 		assertTrue(vacation.getDuration() == 22);	*/
 	}	
 
+	//ulogovati se kao admin i obrisati svoj odmor
 	@Test
+	@Transactional
 	void testDeleteVacation() {
+		login("bogdan.blazic");
+		//prvo kreirati useru 2 odmora
+		username = "bogdan.blazic";
+		initializeVacations(username);
+		uri = "/vacation/"+ sessionID + "?user=" + username;
 		restTamplete.delete(uri);
-		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
-		Vacation[] vacations = response.getBody();
-		assertNull(vacations);
+		ResponseEntity<ErrorResponseDto> response = restTamplete.getForEntity(uri, ErrorResponseDto.class);
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
 	
-	//invalid test scenarios - change the username to the one which does not exist in the DB	
-	//or make login of regular user and username to be somebody else
-	@Test
-	void testCreateVacationInvalidUserLoggedRegular() {
-		String message = "korisnik sa ovim username-om ne postoji u bazi";
-		c1.set(Calendar.YEAR,  2022);
-		c1.set(Calendar.MONTH, 7); //month numbers start for zero
-		c1.set(Calendar.DATE,  30);
-		VacationRequest request = VacationRequest.builder()
-                				  .startDate(c1.getTime())
-                                  .duration(19)
-                                  .build();
-	
-		VacationResponse newVacation = restTamplete.postForObject(uri, request, VacationResponse.class);
-		assertTrue(newVacation.getMessage().equalsIgnoreCase(message));
-	}
-	
+	//ulogovati se kao admin i obrisati tudji odmor
 	@Test
 	@Transactional
-	void testGetVacationInvalidUserLoggedRegular() {
-		String message = "korisnik sa ovim username-om ne postoji u bazi";
-		ErrorResponseDto errorResponse = restTamplete.getForObject(uri, ErrorResponseDto.class);
-		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
-	}
+	void testDeleteVacationOtherUser() {
+		login("bogdan.blazic");
+		//prvo kreirati useru 2 odmora
+		username = "olga.jesic";
+		initializeVacations(username);
+		uri = "/vacation/"+ sessionID + "?user=" + username;
+		restTamplete.delete(uri);
+		ResponseEntity<ErrorResponseDto> response = restTamplete.getForEntity(uri, ErrorResponseDto.class);
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+	}	
 	
-	@Test
-	@Transactional
-	void testUpdateVacationInvalidUserLoggedRegular() {
-		String message = "korisnik sa ovim username-om ne postoji u bazi";
-		VacationRequest request = VacationRequest.builder()
-                                 .duration(33)
-                                 .build();
-		uriUpdate = "/vacation/"+ sessionID + "/" + id + "/" + "?user=" + username;
-		System.out.println("URI for update: " + uriUpdate.toString());
-		restTamplete.put(uriUpdate, request);
-		uri = "/vacation/"+ sessionID + "?user=" + username;		
-		ErrorResponseDto errorResponse = restTamplete.getForObject(uri, ErrorResponseDto.class);
-		assertTrue(errorResponse.getMessage().equalsIgnoreCase(message));
-	}
-	
+	//ulogovati se kao admin i obrisati odmor nepostojeceg korisnika
 	@Test
 	@Transactional
 	void testDeleteVacationInvalidUser() {
+		login("bogdan.blazic");
+		//prvo kreirati useru 2 odmora
+		username = "olga.jesic";
+		initializeVacations(username);
+		username = "oolga.jesic";
+		uri = "/vacation/"+ sessionID + "?user=" + username;
 		restTamplete.delete(uri);
+		ResponseEntity<ErrorResponseDto> response = restTamplete.getForEntity(uri, ErrorResponseDto.class);
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}	
+	
+	//ulogovati se kao regular i kreirati odmor sebi
+	@Test
+	@Transactional
+	void testCreateVacationLoggedRegular() {
+		login("olga.jesic");
+		username = "olga.jesic";
+		uri = "/vacation/"+ sessionID + "?user=" + username;		
+		c1.set(Calendar.YEAR,  2022);
+		c1.set(Calendar.MONTH, 7); 
+		c1.set(Calendar.DATE,  30);		
+		VacationRequest request = VacationRequest.builder()
+				                  .startDate(c1.getTime())
+				                  .duration(15)
+				                  .approval("N")
+				                  .build();
+	
+		ResponseEntity<VacationResponse> response = restTamplete.postForEntity(uri, new HttpEntity<>(request), VacationResponse.class);
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());	
+	}	
+	
+	//ulogovati se kao regular i kreirati odmor nekom drugom
+	@Test
+	@Transactional
+	void testCreateVacationLoggedRegularOtherUser() {
+		login("olga.jesic");
+		username = "bogdan.blazic";
+		uri = "/vacation/"+ sessionID + "?user=" + username;		
+		c1.set(Calendar.YEAR,  2022);
+		c1.set(Calendar.MONTH, 7); 
+		c1.set(Calendar.DATE,  30);		
+		VacationRequest request = VacationRequest.builder()
+				                  .startDate(c1.getTime())
+				                  .duration(15)
+				                  .approval("N")
+				                  .build();
+	
+		ResponseEntity<VacationResponse> response = restTamplete.postForEntity(uri, new HttpEntity<>(request), VacationResponse.class);
+		assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());	
+	}		
+	
+	//ulogovati se kao regular i procitati svoj vacation
+	@Test
+	@Transactional
+	void testGetVacationLoggedRegular() {
+		login("olga.jesic");
+		//prvo kreirati sebi 2 odmora
+		username = "olga.jesic";
+		initializeVacations(username);
+		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
+		Vacation[] vacations = response.getBody();
+		assertNotNull(vacations);	
+	}
+	
+	//ulogovati se kao regular i procitati tudji vacation
+	@Test
+	@Transactional
+	void testGetVacationOtherUserLoggedRegular() {
+		login("olga.jesic");
+		uri = "/vacation/"+ sessionID + "?user=" + username;
+		ResponseEntity<ErrorResponseDto> response = restTamplete.getForEntity(uri, ErrorResponseDto.class);
+		assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+	}	
+	
+	//ulogovati se kao regular i uraditi updejt svog odmora
+	@Test
+	@Transactional
+	void testUpdateVacationLoggedRegular() {
+		login("olga.jesic");
+		//prvo kreirati useru 2 odmora
+		username = "olga.jesic";
+		initializeVacations(username);
+		uri = "/vacation/"+ sessionID + "?user=" + username;
+		ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
+		Vacation[] vacations = response.getBody();		
+		id = vacations[0].getId(); //uzeti prvi odmor za updejt
+		
+		VacationRequest vacationRequest = VacationRequest.builder()
+                                         .duration(22)
+                                         .build();
+		uriUpdate = "/vacation/"+ sessionID + "/" + id + "/" + "?user=" + username;
+		System.out.println("URI for update: " + uriUpdate.toString());
+		restTamplete.put(uriUpdate, vacationRequest);
+		/*ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
+		Vacation[] vacations = response.getBody();
+		Vacation vacation = null;
+		for (int i = 0; i < vacations.length; i++) {
+			if (vacations[i].getId() == id) {
+				vacation = vacations[i];
+				break;
+			}
+		}
+		assertTrue(vacation.getDuration() == 22);	*/
+	}
+	
+	//ulogovati se kao regular i obrisati svoj odmor
+	@Test
+	@Transactional
+	void testDeleteVacationLoggedRegular() {
+		login("olga.jesic");
+		//prvo kreirati useru 2 odmora
+		username = "olga.jesic";
+		initializeVacations(username);
+		uri = "/vacation/"+ sessionID + "?user=" + username;
+		restTamplete.delete(uri);
+		ResponseEntity<ErrorResponseDto> response = restTamplete.getForEntity(uri, ErrorResponseDto.class);
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+	}	
+	
+	//ulogovati se kao regular i obrisati tudji odmor
+	@Test
+	@Transactional
+	void testDeleteVacationInvalidUserLoggedRegular() {
+		login("olga.jesic");
+		username = "bogdan.blazic";
+		uri = "/vacation/"+ sessionID + "?user=" + username;
+		restTamplete.delete(uri);
+		ResponseEntity<ErrorResponseDto> response = restTamplete.getForEntity(uri, ErrorResponseDto.class);
+		assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+	}	
+	
+	
 }

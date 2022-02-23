@@ -32,7 +32,7 @@ public class VacationServiceImpl implements VacationService {
 	@Override
 	@Transactional
 	public VacationResponse createVacation(Vacation vacation) {
-		log.debug("Zahtev za kreiranje odmora: {} usera = {} ", vacation.getUsername());
+		log.debug("Zahtev za kreiranje odmora usera = {} ", vacation.getUsername());
 		
 		validator.validateVacationData(vacation);
 		
