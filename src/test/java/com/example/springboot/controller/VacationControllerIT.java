@@ -235,9 +235,13 @@ class VacationControllerIT {
 		VacationRequest vacationRequest = VacationRequest.builder()
                                          .duration(22)
                                          .build();
-		uriUpdate = "/vacation/"+ sessionID + "/" + id + "/" + "?user=" + username;
+		
+		System.out.println("sessionID: " + sessionID + " id: " + id + " username: " + username);
+		
+		uriUpdate = "/vacation/{sessionID}/{id}/?user={username}";
 		System.out.println("URI for update: " + uriUpdate.toString());
-		restTamplete.put(uriUpdate, vacationRequest);
+
+		restTamplete.put(uriUpdate, vacationRequest, sessionID, id, username);
 		/*ResponseEntity<Vacation[]> response = restTamplete.getForEntity(uri, Vacation[].class);
 		Vacation[] vacations = response.getBody();
 		Vacation vacation = null;
