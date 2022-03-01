@@ -27,6 +27,7 @@ import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
 import com.example.springboot.domain.RegistrationRequest;
 import com.example.springboot.domain.RegistrationResponse;
+import com.example.springboot.domain.User;
 import com.example.springboot.domain.Vacation;
 import com.example.springboot.domain.VacationRequest;
 import com.example.springboot.domain.VacationResponse;
@@ -65,7 +66,7 @@ class VacationControllerIT {
 	
 	//try all testcases logged as admin and logged as regular user	
 	@BeforeEach
-	public void initialSetUp(){
+	public void setUp(){
 		//kreiranje administratora i regular usera	
 		RegistrationRequest administratorRegistrationRequest  = RegistrationRequest.builder()
                 					   							.username("bogdan.blazic")
@@ -76,8 +77,10 @@ class VacationControllerIT {
                 					   							.role("administrator")
                 					   							.build();
 
-       ResponseEntity<RegistrationResponse> administratorRegistrationResponse = restTamplete.postForEntity("/register", new HttpEntity<>(administratorRegistrationRequest), RegistrationResponse.class);
-       assertEquals(HttpStatus.CREATED, administratorRegistrationResponse.getStatusCode());			
+       //ResponseEntity<RegistrationResponse> administratorRegistrationResponse = restTamplete.postForEntity("/register", new HttpEntity<>(administratorRegistrationRequest), RegistrationResponse.class);
+		User user = converter.convertRegistrationRequest(administratorRegistrationRequest);
+		RegistrationResponse administratorRegistrationResponse = userService.registerUser(user);
+		assertEquals(HttpStatus.OK, administratorRegistrationResponse.getStatus().getHttpStatus());			
 		
 	   RegistrationRequest regularRegistrationRequest = RegistrationRequest.builder()
 					                  					.username("olga.jesic")
@@ -88,8 +91,10 @@ class VacationControllerIT {
 					                  					.role("user")
 					                  					.build();
 			
-	    ResponseEntity<RegistrationResponse> regularRegistrationResponse = restTamplete.postForEntity("/register", new HttpEntity<>(regularRegistrationRequest), RegistrationResponse.class);
-		assertEquals(HttpStatus.CREATED, regularRegistrationResponse.getStatusCode());
+	    //ResponseEntity<RegistrationResponse> regularRegistrationResponse = restTamplete.postForEntity("/register", new HttpEntity<>(regularRegistrationRequest), RegistrationResponse.class);
+	   user = converter.convertRegistrationRequest(regularRegistrationRequest);	
+	   RegistrationResponse regularRegistrationResponse = userService.registerUser(user);
+	   assertEquals(HttpStatus.OK, regularRegistrationResponse.getStatus().getHttpStatus());
 	}	
 	
 	public void login(String loggedUser) {		
