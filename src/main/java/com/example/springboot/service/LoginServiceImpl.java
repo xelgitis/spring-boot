@@ -48,4 +48,10 @@ public class LoginServiceImpl implements LoginService {
 		return loggedUsers.get(sessionId);
 	}
 
+	@Override
+	public void expireSessions() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

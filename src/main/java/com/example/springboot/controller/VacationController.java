@@ -73,7 +73,7 @@ public class VacationController {
 		
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping(path="/{sessionID}/{id}", consumes = APPLICATION_JSON_VALUE)	
-	public void updateVacation(@PathVariable String sessionID, @PathVariable Long id, @Valid @RequestBody VacationRequest request, @RequestParam(value="user") String user) {
+	public void updateVacation(@PathVariable(name = "sessionID") String sessionID, @PathVariable(name = "id") Long id, @Valid @RequestBody VacationRequest request, @RequestParam(name = "user") String user) {
 		User loggedUser = loginService.getLoggedUser(sessionID);
 		log.debug("loggedUser {}", loggedUser);
 		Vacation vacation = converter.convertVacationRequest(request, user);
@@ -83,7 +83,7 @@ public class VacationController {
 		vacationService.updateVacation(vacation);		
 	}	
 		
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping(path="/{sessionID}")
 	public void deleteVacation(@PathVariable String sessionID, @RequestParam(value="user") String user) {
 		User loggedUser = loginService.getLoggedUser(sessionID);
@@ -91,7 +91,7 @@ public class VacationController {
 		vacationService.deleteVacation(user);	
 	}	
 	
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping(path="/{sessionID}/{id}")
 	public void deleteVacationById(@PathVariable String sessionID, @PathVariable Long id, @RequestParam(value="user") String user) {
 		User loggedUser = loginService.getLoggedUser(sessionID);

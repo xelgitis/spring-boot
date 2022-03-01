@@ -13,4 +13,6 @@ public interface LoginService {
 	Map<String, User> getLoggedUsers();	
 	
 	User getLoggedUser(String sessionId);
+	
+	void expireSessions();
 }
