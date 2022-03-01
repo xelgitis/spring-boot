@@ -1,6 +1,8 @@
 package com.example.springboot.service;
 
 import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +33,11 @@ public class LoginServiceImpl implements LoginService {
 		User user = userService.findUser(request.getUsername(), request.getPassword());
 		
     	String sessionId = UUID.randomUUID().toString();
+    	user.setLoginTime(new Date());
+    	log.debug("Korisnik se ulogovao u: {} ", user.getLoginTime());
 		loggedUsers.put(sessionId, user);
+		
+		expireSessions();
 		
 		return new LoginResponse(user.getUsername(), sessionId, Status.SUCCESS, "Login za korisnika uspesan");
 	}	
@@ -50,8 +56,17 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public void expireSessions() {
-		// TODO Auto-generated method stub
 		
+		Date loginTime, currentTime = new Date();
+		Iterator<Map.Entry<String, User>> itr = loggedUsers.entrySet().iterator();
+		
+        while(itr.hasNext())
+        {
+             Map.Entry<String, User> entry = itr.next();             
+             log.debug("sessionID: {} loginTime: {} " , entry.getKey(), entry.getValue().getLoginTime());
+             loginTime = entry.getValue().getLoginTime();
+             if (currentTime.getTime() - loginTime.getTime() > 60000) loggedUsers.remove(entry.getKey()); //ako je proslo vise od 60s od kada se korisnik ulogovao
+        }
 	}
 
 }
