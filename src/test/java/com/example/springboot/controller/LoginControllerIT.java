@@ -2,7 +2,6 @@ package com.example.springboot.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,38 +10,23 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springboot.domain.ErrorResponseDto;
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
-import com.example.springboot.domain.RegistrationRequest;
-import com.example.springboot.domain.RegistrationResponse;
+
+import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Slf4j
 class LoginControllerIT {
 	
 	@Autowired
 	TestRestTemplate restTamplete;
-	
-	@BeforeEach
-	public void initialCreate(){
-		RegistrationRequest request = RegistrationRequest.builder()
-				                      .username("olga.jesic")
-				                      .password("olga.jesic")
-				                      .address("Ivana Blagojevica 14")
-				                      .name("Olga Jesic")
-				                      .email("olga.jesic@mozzartbet.com")
-				                      .role("user")
-				                      .build();
-		
-		ResponseEntity<RegistrationResponse> response = restTamplete.postForEntity("/register", new HttpEntity<>(request), RegistrationResponse.class);
-		assertEquals(HttpStatus.CREATED, response.getStatusCode());	
-	}		
 
 	@Test
-	@Transactional
 	void testLoginCheck() {
+		log.debug("TEST: testLoginCheck");
 		
 		LoginRequest request = LoginRequest.builder()
 				               .username("olga.jesic")
@@ -54,8 +38,8 @@ class LoginControllerIT {
 	}
 	
 	@Test
-	@Transactional
 	void testLoginWrongUsername() {
+		log.debug("TEST: testLoginWrongUsername");		
 		LoginRequest request = LoginRequest.builder()
 				               .username("oolga.jesic")
 				               .password("olga.jesic")
@@ -67,8 +51,8 @@ class LoginControllerIT {
 	
 	//TODO: ne radi!
 	@Test
-	@Transactional
-	void testLoginWrongPassword() {		
+	void testLoginWrongPassword() {	
+		log.debug("TEST: testLoginWrongPassword");	
 		LoginRequest request = LoginRequest.builder()
 				               .username("olga.jesic")
 				               .password("oolga.jesic")
@@ -79,8 +63,8 @@ class LoginControllerIT {
 	}	
 	
 	@Test
-	@Transactional
 	void testLoginNoUsername() {
+		log.debug("TEST: testLoginNoUsername");
 		LoginRequest request = LoginRequest.builder()
 				               .username(null)
 				               .password("olga.jesic")
@@ -90,8 +74,8 @@ class LoginControllerIT {
 	}	
 	
 	@Test
-	@Transactional
 	void testLoginNoPassword() {
+		log.debug("TEST: testLoginNoPassword");
 		LoginRequest request = LoginRequest.builder()
 				               .username("olga.jesic")
 				               .password(null)

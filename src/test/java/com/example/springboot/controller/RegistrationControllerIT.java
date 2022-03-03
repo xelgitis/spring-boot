@@ -9,29 +9,30 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import com.example.springboot.domain.ErrorResponseDto;
 import com.example.springboot.domain.RegistrationRequest;
 import com.example.springboot.domain.RegistrationResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@Slf4j
 class RegistrationControllerIT {
 	
 	@Autowired
 	TestRestTemplate restTamplete; 	
 
 	@Test
-	@Transactional
 	void testRegister() {
-
+		log.debug("TEST: testRegister");
 		RegistrationRequest request = RegistrationRequest.builder()
-				                      .username("olga.jesic")
-				                      .password("olga.jesic")
+				                      .username("marija.markovic")
+				                      .password("marija.markovic")
 				                      .address("Ivana Blagojevica 14")
-				                      .name("Olga Jesic")
-				                      .email("olga.jesic@mozzartbet.com")
+				                      .name("Marija Markovic")
+				                      .email("marija.markovic@mozzartbet.com")
 				                      .role("user")
 				                      .build();
 		
@@ -40,8 +41,8 @@ class RegistrationControllerIT {
 	}
 	
 	@Test
-	@Transactional	
 	void testRegisterInvalidUsername() {
+		log.debug("TEST: testRegisterInvalidUsername");
 		RegistrationRequest request = RegistrationRequest.builder()
 				                      .username(null)
 				                      .password("olga.jesic")
@@ -55,9 +56,9 @@ class RegistrationControllerIT {
 		assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());				
 	}	
 	
-	@Test
-	@Transactional	
+	@Test	
 	void testRegisterInvalidPassword() {
+		log.debug("TEST: testRegisterInvalidPassword");
 		RegistrationRequest request = RegistrationRequest.builder()
 				                      .username("olga.jesic")
 				                      .password(null)
@@ -71,23 +72,9 @@ class RegistrationControllerIT {
 		assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());
 	}	
 	
-	@Test
-	@Transactional	
+	@Test	
 	void testRegisterExistingUsername() {
-		//preduslov: vec postoji isti user u bazi
-		RegistrationRequest request = RegistrationRequest.builder()
-                					  .username("olga.jesic")
-                					  .password("olga.jesic")
-                                      .address("Ivana Blagojevica 14")
-                                      .name("Olga Jesic")
-                                      .email("olga.jesic@mozzartbet.com")
-                                      .role("user")
-                                      .build();
-
-        ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
-        assertEquals(HttpStatus.CREATED, errorResponse.getStatusCode());
-		
-				
+		log.debug("TEST: testRegisterExistingUsername");
 		RegistrationRequest newRequest = RegistrationRequest.builder()
 				                         .username("olga.jesic")
 				                         .password("olga.jesic")
@@ -101,22 +88,10 @@ class RegistrationControllerIT {
 		assertEquals(HttpStatus.CONFLICT, errorNewResponse.getStatusCode());
 	}	
 	
-	@Test
-	@Transactional	
+	@Test	
 	void testRegisterExistingEmail() {
+		log.debug("TEST: testRegisterExistingEmail");
 		//preduslov: vec postoji user sa istim email-om u bazi		
-		RegistrationRequest request = RegistrationRequest.builder()
-                					  .username("olga.jesic")
-                					  .password("olga.jesic")
-                                      .address("Ivana Blagojevica 14")
-                                      .name("Olga Jesic")
-                                      .email("olga.jesic@mozzartbet.com")
-                                      .role("user")
-                                      .build();
-
-        ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.postForEntity("/register", new HttpEntity<>(request), ErrorResponseDto.class);
-        assertEquals(HttpStatus.CREATED, errorResponse.getStatusCode());		
-				
 		RegistrationRequest newRequest = RegistrationRequest.builder()
 				                         .username("milos.milosevic")
 				                         .password("milos.milosevic")

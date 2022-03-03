@@ -2,212 +2,213 @@ package com.example.springboot.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.example.springboot.domain.ErrorResponseDto;
 import com.example.springboot.domain.LoginRequest;
 import com.example.springboot.domain.LoginResponse;
-import com.example.springboot.domain.RegistrationRequest;
 import com.example.springboot.domain.RegistrationResponse;
+import com.example.springboot.domain.Role;
 import com.example.springboot.domain.User;
 import com.example.springboot.domain.UserRequest;
+import com.example.springboot.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 //import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-//@Slf4j
+@Slf4j
 class UserControllerIT {
 	
 	private String sessionID;
-	private String uri;
-	private String loggedUser = "olga.jesic";
+	private Map<String, String> params = new HashMap<>();
+	private String uri = "/users/{sessionID}/?user={user}";
 	private String username;  //change the username to test CRUD for different users
 	
 	@Autowired
 	TestRestTemplate restTamplete;
 	
-	//try all testcases logged as admin and logged as regular user	
-	@BeforeEach
-	public void initialSetUp(){
-		//kreiranje administratora i regular usera	
-		RegistrationRequest request1 = RegistrationRequest.builder()
-                					   .username("bogdan.blazic")
-                                       .password("bogdan.blazic")
-                                       .address("Ivana Blagojevica 14")
-                                       .name("Bogdan Blazic")
-                                       .email("bogdan.blazic@mozzartbet.com")
-                                       .role("administrator")
-                                       .build();
-
-       ResponseEntity<RegistrationResponse> response1 = restTamplete.postForEntity("/register", new HttpEntity<>(request1), RegistrationResponse.class);
-       assertEquals(HttpStatus.CREATED, response1.getStatusCode());			
-		
-	   RegistrationRequest request2 = RegistrationRequest.builder()
-					                  .username("olga.jesic")
-					                  .password("olga.jesic")
-					                  .address("Ivana Blagojevica 14")
-					                  .name("Olga Jesic")
-					                  .email("olga.jesic@mozzartbet.com")
-					                  .role("user")
-					                  .build();
-			
-	    ResponseEntity<RegistrationResponse> response2 = restTamplete.postForEntity("/register", new HttpEntity<>(request2), RegistrationResponse.class);
-		assertEquals(HttpStatus.CREATED, response2.getStatusCode());						
-		
-		//
+	@Autowired
+	UserService userService;	
+	
+	public void login(String loggedUser) {		
 		LoginRequest request = LoginRequest.builder()
 				               .username(loggedUser)
 				               .password(loggedUser)
 				               .build();
 	
 		LoginResponse logedUser = restTamplete.postForObject("/login", request, LoginResponse.class);
-		sessionID = logedUser.getSessionId();		
+		sessionID = logedUser.getSessionId();
+		params.put("sessionID", sessionID);
 	}	
+	
+	public void createTmpUser() {		
+		Role userRole = Role.builder()
+    			       .name("user")
+    			       .build();
+		
+		User userRegistration  = User.builder()
+				  				.username("marija.petrovic")
+				  				.password("marija.petrovic")
+				  				.address("Ivana Blagojevica 14")
+				  				.name("Marija Petrovic")
+				  				.email("marija.petrovic@mozzartbet.com")
+				  				.role(userRole)
+				  				.build();	
+		
+		RegistrationResponse userResponse = userService.registerUser(userRegistration);
+		assertEquals(HttpStatus.OK, userResponse.getStatus().getHttpStatus());	
+	}		
 	
 	//ulogovati se kao admin i procitati usera koji postoji u bazi
 	@Test
-	@Transactional
-	void testGetUser() {		
+	void testGetUser() {
+		log.debug("TEST: testGetUser");
+		login("bogdan.blazic");
 		username = "olga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNotNull(user.getUsername());	
+		params.put("user", username);
+		ResponseEntity<User> response = restTamplete.getForEntity(uri, User.class, params);
+		assertEquals(HttpStatus.OK, response.getStatusCode());	
 	}	
 	
 	//ulogovati se kao admin i dohvatiti usera koji ne postoji u bazi
 	@Test
-	@Transactional
 	void testGetInvalidUser() {
+		log.debug("TEST: testGetInvalidUser");
+		login("bogdan.blazic");
 		username = "oolga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;		
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user.getUsername());	
+		params.put("user", username);
+		
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.getForEntity(uri, ErrorResponseDto.class, params);
+		assertEquals(HttpStatus.NOT_FOUND, errorResponse.getStatusCode());
 	}	
 
 	//ulogovati se kao admin i updejt usera koji postoji u bazi
 	@Test
-	@Transactional
 	void testUpdateUser() {
+		log.debug("TEST: testUpdateUser");
+		login("bogdan.blazic");
 		username = "olga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;		
+		params.put("user", username);	
 		UserRequest request = UserRequest.builder()
 				              .email("olga.jesic@gmail.com")
 				              .build();		
-		restTamplete.put(uri, request);
-		User user = restTamplete.getForObject(uri, User.class);
-		assertTrue(user.getEmail().equalsIgnoreCase("olga.jesic@gmail.com"));
+		restTamplete.put(uri, request, params);
+		ResponseEntity<User> response = restTamplete.getForEntity(uri, User.class, params);
+		assertTrue(response.getBody().getEmail().equalsIgnoreCase("olga.jesic@gmail.com"));
 	}
 	
 	//ulogovati se kao admin i updejt usera koji ne postoji u bazi
 	@Test
-	@Transactional
 	void testUpdateInvalidUser() {
+		log.debug("TEST: testUpdateInvalidUser");
+		login("bogdan.blazic");
 		username = "oolga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;	
+		params.put("user", username);	
 		UserRequest request = UserRequest.builder()
 				              .email("olga.jesic@mozzartbet.com")
 				              .build();
-		restTamplete.put(uri, request);
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user.getUsername());	
+		restTamplete.put(uri, request, params);
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.getForEntity(uri, ErrorResponseDto.class, params);
+		assertEquals(HttpStatus.NOT_FOUND, errorResponse.getStatusCode());
 	}		
 
 	//ulogovati se kao admin i brisanje usera koji postoji u bazi
 	@Test
-	@Transactional
 	void testDeleteUser() {
-		username = "olga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;
-		restTamplete.delete(uri);
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user.getUsername());
+		log.debug("TEST: testDeleteUser");
+		login("bogdan.blazic");		
+		createTmpUser();
+		username = "marija.petrovic";
+		params.put("user", username);
+		restTamplete.delete(uri, params);
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.getForEntity(uri, ErrorResponseDto.class, params);
+		assertEquals(HttpStatus.NOT_FOUND, errorResponse.getStatusCode());
 	}
-
 	
 	@Test
-	@Transactional
 	void testDeleteInvalidUser() {
+		log.debug("TEST: testDeleteUser");
+		login("bogdan.blazic");	
 		username = "oolga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;		
-		restTamplete.delete(uri);
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user.getUsername());
+		params.put("user", username);	
+		restTamplete.delete(uri, params);
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.getForEntity(uri, ErrorResponseDto.class, params);
+		assertEquals(HttpStatus.NOT_FOUND, errorResponse.getStatusCode());
 	}	
 	
 	//ulogovati se kao regular user i procitati drugog usera
 	@Test
-	@Transactional
-	void testGetUserLoggedRegular() {		
+	void testGetUserLoggedRegular() {
+		log.debug("TEST: testGetUserLoggedRegular");
+		login("olga.jesic");		
 		username = "bogdan.blazic";
-		uri = "/users/"+ sessionID + "?user=" + username;
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user.getUsername());	
+		params.put("user", username);
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.getForEntity(uri, ErrorResponseDto.class, params);
+		assertEquals(HttpStatus.FORBIDDEN, errorResponse.getStatusCode());
 	}	
 	
 	//ulogovati se kao regular user i procitati sebe
 	@Test
-	@Transactional
-	void testGetMySelfLoggedRegular() {		
+	void testGetMySelfLoggedRegular() {
+		log.debug("TEST: testGetMySelfLoggedRegular");
+		login("olga.jesic");		
 		username = "olga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNotNull(user.getUsername());	
+		params.put("user", username);
+		ResponseEntity<User> response = restTamplete.getForEntity(uri, User.class, params);
+		assertEquals(HttpStatus.OK, response.getStatusCode());		
 	}	
 	
 	//ulogovati se kao regular user i updejt drugog usera
 	@Test
-	@Transactional
 	void testUpdateUserLoggedRegular() {
+		log.debug("TEST: testUpdateUserLoggedRegular");
+		login("olga.jesic");		
 		username = "bogdan.blazic";
-		uri = "/users/"+ sessionID + "?user=" + username;		
+		params.put("user", username);	
 		UserRequest request = UserRequest.builder()
 				              .email("bogdan.blazic@gmail.com")
 				              .build();		
-		restTamplete.put(uri, request);
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user.getUsername());	
+		restTamplete.put(uri, request, params);
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.getForEntity(uri, ErrorResponseDto.class, params);
+		assertEquals(HttpStatus.FORBIDDEN, errorResponse.getStatusCode());
 	}
 	
 	//ulogovati se kao regular user i updejt samog sebe
 	@Test
-	@Transactional
 	void testUpdateMySelfLoggedRegular() {
+		log.debug("TEST: testUpdateUserLoggedRegular");
+		login("olga.jesic");		
 		username = "olga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;	
+		params.put("user", username);	
 		UserRequest request = UserRequest.builder()
 				              .email("olga.jesic@gmail.com")
 				              .build();
-		restTamplete.put(uri, request);
-		User user = restTamplete.getForObject(uri, User.class);
-		assertTrue(user.getEmail().equalsIgnoreCase("olga.jesic@gmail.com"));
+		restTamplete.put(uri, request, params);
+		ResponseEntity<User> response = restTamplete.getForEntity(uri, User.class, params);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertTrue(response.getBody().getEmail().equalsIgnoreCase("olga.jesic@gmail.com"));
 	}	
 	
 	//ulogovati se kao regular user i delete drugog usera
 	@Test
-	@Transactional
 	void testDeleteUserLoggedRegular() {
+		log.debug("TEST: testDeleteUserLoggedRegular");
+		login("olga.jesic");		
 		username = "bogdan.blazic";
-		uri = "/users/"+ sessionID + "?user=" + username;		
-		restTamplete.delete(uri);
-	}
-	
-	//ulogovati se kao regular user i updejt samog sebe
-	@Test
-	@Transactional
-	void testDeleteMySelfLoggedRegular() {
-		username = "olga.jesic";
-		uri = "/users/"+ sessionID + "?user=" + username;	
-		restTamplete.delete(uri);
-		User user = restTamplete.getForObject(uri, User.class);
-		assertNull(user.getUsername());
-	}		
-	
+		params.put("user", username);		
+		restTamplete.delete(uri, params);
+		ResponseEntity<ErrorResponseDto> errorResponse = restTamplete.getForEntity(uri, ErrorResponseDto.class, params);
+		assertEquals(HttpStatus.FORBIDDEN, errorResponse.getStatusCode());		
+	}	
 }

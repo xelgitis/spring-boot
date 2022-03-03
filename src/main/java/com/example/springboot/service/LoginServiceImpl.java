@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
 		
     	String sessionId = UUID.randomUUID().toString();
     	user.setLoginTime(new Date());
-    	log.debug("Korisnik se ulogovao u: {} ", user.getLoginTime());
+
 		loggedUsers.put(sessionId, user);
 		
 		expireSessions();
@@ -63,7 +63,7 @@ public class LoginServiceImpl implements LoginService {
         while(itr.hasNext())
         {
              Map.Entry<String, User> entry = itr.next();             
-             log.debug("sessionID: {} loginTime: {} " , entry.getKey(), entry.getValue().getLoginTime());
+             //log.debug("sessionID: {} loginTime: {} " , entry.getKey(), entry.getValue().getLoginTime());
              loginTime = entry.getValue().getLoginTime();
              if (currentTime.getTime() - loginTime.getTime() > 60000) loggedUsers.remove(entry.getKey()); //ako je proslo vise od 60s od kada se korisnik ulogovao
         }

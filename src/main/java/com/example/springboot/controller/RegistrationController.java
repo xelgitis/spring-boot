@@ -37,11 +37,9 @@ public class RegistrationController {
 		
 		request.setUsername(request.getUsername().toLowerCase());
      		
-		//convert request to user
 		User user = converter.convertRegistrationRequest(request);
 		log.debug("Kreirani korisnik ={} ", user);
 
-		//try to register user and get a response
 	    RegistrationResponse response = userService.registerUser(user);
 		
         log.info("Odgovor servisa za registraciju za korisnicko ime: {}, response: {}", request.getUsername(), response);

@@ -32,7 +32,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public RegistrationResponse registerUser(User user) {
+	public RegistrationResponse registerUser(User user) {		
+		
+		String passwordSalt   = passwordGeneratorService.createPasswordSalt();
+		String hashedPassword = passwordGeneratorService.provideHashedPassword(user.getPassword(), passwordSalt);	
+		
+		user.setPasswordSalt(passwordSalt);
+		user.setHashedPassword(hashedPassword);
 
 		try {
 			userMapper.create(user);
